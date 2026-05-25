@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A-WAG</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Barlow:wght@300;400&family=Cormorant+Garamond:ital,wght@0,400;1,300;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- ══════════════════════════════════════════════
+       ANALYTICS — paste snippets here when site goes live.
+       (same instructions as index.html)
+       ══════════════════════════════════════════════ -->
+</head>
+<body>
+
+  <!-- ANNOUNCEMENT BAR -->
+  <div class="announcement-bar">
+    <span>FREE SHIPPING ACROSS INDIA — ALL ORDERS</span>
+    <span class="sep">·</span>
+    <span>DROP 001–005 NOW LIVE</span>
+    <span class="sep">·</span>
+    <span>ONLY 50 PIECES PER DESIGN</span>
+  </div>
+
+  <!-- NAVIGATION -->
+  <nav class="nav" id="nav">
+    <button class="nav-hamburger" id="hamburgerBtn" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="index.html" class="nav-logo">A-WAG</a>
+    <div class="nav-icons">
+      <button class="nav-icon-btn" id="wishlistNavBtn" aria-label="Wishlist">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+        <span class="nav-badge" id="wishlistCount" style="display:none">0</span>
+      </button>
+      <button class="nav-icon-btn" id="cartNavBtn" aria-label="Cart">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        <span class="nav-badge" id="cartCount" style="display:none">0</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-menu-close" id="menuClose" aria-label="Close">✕</button>
+    <nav class="mobile-nav-links">
+      <a href="index.html#collections">Collections</a>
+      <a href="index.html#shop">Shop</a>
+      <a href="index.html#philosophy">Philosophy</a>
+      <a href="index.html#journal">Journal</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+    <div class="mobile-menu-footer">
+      <p class="mobile-tagline">Ain't We All God?</p>
+    </div>
+  </div>
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <!-- CART DRAWER -->
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-drawer-header">
+      <h3>CART</h3>
+      <button class="cart-close" id="cartClose">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <div class="cart-empty">
+        <p>Your cart is empty.</p>
+        <p class="cart-empty-sub">The gods travel light.</p>
+      </div>
+    </div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="cart-total">
+        <span>Total</span>
+        <span id="cartTotal">₹0</span>
+      </div>
+      <button class="btn-primary btn-block" id="checkoutBtn" onclick="initiateCheckout()">PROCEED TO PAYMENT</button>
+    </div>
+  </div>
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+
+  <!-- SIZE GUIDE MODAL -->
+  <div class="sgmodal-overlay" id="sizeGuideOverlay" onclick="closeSizeGuide()"></div>
+  <div class="sgmodal" id="sizeGuideModal">
+    <div class="sgmodal-header">
+      <div>
+        <p class="section-label" style="margin-bottom:4px">FIT REFERENCE</p>
+        <h3 style="font-family:var(--font-condensed);font-size:22px;font-weight:900;letter-spacing:0.06em">SIZE GUIDE</h3>
+      </div>
+      <button class="sgmodal-close" onclick="closeSizeGuide()">✕</button>
+    </div>
+    <div class="sgmodal-body">
+      <p class="size-guide-note">240 GSM oversized drop-shoulder crew. All measurements are <strong>garment half-chest laid flat</strong> in inches — double for full chest. The GOTS-certified organic cotton will ease by ½" over first 3 washes.</p>
+      <table class="size-table">
+        <thead>
+          <tr><th>SIZE</th><th>HALF CHEST</th><th>LENGTH</th><th>SHOULDER</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>S</td><td>21"</td><td>28"</td><td>18"</td></tr>
+          <tr><td>M</td><td>22.5"</td><td>29"</td><td>19"</td></tr>
+          <tr><td>L</td><td>24"</td><td>30"</td><td>20.5"</td></tr>
+        </tbody>
+      </table>
+      <p class="size-guide-note" style="margin-top:16px">
+        S fits body chest 34–36" · M fits 36–38" · L fits 38–42"<br>
+        Oversized by design — if you want a tighter fit, size down. If in doubt, size up.
+      </p>
+    </div>
+  </div>
+
+  <!-- PRODUCT PAGE — JS renders into this -->
+  <div id="productContent" class="product-page-wrap"></div>
+
+  <!-- NOT FOUND — shown if id is missing/invalid -->
+  <div id="productNotFound" class="product-not-found" style="display:none">
+    <p class="section-label">LOST?</p>
+    <h2 style="font-family:var(--font-condensed);font-size:clamp(36px,8vw,72px);font-weight:900;margin:16px 0">THIS DESIGN DOESN'T EXIST.</h2>
+    <p style="color:var(--muted);margin-bottom:40px">Or it did — and it's gone. 50 pieces means 50 pieces.</p>
+    <a href="index.html#shop" class="btn-primary">VIEW ALL DESIGNS</a>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer" id="contact" style="display:none" id="pgFooter">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <p class="footer-logo">A-WAG</p>
+        <p class="footer-tagline">Ain't We All God?</p>
+        <p class="footer-desc">Premium Indian spiritual streetwear.<br>Made for those who are asking.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <p class="footer-col-head">COLLECTIONS</p>
+          <a href="index.html#shop" class="footer-link">All Designs</a>
+          <a href="index.html#shop" class="footer-link">Akshar ∴</a>
+          <a href="index.html#shop" class="footer-link">Bloom ⊕</a>
+          <a href="index.html#shop" class="footer-link">Void ○</a>
+          <a href="index.html#shop" class="footer-link">Witness ◉</a>
+          <a href="index.html#shop" class="footer-link">Yaatra ◎</a>
+        </div>
+        <div class="footer-col">
+          <p class="footer-col-head">INFO</p>
+          <a href="index.html#philosophy" class="footer-link">Philosophy</a>
+          <a href="index.html#journal" class="footer-link">Journal</a>
+          <a href="#" class="footer-link" onclick="openSizeGuide();return false;">Size Guide</a>
+          <a href="#" class="footer-link">Shipping</a>
+        </div>
+        <div class="footer-col">
+          <p class="footer-col-head">CONNECT</p>
+          <a href="#" class="footer-link">Instagram</a>
+          <a href="mailto:aintweallgod@gmail.com" class="footer-link">aintweallgod@gmail.com</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 A-WAG. All rights reserved.</p>
+      <p>50 pieces. Then gone. Forever.</p>
+    </div>
+  </footer>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script src="products.js"></script>
+  <script src="script.js"></script>
+  <script>
+  /* ── Product page state ── */
+  var selectedSize = 'M';  // default selection
+
+  /* ── Size guide modal ── */
+  function openSizeGuide() {
+    document.getElementById('sizeGuideOverlay').style.display = 'block';
+    document.getElementById('sizeGuideModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeSizeGuide() {
+    document.getElementById('sizeGuideOverlay').style.display = 'none';
+    document.getElementById('sizeGuideModal').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  /* ── Size selection ── */
+  function selectSize(size) {
+    selectedSize = size;
+    document.querySelectorAll('.size-btn').forEach(function(btn) {
+      btn.classList.toggle('active', btn.dataset.size === size);
+    });
+  }
+
+  /* ── Add to cart from product page (includes size in ID) ── */
+  function addToCartFromPage() {
+    var params  = new URLSearchParams(window.location.search);
+    var id      = params.get('id');
+    var product = getProduct(id);
+    if (!product) return;
+    if (!selectedSize) { showToast('SELECT A SIZE FIRST'); return; }
+    var cartId   = product.id + '-' + selectedSize;
+    var cartName = product.name + ' / ' + selectedSize;
+    addToCart(cartId, cartName, product.img);
+  }
+
+  /* ── Buy now — direct single-item Razorpay checkout ── */
+  function buyNowFromPage() {
+    var params  = new URLSearchParams(window.location.search);
+    var id      = params.get('id');
+    var product = getProduct(id);
+    if (!product) return;
+    if (!selectedSize) { showToast('SELECT A SIZE FIRST'); return; }
+    if (typeof Razorpay === 'undefined') { showToast('PAYMENT LOADING — TRY AGAIN'); return; }
+
+    var utm      = getStoredUTM();
+    var itemName = product.name + ' / ' + selectedSize;
+
+    track('begin_checkout', {
+      value: product.price, currency: 'INR', num_items: 1,
+      item_id: product.id, item_name: itemName
+    });
+
+    var options = {
+      key:         AWAG_CONFIG.razorpay.key,
+      amount:      product.price * 100,
+      currency:    'INR',
+      name:        AWAG_CONFIG.razorpay.name,
+      description: itemName,
+      image:       AWAG_CONFIG.razorpay.image || undefined,
+      notes: {
+        item:         itemName,
+        collection:   product.collection,
+        size:         selectedSize,
+        utm_source:   utm.utm_source   || 'direct',
+        utm_medium:   utm.utm_medium   || '',
+        utm_campaign: utm.utm_campaign || '',
+      },
+      theme: { color: AWAG_CONFIG.razorpay.themeColor },
+      handler: function(response) {
+        track('purchase', {
+          transaction_id: response.razorpay_payment_id,
+          value: product.price, currency: 'INR',
+          item_id: product.id, item_name: itemName
+        });
+        showToast("ORDER PLACED — AIN'T WE ALL GOD? ∴");
+        setTimeout(function() { window.location.href = 'index.html'; }, 2500);
+      },
+      modal: {
+        ondismiss: function() {
+          track('checkout_abandoned', { value: product.price, currency: 'INR', num_items: 1 });
+        }
+      }
+    };
+
+    var rzp = new Razorpay(options);
+    rzp.on('payment.failed', function(response) {
+      track('payment_failed', { error_code: response.error.code, value: product.price });
+      showToast('PAYMENT FAILED — PLEASE TRY AGAIN');
+    });
+    rzp.open();
+  }
+
+  /* ── Render product page HTML ── */
+  function renderProductPage(product) {
+    var related      = getRelated(product.id, 3);
+    var otherPicks   = getOtherCollections(product.id, 4);
+    var footer       = document.getElementById('pgFooter') || document.querySelector('.footer');
+
+    /* ── helper: build a product card row ── */
+    function buildCardRow(products) {
+      return products.map(function(p) {
+        return '<a href="product.html?id=' + p.id + '" class="related-card">'
+          + '<div class="related-img-wrap"><img src="' + p.img + '" alt="' + p.name + '" loading="lazy" onerror="this.parentElement.style.background=\'#1A1816\';this.style.display=\'none\'"></div>'
+          + '<div class="related-info">'
+          + '<p class="related-collection-tag">' + p.symbol + ' ' + p.collection.toUpperCase() + '</p>'
+          + '<p class="related-name">' + p.name + '</p>'
+          + '<p class="related-colorway">' + p.colorway + '</p>'
+          + '<p class="related-price">₹2,499</p>'
+          + '</div></a>';
+      }).join('');
+    }
+
+    var relatedHTML = '';
+    if (related.length) {
+      relatedHTML = '<section class="related-section">'
+        + '<p class="section-label">MORE FROM ' + product.symbol + ' ' + product.collection.toUpperCase() + '</p>'
+        + '<div class="related-grid">'
+        + buildCardRow(related)
+        + '</div></section>';
+    }
+
+    var otherHTML = '';
+    if (otherPicks.length) {
+      otherHTML = '<section class="related-section other-collections-section">'
+        + '<div class="other-col-header">'
+        + '<p class="section-label">OTHER COLLECTIONS</p>'
+        + '<a href="index.html#shop" class="other-col-link">VIEW ALL →</a>'
+        + '</div>'
+        + '<div class="related-grid">'
+        + buildCardRow(otherPicks)
+        + '</div></section>';
+    }
+
+    document.getElementById('productContent').innerHTML =
+      /* BREADCRUMB */
+      '<nav class="pg-breadcrumb" aria-label="breadcrumb">'
+        + '<a href="index.html">A-WAG</a>'
+        + '<span class="bc-sep">·</span>'
+        + '<a href="index.html#shop">' + product.collection.toUpperCase() + '</a>'
+        + '<span class="bc-sep">·</span>'
+        + '<span>' + product.name + '</span>'
+      + '</nav>'
+
+      /* TWO-COLUMN LAYOUT */
+      + '<div class="product-layout">'
+
+        /* LEFT — image */
+        + '<div class="product-img-panel">'
+          + '<div class="product-img-frame">'
+            + '<img id="mainProductImg" src="' + product.img + '" alt="' + product.name + '" onerror="this.parentElement.style.background=\'#1A1816\';this.style.display=\'none\'">'
+          + '</div>'
+          + '<div class="product-img-meta">'
+            + '<span class="product-limited-badge">50 PCS · NO RESTOCK · EVER</span>'
+          + '</div>'
+        + '</div>'
+
+        /* RIGHT — details */
+        + '<div class="product-detail-panel">'
+          + '<p class="pg-signal">' + product.signal + '</p>'
+          + '<p class="pg-collection-tag">' + product.symbol + ' ' + product.collection.toUpperCase() + '</p>'
+          + '<h1 class="pg-title">' + product.name + '</h1>'
+          + '<p class="pg-colorway">' + product.colorway + '</p>'
+
+          + '<blockquote class="pg-philosophy">' + product.philosophy + '</blockquote>'
+
+          + '<div class="pg-price-row">'
+            + '<span class="pg-price">₹2,499</span>'
+            + '<span class="pg-gst-note">Incl. all taxes · Free shipping across India</span>'
+          + '</div>'
+
+          /* SIZE */
+          + '<div class="pg-size-selector">'
+            + '<div class="pg-size-head">'
+              + '<p class="pg-size-label">SIZE</p>'
+              + '<button class="pg-size-guide-btn" onclick="openSizeGuide()">SIZE GUIDE →</button>'
+            + '</div>'
+            + '<div class="pg-size-row">'
+              + ['S','M','L'].map(function(s) {
+                  return '<button class="size-btn' + (s === selectedSize ? ' active' : '') + '" data-size="' + s + '" onclick="selectSize(\'' + s + '\')">' + s + '</button>';
+                }).join('')
+            + '</div>'
+          + '</div>'
+
+          /* CTA */
+          + '<div class="pg-cta-stack">'
+            + '<button class="btn-primary btn-block" onclick="addToCartFromPage()">ADD TO CART</button>'
+            + '<button class="btn-ghost btn-block" onclick="buyNowFromPage()">BUY NOW — ₹2,499</button>'
+          + '</div>'
+
+          /* PRODUCT META */
+          + '<div class="pg-meta-strip">'
+            + [
+                ['FABRIC',   '240 GSM · 100% GOTS-certified organic cotton'],
+                ['PRINT',    'Water-based ink · Bonds with cotton fibre · Doesn\'t crack or peel'],
+                ['ORIGIN',   'Made in India · Artisan screen-printed'],
+                ['CARE',     'Cold wash inside out · Shade dry · No tumble dry'],
+                ['SHIPPING', 'Free across India · 5–7 working days'],
+              ].map(function(row) {
+                return '<div class="pg-meta-row"><span class="pg-meta-key">' + row[0] + '</span><span class="pg-meta-val">' + row[1] + '</span></div>';
+              }).join('')
+          + '</div>'
+
+          + '<p class="pg-returns-note">'
+            + 'S · M · L — oversized drop-shoulder cut. S fits body chest 34–36". M fits 36–38". L fits 38–42". <button class="inline-size-link" onclick="openSizeGuide()">Full size chart →</button><br><br>'
+            + 'No restocks. No returns — every piece is made to order in a run of 50.<br>'
+            + 'Size questions: <a href="mailto:aintweallgod@gmail.com">aintweallgod@gmail.com</a>'
+          + '</p>'
+        + '</div>'
+      + '</div>'
+
+      + relatedHTML
+      + otherHTML
+
+      + '<div class="back-to-shop"><a href="index.html#shop" class="btn-ghost">← ALL DESIGNS</a></div>';
+
+    // Show footer now that content is rendered
+    if (footer) footer.style.display = '';
+
+    // Set correct default size active state
+    selectSize(selectedSize);
+  }
+
+  /* ── INIT ── */
+  document.addEventListener('DOMContentLoaded', function() {
+    var params  = new URLSearchParams(window.location.search);
+    var id      = params.get('id');
+    var product = id ? getProduct(id) : null;
+
+    if (!product) {
+      document.getElementById('productNotFound').style.display = 'flex';
+      document.title = 'A-WAG — Not Found';
+      return;
+    }
+
+    document.title = 'A-WAG — ' + product.name;
+
+    track('view_item', {
+      item_id:       product.id,
+      item_name:     product.name,
+      item_category: product.collection,
+      price:         product.price,
+      currency:      'INR'
+    });
+
+    renderProductPage(product);
+  });
+  </script>
+
+  <!-- Razorpay — loaded last so it doesn't block paint -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</body>
+</html>

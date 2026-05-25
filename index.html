@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A-WAG — Ain't We All God?</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Barlow:wght@300;400&family=Cormorant+Garamond:ital,wght@0,400;1,300;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- ══════════════════════════════════════════════
+       ANALYTICS — add when site goes live.
+       Three snippets to paste here, in order:
+
+       1. Google Analytics 4
+          → create property at analytics.google.com
+          → get Measurement ID (G-XXXXXXXXXX) from Admin > Data Streams
+          → paste the gtag snippet here
+
+       2. Meta / Facebook Pixel
+          → create pixel at business.facebook.com > Events Manager
+          → get the numeric Pixel ID
+          → paste the fbq snippet here
+
+       3. Microsoft Clarity (session recordings + heatmaps — free)
+          → create project at clarity.microsoft.com
+          → paste the clarity snippet here
+
+       The tracking functions in script.js are already wired up —
+       just paste the snippets and the full funnel fires automatically.
+       ══════════════════════════════════════════════ -->
+
+</head>
+<body>
+
+  <!-- ANNOUNCEMENT BAR -->
+  <div class="announcement-bar">
+    <span>FREE SHIPPING ACROSS INDIA — ALL ORDERS</span>
+    <span class="sep">·</span>
+    <span>DROP 001–005 NOW LIVE</span>
+    <span class="sep">·</span>
+    <span>ONLY 50 PIECES PER DESIGN</span>
+  </div>
+
+  <!-- NAVIGATION -->
+  <nav class="nav" id="nav">
+    <button class="nav-hamburger" id="hamburgerBtn" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="#" class="nav-logo">A-WAG</a>
+    <div class="nav-icons">
+      <button class="nav-icon-btn" id="wishlistNavBtn" aria-label="Wishlist">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+        <span class="nav-badge" id="wishlistCount" style="display:none">0</span>
+      </button>
+      <button class="nav-icon-btn" id="cartNavBtn" aria-label="Cart">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        <span class="nav-badge" id="cartCount" style="display:none">0</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-menu-close" id="menuClose" aria-label="Close">✕</button>
+    <nav class="mobile-nav-links">
+      <a href="#collections">Collections</a>
+      <a href="#shop">Shop</a>
+      <a href="#philosophy">Philosophy</a>
+      <a href="#journal">Journal</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="mobile-menu-footer">
+      <p class="mobile-tagline">Ain't We All God?</p>
+    </div>
+  </div>
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <!-- CART DRAWER -->
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-drawer-header">
+      <h3>CART</h3>
+      <button class="cart-close" id="cartClose">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+      <div class="cart-empty">
+        <p>Your cart is empty.</p>
+        <p class="cart-empty-sub">The gods travel light.</p>
+      </div>
+    </div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="cart-total">
+        <span>Total</span>
+        <span id="cartTotal">₹0</span>
+      </div>
+      <button class="btn-primary btn-block" id="checkoutBtn" onclick="initiateCheckout()">PROCEED TO PAYMENT</button>
+    </div>
+  </div>
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <canvas id="heroCanvas" class="hero-canvas"></canvas>
+    <div class="hero-content">
+      <p class="hero-signal">∴ · ≋ · ◎</p>
+      <h1 class="hero-headline">AIN'T<br>WE ALL<br>GOD?</h1>
+      <p class="hero-sub">Five collections. Nineteen designs.<br>The philosophy wears you.</p>
+      <div class="hero-ctas">
+        <a href="#shop" class="btn-primary">SHOP NOW</a>
+        <a href="#collections" class="btn-ghost">VIEW COLLECTIONS</a>
+      </div>
+    </div>
+    <div class="hero-scroll-hint">
+      <span>SCROLL</span>
+      <div class="hero-scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- PHILOSOPHY STRIP -->
+  <div class="philosophy-strip">
+    <div class="philosophy-track">
+      <span>YOU WERE NEVER BORN</span>
+      <span class="dot">·</span>
+      <span>EVEN GODS DOUBT</span>
+      <span class="dot">·</span>
+      <span>WHO IS AWARE?</span>
+      <span class="dot">·</span>
+      <span>JUST THIS.</span>
+      <span class="dot">·</span>
+      <span>नैनं छिन्दन्ति</span>
+      <span class="dot">·</span>
+      <span>YOUR BODY IS ON LOAN</span>
+      <span class="dot">·</span>
+      <span>AREN'T WE ALL?</span>
+      <span class="dot">·</span>
+      <span>YOU WERE NEVER BORN</span>
+      <span class="dot">·</span>
+      <span>EVEN GODS DOUBT</span>
+      <span class="dot">·</span>
+      <span>WHO IS AWARE?</span>
+      <span class="dot">·</span>
+      <span>JUST THIS.</span>
+      <span class="dot">·</span>
+      <span>नैनं छिन्दन्ति</span>
+      <span class="dot">·</span>
+      <span>YOUR BODY IS ON LOAN</span>
+      <span class="dot">·</span>
+      <span>AREN'T WE ALL?</span>
+      <span class="dot">·</span>
+    </div>
+  </div>
+
+  <!-- BRAND PHILOSOPHY SECTION -->
+  <section class="brand-philosophy-section" id="collections">
+    <div class="brand-philosophy-inner">
+      <p class="section-label">THE QUESTION</p>
+      <h2 class="brand-philosophy-headline">WHY A-WAG EXISTS</h2>
+      <div class="brand-philosophy-body">
+        <p>Divinity isn't a destination. It's a question you live inside.</p>
+        <p>A-WAG was built from one observation: every spiritual tradition — Vedanta, Zen, Sufism, Kashmir Shaivism — arrives at the same place. The self and the universe are not separate. The boundary between human and divine is not a wall. It is a question mark.</p>
+        <p>We build garments from that question. Each collection takes a domain — devotion, pilgrimage, sound, silence, language — and renders it through physics. Not as metaphor. As documentation. The cymatic pattern of a mantra is what that mantra looks like in matter. The Lissajous figure of a raga's defining note is what that note is. You wear the frequency. The meaning finds you later.</p>
+      </div>
+      <div class="brand-philosophy-sources">
+        <div class="source-item">
+          <p class="source-tradition">ADVAITA VEDANTA</p>
+          <p class="source-text">Aham Brahmasmi — I am Brahman. The small self and the universal are not two.</p>
+        </div>
+        <div class="source-item">
+          <p class="source-tradition">NADA BRAHMA</p>
+          <p class="source-text">Sound is the universe. Every raga is a door opened at a specific time of day.</p>
+        </div>
+        <div class="source-item">
+          <p class="source-tradition">ZEN</p>
+          <p class="source-text">The observer and the observed are not separate. The koan is the answer.</p>
+        </div>
+        <div class="source-item">
+          <p class="source-tradition">KASHMIR SHAIVISM</p>
+          <p class="source-text">Spanda — the divine pulse at the root of every vibration, including yours.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- SHOP / PRODUCT GRID -->
+  <section class="shop-section" id="shop">
+    <div class="section-header">
+      <p class="section-label">ALL DESIGNS</p>
+      <h2 class="section-title">SHOP THE DROP</h2>
+    </div>
+
+    <!-- FILTER PILLS -->
+    <div class="filter-bar">
+      <button class="filter-pill active" data-filter="all">ALL (19)</button>
+      <button class="filter-pill" data-filter="Akshar">AKSHAR (4)</button>
+      <button class="filter-pill" data-filter="Bloom">BLOOM (5)</button>
+      <button class="filter-pill" data-filter="Void">VOID (3)</button>
+      <button class="filter-pill" data-filter="Witness">WITNESS (3)</button>
+      <button class="filter-pill" data-filter="Yaatra">YAATRA (4)</button>
+    </div>
+
+    <!-- PRODUCT GRID -->
+    <div class="product-grid" id="productGrid">
+
+      <!-- AKSHAR -->
+      <div class="product-card" data-collection="Akshar">
+        <div class="product-img-wrap">
+          <img src="Collections/Akshar/Arent%20we%20all.jpg" alt="Aren't We All?" loading="lazy">
+          <button class="wishlist-heart" data-id="akshar-arent-we-all" aria-label="Wishlist">♡</button>
+          <div class="product-overlay">
+            <button class="btn-primary btn-sm" onclick="addToCart('akshar-arent-we-all', 'AREN\'T WE ALL?', 'Collections/Akshar/Arent%20we%20all.jpg')">BUY NOW</button>
+            <button class="btn-outline btn-sm" onclick="addToCart('akshar-arent-we-all', 'AREN\'T WE ALL?', 'Collections/Akshar/Arent%20we%20all.jpg')">ADD TO CART</button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-collection">∴ AKSHAR</p>
+          <h3 class="product-name">AREN'T WE ALL?</h3>
+          <p class="product-ground">Washed Void Black · Bone White Ink</p>
+          <div class="product-price-row">
+            <span class="product-price">₹2,499</span>
+            <span class="product-limited">50 pcs</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-collection="Akshar">
+        <div class="product-img-wrap">
+          <img src="Collections/Akshar/Gods%20Doubt.jpg" alt="Even Gods Doubt" loading="lazy">
+          <button class="wishlist-heart" data-id="akshar-gods-doubt" aria-label="Wishlist">♡</button>
+          <div class="product-overlay">
+            <button class="btn-primary btn-sm" onclick="addToCart('akshar-gods-doubt', 'EVEN GODS DOUBT', 'Collections/Akshar/Gods%20Doubt.jpg')">BUY NOW</button>
+            <button class="btn-outline btn-sm" onclick="addToCart('akshar-gods-doubt', 'EVEN GODS DOUBT', 'Collections/Akshar/Gods%20Doubt.jpg')">ADD TO CART</button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-collection">∴ AKSHAR</p>
+          <h3 class="product-name">EVEN GODS DOUBT</h3>
+          <p class="product-ground">Deep Burgundy · Bone White Ink</p>
+          <div class="product-price-row">
+            <span class="product-price">₹2,499</span>
+            <span class="product-limited">50 pcs</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-collection="Akshar">
+        <div class="product-img-wrap">
+          <img src="Collections/Akshar/Never%20Born.jpg" alt="You Were Never Born" loading="lazy">
+          <button class="wishlist-heart" data-id="akshar-never-born" aria-label="Wishlist">♡</button>
+          <div class="product-overlay">
+            <button class="btn-primary btn-sm" onclick="addToCart('akshar-never-born', 'YOU WERE NEVER BORN', 'Collections/Akshar/Never%20Born.jpg')">BUY NOW</button>
+            <button class="btn-outline btn-sm" onclick="addToCart('akshar-never-born', 'YOU WERE NEVER BORN', 'Collections/Akshar/Never%20Born.jpg')">ADD TO CART</button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-collection">∴ AKSHAR</p>
+          <h3 class="product-name">YOU WERE NEVER BORN</h3>
+          <p class="product-ground">Raw Linen · Deep Black Ink</p>
+          <div class="product-price-row">
+            <span class="product-price">₹2,499</span>
+            <span class="product-limited">50 pcs</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-collection="Akshar">
+        <div class="product-img-wrap">
+          <img src="Collections/Akshar/On%20Loan.jpg" alt="Your Body Is On Loan" loading="lazy">
+          <button class="wishlist-heart" data-id="akshar-on-loan" aria-label="Wishlist">♡</button>
+          <div class="product-overlay">
+            <button class="btn-primary btn-sm" onclick="addToCart('akshar-on-loan', 'YOUR BODY IS ON LOAN', 'Collections/Akshar/On%20Loan.jpg')">BUY NOW</button>
+            <button class="btn-outline btn-sm" onclick="addToCart('akshar-on-loan', 'YOUR BODY IS ON LOAN', 'Collections/Akshar/On%20Loan.jpg')">ADD TO CART</button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-collection">∴ AKSHAR</p>
+          <h3 class="product-name">YOUR BODY IS ON LOAN</h3>
+          <p class="product-ground">Army Khaki · Bone White Ink</p>
+          <div class="product-price-row">
+            <span class="product-price">₹2,499</span>
+            <span class="product-limited">50 pcs</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- BLOOM -->
+      <div class="product-card" data-collection="Bloom">
+        <div class="product-img-wrap">
+          <img src="Collections/Bloom/Nada.jpg" alt="Nada" loading="lazy">
+          <button class="wishlist-heart" data-id="bloom-nada" aria-label="Wishlist">♡</button>
+          <div class="product-overlay">
+            <button class="btn-primary btn-sm" onclick="addToCart('bloom-nada', 'NADA', 'Collections/Bloom/Nada.jpg')">BUY NOW</button>
+            <button class="btn-outline btn-sm" onclick="addToCart('bloom-nada', 'NADA', 'Collections/Bloom/Nada.jpg')">ADD TO CART</button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-collection">⊕ BLOOM</p>
+          <h3 class="product-name">NADA</h3>
+          <p class="product-ground">Sacred Geometry · Sound Form</p>
+          <div class="product-price-row">
+            <span class="product-price">₹2,499</span>
+            <span class="product-limited">50 pcs</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-collection="Bloom">
+        <div class="product-img-wrap">
+          <img src="Collections/Bloom/Panchakshara.jpg" alt="Panchakshara" loading="lazy">
+          <button class="wishlist-heart" data-id="bloom-panchakshara" aria-label="Wishlist">♡</button>
+          <div class="product-overlay">
+            <button class="btn-primary btn-sm" onclick="addToCart('bloom-panchakshara', 'PANCHAKSHARA', 'Collections/Bloom/Panchakshara.jpg')">BUY NOW</button>
+            <button class="btn-outline btn-sm" onclick="addToCart('bloom-panchakshara', 'PANCHAKSHARA', 'Collections/Bloom/Panchakshara.jpg')">ADD TO CART</button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-collection">⊕ BLOOM</p>
+          <h3 class="product-name">PANCHAKSHARA</h3>
+          <p class="product-ground">Five Syllables · Five Elements</p>
+          <div class="product-price-row">
+            <span class="product-price">₹2,499</span>
+            <span class="product-limited">50 pcs</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-collection="Bloom">
+        <div class="product-img-wrap">
+          <img src="Collections/Bloom/Spanda.jpg" alt="Spanda" loading="lazy">
+          <button class="wishlist-heart" data-id="bloom-spanda" aria-label="Wishlist">♡</button>
+          <div class="product-overlay">
+            <button class="btn-primary btn-sm" onclick="addToCart('bloom-spanda', 'SPANDA', 'Collections/Bloom/Spanda.jpg')">BUY NOW</button>
+            <button class="btn-outline btn-sm" onclick="addToCart('bloom-spanda', 'SPANDA', 'Collections/Bloom/Spanda.jpg')">ADD TO CART</button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-collection">⊕ BLOOM</p>
+          <h3 class="product-name">SPANDA</h3>
+          <p class="product-ground">The Divine Pulse · Primordial Vibration</p>
+          <div class="product-price-row">
+            <span class="product-price">₹2,499</span>
+            <span class="product-limited">50 pcs</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-collection="Bloom">
+        <div class="product-img-wrap">
+          <img src="Collections/Bloom/Vaayu%20Putra%201.jpg" alt="Vaayu Putra I" loading="lazy">
+          <button class="wishlist-heart" data-id="bloom-vaayu-1" aria-label="Wishlist">♡</button>
+          <div class="product-overlay">
+            <button class="btn-primary btn-sm" onclick="addToCart('bloom-vaayu-1', 'VAAYU PUTRA I', 'Collections/Bloom/Vaayu%20Putra%201.jpg')">BUY NOW</button>
+            <button class="btn-outline btn-sm" onclick="addToCart('bloom-vaayu-1', 'VAAYU PUTRA I', 'Collections/Bloom/Vaayu%20Putra%201.jpg')">ADD TO CART</button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-collection">⊕ BLOOM</p>
+          <h3 class="product-name">VAAYU PUTRA I</h3>
+          <p class="product-ground">Son of Wind · Form I</p>
+          <div class="product-price-row">
+            <span class="product-price">₹2,499</span>
+            <span class="product-limited">50 pcs</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-collection="Bloom">
+        <div class="product-img-wrap">
+          <img src="Collections/Bloom/Vaayu%20Putra%202.jpg" alt="Vaayu Putra II" loading="lazy">
+          <button class="wishlist-heart" data-id="bloom-vaayu-2" aria-label="Wishlist">♡</button>
+          <div class="product-overlay">
+            <button class="btn-primary btn-sm" onclick="addToCart('bloom-vaayu-2', 'VAAYU PUTRA II', 'Collections/Bloom/Vaayu%20Putra%202.jpg')">BUY NOW</button>
+            <button class="btn-outline btn-sm" onclick="addToCart('bloom-vaayu-2', 'VAAYU PUTRA II', 'Collections/Bloom/Vaayu%20Putra%202.jpg')">ADD TO CART</button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-collection">⊕ BLOOM</p>
+          <h3 class="product-name">VAAYU PUTRA II</h3>
+          <p class="product-ground">Son of Wind · Form II</p>
+          <div class="product-price-row">
+            <span class="product-price">₹2,499</span>
+            <span class="product-limited">50 pcs</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- VOID -->
+      <div class="product-card" data-collection="Void">
+        <div class="product-img-wrap">
+          <img src="Collections/Void/Before%20Name.jpg" alt="Before Name" loading="lazy">
+          <button class="wishlist-heart" data-id="void-before-name" aria-label="Wishlist">♡</button>
+          <div class="product-overlay">
+            <button class="btn-primary btn-sm" onclick="addToCart('void-before-name', 'BEFORE NAME', 'Collections/Void/Before%20Name.jpg')">BUY NOW</button>
+            <button class="btn-outline btn-sm" onclick="addToCart('void-before-name', 'BEFORE NAME', 'Collections/Void/Before%20Name.jpg')">ADD TO CART</button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-collection">○ VOID</p>
+          <h3 class="product-name">BEFORE NAME</h3>
+          <p class="product-ground">The Ground Before Form</p>
+          <div class="product-price-row">
+            <span class="product-price">₹2,499</span>
+            <span class="product-limited">50 pcs</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-collection="Void">
+        <div class="product-img-wrap">
+          <img src="Collections/Void/Static%20Field.jpg" alt="Static Field" loading="lazy">
+          <button class="wishlist-heart" data-id="void-static-field" aria-label="Wishlist">♡</button>
+          <div class="product-overlay">
+            <button class="btn-primary btn-sm" onclick="addToCart('void-static-field', 'STATIC FIELD', 'Collections/Void/Static%20Field.jpg')">BUY NOW</button>
+            <button class="btn-outline btn-sm" onclick="addToCart('void-static-field', 'STATIC FIELD', 'Collections/Void/Static%20Field.jpg')">ADD TO CART</button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-collection">○ VOID</p>
+          <h3 class="product-name">STATIC FIELD</h3>
+          <p class="product-ground">Quantum Ground State</p>
+          <div class="product-price-row">
+            <span class="product-price">₹2,499</span>
+            <span class="product-limited">50 pcs</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-collection="Void">
+        <div class="product-img-wrap">
+          <img src="Collections/Void/The%20Vessel.jpg" alt="The Vessel" loading="lazy">
+          <button class="wishlist-heart" data-id="void-the-vessel" aria-label="Wishlist">♡</button>
+          <div class="product-overlay">
+            <button class="btn-primary btn-sm" onclick="addToCart('void-the-vessel', 'THE VESSEL', 'Collections/Void/The%20Vessel.jpg')">BUY NOW</button>
+            <button class="btn-outline btn-sm" onclick="addToCart('void-the-vessel', 'THE VESSEL', 'Collections/Void/The%20Vessel.jpg')">ADD TO CART</button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-collection">○ VOID</p>
+          <h3 class="product-name">THE VESSEL</h3>
+          <p class="product-ground">Form Holding Emptiness</p>
+          <div class="product-price-row">
+            <span class="product-price">₹2,499</span>
+            <span class="product-limited">50 pcs</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- WITNESS -->
+      <div class="product-card" data-collection="Witness">
+        <div class="product-img-wrap">
+          <img src="Collections/Witness/Enso.jpg" alt="Enso" loading="lazy">
+          <button class="wishlist-heart" data-id="witness-enso" aria-label="Wishlist">♡</button>
+          <div class="product-overlay">
+            <button class="btn-primary btn-sm" onclick="addToCart('witness-enso', 'ENSO', 'Collections/Witness/Enso.jpg')">BUY NOW</button>
+            <button class="btn-outline btn-sm" onclick="addToCart('witness-enso', 'ENSO', 'Collections/Witness/Enso.jpg')">ADD TO CART</button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-collection">◉ WITNESS</p>
+          <h3 class="product-name">ENSO</h3>
+          <p class="product-ground">The Zen Circle · Completion</p>
+          <div class="product-price-row">
+            <span class="product-price">₹2,499</span>
+            <span class="product-limited">50 pcs</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-collection="Witness">
+        <div class="product-img-wrap">
+          <img src="Collections/Witness/Indra%27s%20Center.jpg" alt="Indra's Center" loading="lazy">
+          <button class="wishlist-heart" data-id="witness-indras-center" aria-label="Wishlist">♡</button>
+          <div class="product-overlay">
+            <button class="btn-primary btn-sm" onclick="addToCart('witness-indras-center', 'INDRA\'S CENTER', 'Collections/Witness/Indra%27s%20Center.jpg')">BUY NOW</button>
+            <button class="btn-outline btn-sm" onclick="addToCart('witness-indras-center', 'INDRA\'S CENTER', 'Collections/Witness/Indra%27s%20Center.jpg')">ADD TO CART</button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-collection">◉ WITNESS</p>
+          <h3 class="product-name">INDRA'S CENTER</h3>
+          <p class="product-ground">The Net of Indra · Infinite Reflection</p>
+          <div class="product-price-row">
+            <span class="product-price">₹2,499</span>
+            <span class="product-limited">50 pcs</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-collection="Witness">
+        <div class="product-img-wrap">
+          <img src="Collections/Witness/Kalachakra.jpg" alt="Kalachakra" loading="lazy">
+          <button class="wishlist-heart" data-id="witness-kalachakra" aria-label="Wishlist">♡</button>
+          <div class="product-overlay">
+            <button class="btn-primary btn-sm" onclick="addToCart('witness-kalachakra', 'KALACHAKRA', 'Collections/Witness/Kalachakra.jpg')">BUY NOW</button>
+            <button class="btn-outline btn-sm" onclick="addToCart('witness-kalachakra', 'KALACHAKRA', 'Collections/Witness/Kalachakra.jpg')">ADD TO CART</button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-collection">◉ WITNESS</p>
+          <h3 class="product-name">KALACHAKRA</h3>
+          <p class="product-ground">Wheel of Time · The Observer</p>
+          <div class="product-price-row">
+            <span class="product-price">₹2,499</span>
+            <span class="product-limited">50 pcs</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- YAATRA -->
+      <div class="product-card" data-collection="Yaatra">
+        <div class="product-img-wrap">
+          <img src="Collections/Yaatra/Jyotirlinga.jpg" alt="Jyotirlinga" loading="lazy">
+          <button class="wishlist-heart" data-id="yaatra-jyotirlinga" aria-label="Wishlist">♡</button>
+          <div class="product-overlay">
+            <button class="btn-primary btn-sm" onclick="addToCart('yaatra-jyotirlinga', 'JYOTIRLINGA', 'Collections/Yaatra/Jyotirlinga.jpg')">BUY NOW</button>
+            <button class="btn-outline btn-sm" onclick="addToCart('yaatra-jyotirlinga', 'JYOTIRLINGA', 'Collections/Yaatra/Jyotirlinga.jpg')">ADD TO CART</button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-collection">◎ YAATRA</p>
+          <h3 class="product-name">JYOTIRLINGA</h3>
+          <p class="product-ground">Kedarnath · Light Form of Shiva</p>
+          <div class="product-price-row">
+            <span class="product-price">₹2,499</span>
+            <span class="product-limited">50 pcs</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-collection="Yaatra">
+        <div class="product-img-wrap">
+          <img src="Collections/Yaatra/Kaal.jpg" alt="Kaal" loading="lazy">
+          <button class="wishlist-heart" data-id="yaatra-kaal" aria-label="Wishlist">♡</button>
+          <div class="product-overlay">
+            <button class="btn-primary btn-sm" onclick="addToCart('yaatra-kaal', 'KAAL', 'Collections/Yaatra/Kaal.jpg')">BUY NOW</button>
+            <button class="btn-outline btn-sm" onclick="addToCart('yaatra-kaal', 'KAAL', 'Collections/Yaatra/Kaal.jpg')">ADD TO CART</button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-collection">◎ YAATRA</p>
+          <h3 class="product-name">KAAL</h3>
+          <p class="product-ground">Ujjain · The Mahakaleshwar</p>
+          <div class="product-price-row">
+            <span class="product-price">₹2,499</span>
+            <span class="product-limited">50 pcs</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-collection="Yaatra">
+        <div class="product-img-wrap">
+          <img src="Collections/Yaatra/Mahasmashana.jpg" alt="Mahasmashana" loading="lazy">
+          <button class="wishlist-heart" data-id="yaatra-mahasmashana" aria-label="Wishlist">♡</button>
+          <div class="product-overlay">
+            <button class="btn-primary btn-sm" onclick="addToCart('yaatra-mahasmashana', 'MAHASMASHANA', 'Collections/Yaatra/Mahasmashana.jpg')">BUY NOW</button>
+            <button class="btn-outline btn-sm" onclick="addToCart('yaatra-mahasmashana', 'MAHASMASHANA', 'Collections/Yaatra/Mahasmashana.jpg')">ADD TO CART</button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-collection">◎ YAATRA</p>
+          <h3 class="product-name">MAHASMASHANA</h3>
+          <p class="product-ground">Kashi · The Great Cremation Ground</p>
+          <div class="product-price-row">
+            <span class="product-price">₹2,499</span>
+            <span class="product-limited">50 pcs</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-collection="Yaatra">
+        <div class="product-img-wrap">
+          <img src="Collections/Yaatra/Triveni.jpg" alt="Triveni" loading="lazy">
+          <button class="wishlist-heart" data-id="yaatra-triveni" aria-label="Wishlist">♡</button>
+          <div class="product-overlay">
+            <button class="btn-primary btn-sm" onclick="addToCart('yaatra-triveni', 'TRIVENI', 'Collections/Yaatra/Triveni.jpg')">BUY NOW</button>
+            <button class="btn-outline btn-sm" onclick="addToCart('yaatra-triveni', 'TRIVENI', 'Collections/Yaatra/Triveni.jpg')">ADD TO CART</button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-collection">◎ YAATRA</p>
+          <h3 class="product-name">TRIVENI</h3>
+          <p class="product-ground">Prayagraj · Three Rivers, One Truth</p>
+          <div class="product-price-row">
+            <span class="product-price">₹2,499</span>
+            <span class="product-limited">50 pcs</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FABRIC & SLOW FASHION SECTION -->
+  <section class="fabric-section">
+    <div class="fabric-inner">
+      <div class="fabric-header">
+        <p class="section-label">THE CRAFT</p>
+        <h2 class="section-title">SLOW FASHION.<br>NO APOLOGY.</h2>
+        <p class="section-sub">240 GSM. 100% organic cotton. 50 pieces. Then gone.</p>
+      </div>
+      <div class="fabric-grid">
+        <div class="fabric-block fabric-block--feature">
+          <div class="fabric-num">240</div>
+          <p class="fabric-gsm-label">GSM</p>
+          <p class="fabric-gsm-desc">100% GOTS-certified organic cotton. Not 220. Not 260. 240 — the weight where the fabric holds its shape, takes the print clean, and improves with every wash. This is the only weight we will ever use.</p>
+        </div>
+        <div class="fabric-block">
+          <p class="fabric-block-sym">⊕</p>
+          <h4>GOTS CERTIFIED</h4>
+          <p>Global Organic Textile Standard. The full supply chain — from cotton field to finished garment — certified organic. No pesticides at source. No toxic chemistry in process.</p>
+        </div>
+        <div class="fabric-block">
+          <p class="fabric-block-sym">◎</p>
+          <h4>WATER-BASED INKS</h4>
+          <p>Every print uses water-based inks. No PVC, no solvent discharge. The ink bonds with the cotton fibre rather than sitting on top of it. The print ages with the garment — it does not crack, it does not peel.</p>
+        </div>
+        <div class="fabric-block">
+          <p class="fabric-block-sym">∅</p>
+          <h4>50 PIECES. THEN GONE.</h4>
+          <p>Every design is limited to 50 pieces. No restocks. No reprints. This is not a marketing mechanic — it is a production philosophy. Small runs mean no deadstock, no waste, no clearance sale.</p>
+        </div>
+        <div class="fabric-block">
+          <p class="fabric-block-sym">◉</p>
+          <h4>MADE IN INDIA</h4>
+          <p>Every garment is made in India by artisans who understand the tradition these designs come from. The people who print these garments have been printing on cotton for generations.</p>
+        </div>
+      </div>
+      <p class="fabric-statement">"We are not a sustainable brand. We are a brand that makes things correctly and calls it normal."</p>
+    </div>
+  </section>
+
+  <!-- RAGA TEASER -->
+  <section class="raga-teaser-section">
+    <div class="raga-teaser-inner">
+      <p class="section-label">NEXT SIGNAL</p>
+      <div class="raga-symbol">≋</div>
+      <h2 class="raga-teaser-title">RAGA</h2>
+      <p class="raga-teaser-tagline">Signal 005 — Dropping Soon</p>
+      <p class="raga-teaser-desc">Seven Indian ragas. Seven times of day. Each raga's defining note has a precise frequency ratio. That ratio, plotted as a Lissajous figure on x-y axes, becomes the graphic on the garment. Not a symbol of the raga — the raga itself, translated into visible form.</p>
+      <div class="raga-list">
+        <span>BHAIRAV · 4AM</span>
+        <span class="raga-sep">·</span>
+        <span>YAMAN · SUNSET</span>
+        <span class="raga-sep">·</span>
+        <span>MALKAUNS · MIDNIGHT</span>
+        <span class="raga-sep">·</span>
+        <span>MEGH MALHAR · MONSOON</span>
+        <span class="raga-sep">·</span>
+        <span>BHAIRAVI · DAWN</span>
+        <span class="raga-sep">·</span>
+        <span>DARBARI · LATE NIGHT</span>
+        <span class="raga-sep">·</span>
+        <span>PURIYA DHANASHRI · DUSK</span>
+      </div>
+      <a href="#newsletter" class="btn-ghost">NOTIFY ME WHEN IT DROPS</a>
+    </div>
+  </section>
+
+  <!-- PHILOSOPHY SECTION -->
+  <section class="philosophy-section" id="philosophy">
+    <div class="philosophy-inner">
+      <p class="section-label">THE SIGNAL</p>
+      <blockquote class="philosophy-quote">
+        "The universe looked at itself<br>
+        and saw a god.<br>
+        You are that moment<br>
+        of recognition."
+      </blockquote>
+      <p class="philosophy-attr">— A-WAG Brand Philosophy</p>
+      <div class="philosophy-pillars">
+        <div class="pillar">
+          <p class="pillar-num">01</p>
+          <h4>CONSCIOUSNESS</h4>
+          <p>Each design carries a frequency. Wear what you want to become.</p>
+        </div>
+        <div class="pillar">
+          <p class="pillar-num">02</p>
+          <h4>CRAFT</h4>
+          <p>240 GSM 100% organic cotton. GOTS-certified. Garment-dyed. Limited runs. No restocks.</p>
+        </div>
+        <div class="pillar">
+          <p class="pillar-num">03</p>
+          <h4>LINEAGE</h4>
+          <p>Osho. Krishna. Mooji. Sadhguru. The teachers are many. The truth is one.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS STRIP -->
+  <div class="process-strip">
+    <div class="process-item">
+      <p class="process-num">240</p>
+      <p class="process-label">GSM ORGANIC COTTON</p>
+    </div>
+    <div class="process-divider"></div>
+    <div class="process-item">
+      <p class="process-num">50</p>
+      <p class="process-label">PIECES PER DESIGN</p>
+    </div>
+    <div class="process-divider"></div>
+    <div class="process-item">
+      <p class="process-num">0</p>
+      <p class="process-label">RESTOCKS. EVER.</p>
+    </div>
+    <div class="process-divider"></div>
+    <div class="process-item">
+      <p class="process-num">5</p>
+      <p class="process-label">COLLECTIONS · 19 DESIGNS</p>
+    </div>
+  </div>
+
+  <!-- JOURNAL -->
+  <section class="journal-section" id="journal">
+    <div class="section-header">
+      <p class="section-label">THE JOURNAL</p>
+      <h2 class="section-title">DISPATCHES</h2>
+      <p class="section-sub">One dispatch when something is ready. No noise.</p>
+    </div>
+    <div class="journal-grid">
+      <article class="journal-card journal-card--large">
+        <div class="journal-card-content">
+          <p class="journal-tag">PHILOSOPHY</p>
+          <h3>The physics of devotion — what happens when a billion people pray the same frequency for a thousand years</h3>
+          <p>Cymatics is the science of visible sound. When you vibrate a metal plate covered in sand at a specific frequency, the sand arranges itself into precise geometric forms — Chladni figures. Different frequencies produce different geometries. The geometry is not decorative. It is the sound, made visible in matter. Every mantra in the Vedic tradition carries a specific frequency. Om Namah Shivaya oscillates at a documented Hz. A billion repetitions over three thousand years is not just prayer. It is a standing wave held in collective consciousness — and standing waves leave physical traces. The BLOOM collection documents those traces. You are not wearing a symbol of devotion. You are wearing what devotion looks like at the particle level.</p>
+          <a href="#" class="journal-read">READ →</a>
+        </div>
+      </article>
+      <article class="journal-card">
+        <div class="journal-card-content">
+          <p class="journal-tag">≋ RAGA · COMING SOON</p>
+          <h3>Bhairav at 4am — the science and the silence of the pre-dawn raga</h3>
+          <p>Raga Bhairav belongs to the brahma muhurta — the hour between 3:30 and 5:30am, before the sun but after deep night. Its defining note is komal Dha, the flat sixth, with a frequency ratio of 8:5 against the root Sa. That ratio, plotted as a Lissajous figure on x-y axes, draws an asymmetric three-lobe closed curve. That curve is the BHAIRAV garment. Not a symbol of the raga. The raga itself, translated into form. Worn at 4am, it resonates at the exact frequency it was designed at.</p>
+          <a href="#" class="journal-read">READ →</a>
+        </div>
+      </article>
+      <article class="journal-card">
+        <div class="journal-card-content">
+          <p class="journal-tag">◎ YAATRA</p>
+          <h3>The geometry of Kashi — why ghat steps are the most honest map of existence</h3>
+          <p>The ghats of Varanasi descend to the Ganga at a specific angle, in specific widths, worn smooth by three thousand years of feet. Viewed from directly above, they become pure topology: parallel lines of decreasing width converging toward water. Every spiritual tradition describes this geometry — the progressive dissolution of form as it approaches the formless. The ghat stairs are not decorative architecture. They are a diagram of the human condition, carved in stone and repeated daily by every person who has ever come to Kashi to die correctly.</p>
+          <a href="#" class="journal-read">READ →</a>
+        </div>
+      </article>
+      <article class="journal-card">
+        <div class="journal-card-content">
+          <p class="journal-tag">◉ WITNESS</p>
+          <h3>The double-slit experiment is a koan — on observation, collapse, and the WITNESS collection</h3>
+          <p>In quantum mechanics, a particle passes through two slits simultaneously and creates an interference pattern — until you observe which slit it uses. The moment you watch, the wave collapses into a particle. The act of observation changes what is observed. This is not philosophy. This is documented physics. It is also the central koan of Zen: the observer and the observed are not two separate things. The WITNESS collection renders the interference pattern that exists before you look — the pattern that only appears when the witness stops watching.</p>
+          <a href="#" class="journal-read">READ →</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="newsletter-section" id="newsletter">
+    <div class="newsletter-inner">
+      <p class="section-label">THE SIGNAL</p>
+      <h2>ONE DISPATCH.<br>WHEN SOMETHING<br>IS READY.</h2>
+      <p class="newsletter-sub">No cadence. No content calendar. Only when there is something worth saying.</p>
+      <form class="newsletter-form" onsubmit="handleNewsletterSubmit(event)">
+        <input type="email" placeholder="your@email.com" class="newsletter-input" required>
+        <button type="submit" class="btn-primary">ENTER THE SIGNAL</button>
+      </form>
+      <p class="newsletter-fine">No spam. No frequency. Just truth, occasionally.</p>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer" id="contact">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <p class="footer-logo">A-WAG</p>
+        <p class="footer-tagline">Ain't We All God?</p>
+        <p class="footer-desc">Premium Indian spiritual streetwear.<br>Made for those who are asking.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <p class="footer-col-head">COLLECTIONS</p>
+          <a href="#" class="footer-link" data-collection="Void">Void</a>
+          <a href="#" class="footer-link" data-collection="Witness">Witness</a>
+          <a href="#" class="footer-link" data-collection="Bloom">Bloom</a>
+          <a href="#" class="footer-link" data-collection="Yaatra">Yaatra</a>
+          <a href="#" class="footer-link" data-collection="Akshar">Akshar</a>
+        </div>
+        <div class="footer-col">
+          <p class="footer-col-head">INFO</p>
+          <a href="#philosophy" class="footer-link">Philosophy</a>
+          <a href="#journal" class="footer-link">Journal</a>
+          <a href="#" class="footer-link">Size Guide</a>
+          <a href="#" class="footer-link">Shipping</a>
+          <a href="#" class="footer-link">Returns</a>
+        </div>
+        <div class="footer-col">
+          <p class="footer-col-head">CONNECT</p>
+          <a href="#" class="footer-link">Instagram</a>
+          <a href="#" class="footer-link">aintweallgod@gmail.com</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 A-WAG. All rights reserved.</p>
+      <p>50 pieces. Then gone. Forever.</p>
+    </div>
+  </footer>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script src="products.js"></script>
+  <script src="script.js"></script>
+
+  <!-- Razorpay Checkout — loaded last so it doesn't block paint -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+</body>
+</html>
