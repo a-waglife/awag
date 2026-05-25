@@ -22,7 +22,7 @@
     <span class="sep">·</span>
     <span>DROP 001–005 NOW LIVE</span>
     <span class="sep">·</span>
-    <span>ONLY 50 PIECES PER DESIGN</span>
+    <span>MAKE TO ORDER · SHIPS IN 7 DAYS</span>
   </div>
 
   <!-- NAVIGATION -->
@@ -55,6 +55,7 @@
     <nav class="mobile-nav-links">
       <a href="index.html#collections">Collections</a>
       <a href="index.html#shop">Shop</a>
+      <a href="designers.html">Meet Designers</a>
       <a href="index.html#philosophy">Philosophy</a>
       <a href="index.html#journal">Journal</a>
       <a href="index.html#contact">Contact</a>
@@ -123,7 +124,7 @@
   <div id="productNotFound" class="product-not-found" style="display:none">
     <p class="section-label">LOST?</p>
     <h2 style="font-family:var(--font-condensed);font-size:clamp(36px,8vw,72px);font-weight:900;margin:16px 0">THIS DESIGN DOESN'T EXIST.</h2>
-    <p style="color:var(--muted);margin-bottom:40px">Or it did — and it's gone. 50 pieces means 50 pieces.</p>
+    <p style="color:var(--muted);margin-bottom:40px">This design doesn't exist yet. Choose from what's available.</p>
     <a href="index.html#shop" class="btn-primary">VIEW ALL DESIGNS</a>
   </div>
 
@@ -161,7 +162,7 @@
     </div>
     <div class="footer-bottom">
       <p>© 2025 A-WAG. All rights reserved.</p>
-      <p>50 pieces. Then gone. Forever.</p>
+      <p>Made to order. Ships in 7 days. Always.</p>
     </div>
   </footer>
 
@@ -173,6 +174,13 @@
   <script>
   /* ── Product page state ── */
   var selectedSize = 'M';  // default selection
+
+  /* ── Image gallery switcher ── */
+  function switchImg(thumbEl) {
+    document.getElementById('mainProductImg').src = thumbEl.dataset.img;
+    document.querySelectorAll('.pg-thumb').forEach(function(t) { t.classList.remove('active'); });
+    thumbEl.classList.add('active');
+  }
 
   /* ── Size guide modal ── */
   function openSizeGuide() {
@@ -245,8 +253,13 @@
           value: product.price, currency: 'INR',
           item_id: product.id, item_name: itemName
         });
-        showToast("ORDER PLACED — AIN'T WE ALL GOD? ∴");
-        setTimeout(function() { window.location.href = 'index.html'; }, 2500);
+        sessionStorage.setItem('awag_last_order', JSON.stringify({
+          payment_id: response.razorpay_payment_id,
+          items:      [{ name: itemName, price: product.price, qty: 1 }],
+          total:      product.price,
+          timestamp:  new Date().toISOString()
+        }));
+        window.location.href = 'success.html';
       },
       modal: {
         ondismiss: function() {
@@ -322,8 +335,18 @@
           + '<div class="product-img-frame">'
             + '<img id="mainProductImg" src="' + product.img + '" alt="' + product.name + '" onerror="this.parentElement.style.background=\'#1A1816\';this.style.display=\'none\'">'
           + '</div>'
+          + (product.img2
+              ? '<div class="product-thumb-strip">'
+                  + '<button class="pg-thumb active" data-img="' + product.img + '" onclick="switchImg(this)" aria-label="View 1">'
+                    + '<img src="' + product.img + '" alt="' + product.name + ' — front" loading="lazy">'
+                  + '</button>'
+                  + '<button class="pg-thumb" data-img="' + product.img2 + '" onclick="switchImg(this)" aria-label="View 2">'
+                    + '<img src="' + product.img2 + '" alt="' + product.name + ' — back" loading="lazy">'
+                  + '</button>'
+                + '</div>'
+              : '')
           + '<div class="product-img-meta">'
-            + '<span class="product-limited-badge">50 PCS · NO RESTOCK · EVER</span>'
+            + '<span class="product-limited-badge">MAKE TO ORDER · SHIPS IN 7 DAYS</span>'
           + '</div>'
         + '</div>'
 
@@ -373,9 +396,24 @@
               }).join('')
           + '</div>'
 
+          /* ARTIST */
+          + (product.artist
+              ? '<div class="artist-section">'
+                  + '<p class="artist-label">THE ARTIST</p>'
+                  + '<div class="artist-profile">'
+                    + '<div class="artist-avatar">' + product.artist.initials + '</div>'
+                    + '<div class="artist-info">'
+                      + '<p class="artist-name">' + product.artist.name + '</p>'
+                      + '<p class="artist-role">' + product.artist.role + ' · ' + product.artist.location + '</p>'
+                    + '</div>'
+                  + '</div>'
+                  + '<blockquote class="artist-quote">"' + product.artist.quote + '"</blockquote>'
+                + '</div>'
+              : '')
+
           + '<p class="pg-returns-note">'
             + 'S · M · L — oversized drop-shoulder cut. S fits body chest 34–36". M fits 36–38". L fits 38–42". <button class="inline-size-link" onclick="openSizeGuide()">Full size chart →</button><br><br>'
-            + 'No restocks. No returns — every piece is made to order in a run of 50.<br>'
+            + 'Made to order — we make yours when you place the order. Ships in 7 working days.<br>'
             + 'Size questions: <a href="mailto:aintweallgod@gmail.com">aintweallgod@gmail.com</a>'
           + '</p>'
         + '</div>'

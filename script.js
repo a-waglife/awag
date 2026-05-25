@@ -7,16 +7,22 @@
 // Find each credential in the comments below.
 const AWAG_CONFIG = {
   razorpay: {
-    // STEP 1 — Paste your TEST key below (rzp_test_...) to verify checkout works locally.
-    // STEP 2 — When site goes live, replace with your LIVE key (rzp_live_...).
-    // Both keys are under: Razorpay Dashboard → Settings → API Keys
-    // Your existing Razorpay account works here — same key, multiple sites is fine.
     key:         'rzp_test_StkS5pheTr7wGM',    // ← TEST KEY — swap to rzp_live_... before going live
     name:        'A-WAG',
     description: "Ain't We All God? · Spiritual Streetwear",
-    // Optional: paste a hosted URL to your square logo (shows in the Razorpay modal header)
     image:       '',
-    themeColor:  '#B8922A',  // Sur Gold
+    themeColor:  '#B8922A',
+  },
+  emailjs: {
+    // Setup: emailjs.com → sign in with aintweallgod@gmail.com
+    // Add Gmail service → get Service ID
+    // Create two templates → get Template IDs
+    // Account → API Keys → get Public Key
+    publicKey:         'REPLACE_EMAILJS_PUBLIC_KEY',      // Account → API Keys
+    serviceId:         'REPLACE_EMAILJS_SERVICE_ID',      // Email Services → your Gmail service ID
+    successTemplateId: 'REPLACE_TEMPLATE_ORDER_SUCCESS',  // template for customer confirmation
+    failureTemplateId: 'REPLACE_TEMPLATE_ORDER_FAILED',   // template for failure alert to you
+    brandEmail:        'aintweallgod@gmail.com',
   }
 };
 
@@ -54,6 +60,28 @@ function track(eventName, params) {
       clarity('set', eventName, 'true');
     }
   }
+}
+
+// ─── EMAILJS ─────────────────────────────────
+// Sends failure alert to brand email when a payment fails.
+// Customer confirmation email is sent from success.html after they enter their email.
+function sendFailureAlert(response, amount, cartItems) {
+  if (typeof emailjs === 'undefined') return;
+  var cfg = AWAG_CONFIG.emailjs;
+  if (!cfg || cfg.serviceId === 'REPLACE_EMAILJS_SERVICE_ID') return;
+
+  var itemsText = cartItems
+    ? cartItems.map(function(i) { return i.name + (i.qty > 1 ? ' ×' + i.qty : ''); }).join(', ')
+    : '—';
+
+  emailjs.send(cfg.serviceId, cfg.failureTemplateId, {
+    to_email:     cfg.brandEmail,
+    error_code:   response.error.code,
+    error_desc:   response.error.description,
+    amount:       '₹' + amount.toLocaleString('en-IN'),
+    items:        itemsText,
+    timestamp:    new Date().toLocaleString('en-IN'),
+  }).catch(function() { /* silent fail — not critical */ });
 }
 
 // ─── UTM CAPTURE ─────────────────────────────
@@ -222,21 +250,27 @@ function initiateCheckout() {
         ...utm
       });
 
-      // Clear cart and close drawer
+      // Store order details for success page
+      sessionStorage.setItem('awag_last_order', JSON.stringify({
+        payment_id: response.razorpay_payment_id,
+        items:      cart.map(i => ({ name: i.name, price: i.price, qty: i.qty })),
+        total:      totalAmount,
+        timestamp:  new Date().toISOString()
+      }));
+
+      // Clear cart
       cart = [];
       saveCart();
       renderCart();
       closeCart();
-      showToast('ORDER PLACED — AIN\'T WE ALL GOD? ∴');
+
+      // Redirect to success page
+      window.location.href = 'success.html';
     },
 
     modal: {
       ondismiss: function() {
-        track('checkout_abandoned', {
-          value:     totalAmount,
-          currency:  'INR',
-          num_items: totalQty
-        });
+        track('checkout_abandoned', { value: totalAmount, currency: 'INR', num_items: totalQty });
       }
     }
   };
@@ -249,6 +283,8 @@ function initiateCheckout() {
       error_description: response.error.description,
       value:             totalAmount
     });
+    // Send failure alert email to brand
+    sendFailureAlert(response, totalAmount, cart);
     showToast('PAYMENT FAILED — PLEASE TRY AGAIN');
   });
 

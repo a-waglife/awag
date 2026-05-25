@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A-WAG — Order Confirmed</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Barlow:wght@300;400&family=Cormorant+Garamond:ital,wght@0,400;1,300;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .success-wrap {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 100px 24px 60px;
+      text-align: center;
+    }
+    .success-symbol {
+      font-size: 64px;
+      color: var(--sur-gold);
+      margin-bottom: 24px;
+      display: block;
+      animation: fadeDown 0.8s ease both;
+    }
+    .success-headline {
+      font-family: var(--font-condensed);
+      font-size: clamp(48px, 10vw, 88px);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--bone-white);
+      line-height: 1;
+      margin-bottom: 20px;
+      animation: fadeDown 0.8s 0.1s ease both;
+    }
+    .success-sub {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: clamp(16px, 2.5vw, 20px);
+      color: var(--muted);
+      max-width: 480px;
+      line-height: 1.65;
+      margin-bottom: 48px;
+      animation: fadeDown 0.8s 0.2s ease both;
+    }
+    .order-card {
+      background: var(--near-black);
+      border: 1px solid var(--border);
+      width: 100%;
+      max-width: 480px;
+      padding: 32px;
+      text-align: left;
+      margin-bottom: 32px;
+      animation: fadeDown 0.8s 0.3s ease both;
+    }
+    .order-card-label {
+      font-family: var(--font-body);
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--sur-gold);
+      margin-bottom: 20px;
+    }
+    .order-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border-light);
+      gap: 16px;
+    }
+    .order-row:last-of-type { border-bottom: none; }
+    .order-key {
+      font-family: var(--font-body);
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+    .order-val {
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--bone-white);
+      text-align: right;
+      word-break: break-all;
+    }
+    .order-val.gold {
+      color: var(--sur-gold);
+      font-family: var(--font-condensed);
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+    .ships-banner {
+      background: rgba(184,146,42,0.08);
+      border: 1px solid rgba(184,146,42,0.2);
+      padding: 14px 20px;
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .ships-icon { font-size: 18px; }
+    .ships-text {
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--sur-gold);
+    }
+
+    /* Email confirmation */
+    .confirm-email-block {
+      width: 100%;
+      max-width: 480px;
+      text-align: left;
+      margin-bottom: 40px;
+      animation: fadeDown 0.8s 0.4s ease both;
+    }
+    .confirm-email-label {
+      font-family: var(--font-body);
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+      display: block;
+    }
+    .confirm-email-row {
+      display: flex;
+      gap: 0;
+    }
+    .confirm-email-input {
+      flex: 1;
+      background: var(--near-black);
+      border: 1px solid var(--border);
+      border-right: none;
+      color: var(--bone-white);
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 300;
+      padding: 14px 16px;
+      outline: none;
+    }
+    .confirm-email-input:focus { border-color: var(--sur-gold); }
+    .confirm-email-btn {
+      background: var(--sur-gold);
+      color: var(--void-black);
+      border: 1px solid var(--sur-gold);
+      font-family: var(--font-condensed);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 14px 20px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.2s;
+    }
+    .confirm-email-btn:hover { background: var(--sur-gold-hover); }
+    .confirm-email-note {
+      font-family: var(--font-body);
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+    .email-sent-msg {
+      font-family: var(--font-body);
+      font-size: 13px;
+      color: var(--sur-gold);
+      margin-top: 10px;
+      display: none;
+    }
+
+    .success-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      animation: fadeDown 0.8s 0.5s ease both;
+    }
+
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <button class="nav-hamburger" id="hamburgerBtn" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="index.html" class="nav-logo">A-WAG</a>
+    <div class="nav-icons">
+      <button class="nav-icon-btn" id="wishlistNavBtn" aria-label="Wishlist">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+        <span class="nav-badge" id="wishlistCount" style="display:none">0</span>
+      </button>
+      <button class="nav-icon-btn" id="cartNavBtn" aria-label="Cart">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        <span class="nav-badge" id="cartCount" style="display:none">0</span>
+      </button>
+    </div>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-menu-close" id="menuClose">✕</button>
+    <nav class="mobile-nav-links">
+      <a href="index.html#shop">Shop</a>
+      <a href="designers.html">Meet Designers</a>
+      <a href="index.html#philosophy">Philosophy</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+  </div>
+  <div class="menu-overlay" id="menuOverlay"></div>
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-drawer-header"><h3>CART</h3><button class="cart-close" id="cartClose">✕</button></div>
+    <div class="cart-items" id="cartItems"><div class="cart-empty"><p>Your cart is empty.</p><p class="cart-empty-sub">The gods travel light.</p></div></div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="cart-total"><span>Total</span><span id="cartTotal">₹0</span></div>
+      <button class="btn-primary btn-block" onclick="initiateCheckout()">PROCEED TO PAYMENT</button>
+    </div>
+  </div>
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <div class="toast" id="toast"></div>
+
+  <!-- SUCCESS CONTENT -->
+  <div class="success-wrap" id="successWrap">
+    <span class="success-symbol">∴</span>
+    <h1 class="success-headline">IT'S YOURS.</h1>
+    <p class="success-sub">"You wear the frequency now.<br>The meaning finds you later."</p>
+
+    <div class="order-card" id="orderCard">
+      <p class="order-card-label">Order Confirmation</p>
+      <div id="orderRows">
+        <!-- Populated by JS -->
+      </div>
+      <div class="ships-banner">
+        <span class="ships-icon">◎</span>
+        <span class="ships-text">Made to order · Ships in 7 working days across India</span>
+      </div>
+    </div>
+
+    <div class="confirm-email-block">
+      <span class="confirm-email-label">Get order confirmation on email</span>
+      <div class="confirm-email-row">
+        <input type="email" id="confirmEmail" class="confirm-email-input" placeholder="your@email.com">
+        <button class="confirm-email-btn" onclick="sendConfirmationEmail()">SEND</button>
+      </div>
+      <p class="confirm-email-note">We'll send your order details. No marketing, ever.</p>
+      <p class="email-sent-msg" id="emailSentMsg">✓ Confirmation sent.</p>
+    </div>
+
+    <div class="success-actions">
+      <a href="index.html#shop" class="btn-primary">CONTINUE SHOPPING</a>
+      <a href="index.html" class="btn-ghost" style="font-size:13px">← BACK TO A-WAG</a>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <script src="products.js"></script>
+  <script src="script.js"></script>
+  <!-- EmailJS -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script>
+    // ── Read order from sessionStorage ──────────────
+    document.addEventListener('DOMContentLoaded', function() {
+      var raw = sessionStorage.getItem('awag_last_order');
+      if (!raw) {
+        // No order data — redirect home
+        window.location.href = 'index.html';
+        return;
+      }
+
+      var order;
+      try { order = JSON.parse(raw); }
+      catch(e) { window.location.href = 'index.html'; return; }
+
+      // Build order rows
+      var rows = '';
+
+      // Items
+      var itemsText = order.items
+        ? order.items.map(function(i) { return i.name + (i.qty > 1 ? ' ×' + i.qty : ''); }).join('<br>')
+        : '—';
+      rows += '<div class="order-row"><span class="order-key">Item</span><span class="order-val">' + itemsText + '</span></div>';
+
+      // Total
+      rows += '<div class="order-row"><span class="order-key">Total Paid</span><span class="order-val gold">₹' + (order.total ? order.total.toLocaleString('en-IN') : '2,499') + '</span></div>';
+
+      // Payment ID
+      rows += '<div class="order-row"><span class="order-key">Payment ID</span><span class="order-val" style="font-size:11px;color:var(--muted)">' + (order.payment_id || '—') + '</span></div>';
+
+      // Date
+      var dateStr = order.timestamp ? new Date(order.timestamp).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) : new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+      rows += '<div class="order-row"><span class="order-key">Order Date</span><span class="order-val">' + dateStr + '</span></div>';
+
+      document.getElementById('orderRows').innerHTML = rows;
+
+      // Init EmailJS with public key from config
+      if (typeof emailjs !== 'undefined' && AWAG_CONFIG.emailjs && AWAG_CONFIG.emailjs.publicKey !== 'REPLACE_EMAILJS_PUBLIC_KEY') {
+        emailjs.init(AWAG_CONFIG.emailjs.publicKey);
+      }
+    });
+
+    // ── Send confirmation email to customer ─────────
+    function sendConfirmationEmail() {
+      var emailInput = document.getElementById('confirmEmail');
+      var email = emailInput.value.trim();
+      if (!email || !email.includes('@')) {
+        emailInput.focus();
+        return;
+      }
+
+      var raw = sessionStorage.getItem('awag_last_order');
+      var order = raw ? JSON.parse(raw) : {};
+      var itemsText = order.items
+        ? order.items.map(function(i) { return i.name + (i.qty > 1 ? ' ×' + i.qty : ''); }).join(', ')
+        : '—';
+
+      if (typeof emailjs !== 'undefined' && AWAG_CONFIG.emailjs && AWAG_CONFIG.emailjs.serviceId !== 'REPLACE_EMAILJS_SERVICE_ID') {
+        emailjs.send(
+          AWAG_CONFIG.emailjs.serviceId,
+          AWAG_CONFIG.emailjs.successTemplateId,
+          {
+            customer_email: email,
+            payment_id:     order.payment_id || '—',
+            items:          itemsText,
+            total:          '₹' + (order.total ? order.total.toLocaleString('en-IN') : '2,499'),
+            order_date:     new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }),
+            delivery_note:  'Made to order · Ships in 7 working days across India',
+          }
+        ).then(function() {
+          document.getElementById('emailSentMsg').style.display = 'block';
+          emailInput.value = '';
+        }).catch(function() {
+          document.getElementById('emailSentMsg').textContent = 'Could not send — email us at aintweallgod@gmail.com';
+          document.getElementById('emailSentMsg').style.display = 'block';
+        });
+      } else {
+        // EmailJS not yet configured — show manual fallback
+        document.getElementById('emailSentMsg').textContent = 'Save your Payment ID above. Email us at aintweallgod@gmail.com for confirmation.';
+        document.getElementById('emailSentMsg').style.display = 'block';
+      }
+    }
+  </script>
+</body>
+</html>

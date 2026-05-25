@@ -1877,3 +1877,378 @@ input { font-family: inherit; }
 .product-card .product-img-wrap { cursor: pointer; }
 .product-card .product-name   { cursor: pointer; }
 .product-card .product-name:hover { color: var(--sur-gold); transition: color 0.2s; }
+
+
+/* =============================================
+   BRAND ORIGIN SECTION
+   ============================================= */
+.brand-origin-section {
+  padding: 80px 24px;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+.brand-origin-inner {
+  max-width: 560px;
+  margin: 0 auto;
+}
+.brand-origin-statement {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(20px, 2.8vw, 26px);
+  line-height: 1.8;
+  color: var(--bone-white);
+  margin-bottom: 32px;
+}
+.brand-origin-sources {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 10px 14px;
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.origin-dot { color: var(--sur-gold); }
+
+/* =============================================
+   COLLECTION SPOTLIGHT
+   ============================================= */
+.spotlight-section {
+  border-top: 1px solid var(--border);
+}
+.spotlight-header {
+  padding: 56px 24px 40px;
+  text-align: center;
+}
+.spotlight-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border-top: 1px solid var(--border);
+}
+.spotlight-card {
+  display: block;
+  background: var(--void-black);
+  overflow: hidden;
+  text-decoration: none;
+  transition: background var(--transition);
+  cursor: pointer;
+}
+.spotlight-card:hover { background: var(--near-black); }
+.spotlight-img-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2/3;
+  overflow: hidden;
+}
+.spotlight-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.55s ease;
+}
+.spotlight-card:hover .spotlight-img-wrap img { transform: scale(1.05); }
+.spotlight-collection-tag {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sur-gold);
+  background: linear-gradient(to top, rgba(13,12,11,0.88) 0%, transparent 100%);
+  padding: 28px 14px 10px;
+}
+.spotlight-body {
+  padding: 16px 14px 22px;
+  border-top: 1px solid var(--border);
+}
+.spotlight-name {
+  font-family: var(--font-condensed);
+  font-size: clamp(15px, 1.3vw, 19px);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--bone-white);
+  margin-bottom: 7px;
+  line-height: 1.1;
+}
+.spotlight-line {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+.spotlight-cta {
+  display: inline-block;
+  font-family: var(--font-condensed);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sur-gold);
+  border-bottom: 1px solid rgba(184,146,42,0.3);
+  padding-bottom: 2px;
+  transition: color var(--transition), border-color var(--transition);
+}
+.spotlight-card:hover .spotlight-cta {
+  color: var(--bone-white);
+  border-bottom-color: rgba(232,226,213,0.35);
+}
+@media (max-width: 1100px) {
+  .spotlight-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 620px) {
+  .spotlight-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* =============================================
+   JOURNAL ACTIONS
+   ============================================= */
+.journal-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+.journal-collection-link {
+  font-family: var(--font-condensed);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--sur-gold);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(184,146,42,0.35);
+  padding-bottom: 2px;
+  transition: color var(--transition), border-color var(--transition);
+}
+.journal-collection-link:hover {
+  color: var(--bone-white);
+  border-bottom-color: rgba(232,226,213,0.4);
+}
+
+/* =============================================
+   UI/UX UPGRADE — BUTTONS
+   ============================================= */
+
+/* Primary button — more authority, depth, hover impact */
+.btn-primary {
+  padding: 15px 34px;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  box-shadow: 0 2px 18px rgba(184,146,42,0.22);
+  transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+.btn-primary:hover {
+  background: var(--sur-gold-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(184,146,42,0.38);
+}
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(184,146,42,0.2);
+}
+
+/* Ghost button — visible from the start, crisp hover */
+.btn-ghost {
+  border: 1px solid rgba(232, 226, 213, 0.38);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  transition: border-color var(--transition), background var(--transition), transform var(--transition);
+}
+.btn-ghost:hover {
+  border-color: var(--bone-white);
+  background: rgba(232,226,213,0.06);
+  transform: translateY(-2px);
+}
+
+/* Checkout block button */
+.btn-block.btn-primary {
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  padding: 17px 34px;
+}
+
+/* =============================================
+   UI/UX UPGRADE — PRODUCT CARDS
+   ============================================= */
+
+/* Position context for gold reveal */
+.product-card { position: relative; }
+
+/* Gold accent bar animates in from left on hover */
+.product-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--sur-gold);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.32s ease;
+  z-index: 2;
+}
+.product-card:hover::after { transform: scaleX(1); }
+
+/* Slightly larger product name for legibility */
+.product-name {
+  font-size: clamp(15px, 1.1vw, 17px);
+  line-height: 1.15;
+}
+
+/* Make product-limited badge more distinctive */
+.product-limited {
+  font-size: 8px;
+  letter-spacing: 0.18em;
+  opacity: 0.75;
+  border: 1px solid rgba(184,146,42,0.4);
+  padding: 3px 7px;
+  color: var(--sur-gold);
+}
+
+/* =============================================
+   UI/UX UPGRADE — NEWSLETTER
+   ============================================= */
+.newsletter-input:focus {
+  border-color: var(--sur-gold) !important;
+  box-shadow: 0 0 0 1px rgba(184,146,42,0.25);
+}
+
+/* =============================================
+   UI/UX UPGRADE — SECTION LABELS
+   ============================================= */
+/* Slightly more gold pop on section labels */
+.section-label {
+  color: var(--sur-gold);
+  letter-spacing: 0.28em;
+}
+
+
+/* =============================================
+   PRODUCT PAGE — THUMBNAIL GALLERY STRIP
+   ============================================= */
+.product-thumb-strip {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+.pg-thumb {
+  width: 64px;
+  height: 80px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+  padding: 0;
+  cursor: pointer;
+  background: var(--near-black);
+  transition: border-color var(--transition);
+}
+.pg-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: opacity var(--transition);
+}
+.pg-thumb.active {
+  border-color: var(--sur-gold);
+}
+.pg-thumb:not(.active) img { opacity: 0.55; }
+.pg-thumb.active img      { opacity: 1; }
+.pg-thumb:not(.active):hover {
+  border-color: rgba(232,226,213,0.45);
+}
+.pg-thumb:not(.active):hover img { opacity: 0.8; }
+
+
+/* =============================================
+   PRODUCT PAGE — ARTIST PROFILE BLOCK
+   ============================================= */
+.artist-section {
+  border-top: 1px solid var(--border);
+  padding: 28px 0 4px;
+  margin-top: 28px;
+}
+.artist-label {
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--sur-gold);
+  margin-bottom: 18px;
+  display: block;
+}
+.artist-profile {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.artist-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid rgba(184,146,42,0.45);
+  background: var(--near-black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-condensed);
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  color: var(--sur-gold);
+  flex-shrink: 0;
+}
+.artist-info { flex: 1; min-width: 0; }
+.artist-name {
+  font-family: var(--font-condensed);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--bone-white);
+  line-height: 1.2;
+}
+.artist-role {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 3px;
+  line-height: 1.4;
+}
+.artist-quote {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--bone-white);
+  border-left: 2px solid var(--sur-gold);
+  padding-left: 16px;
+  margin: 0;
+  opacity: 0.92;
+}
+
+
+/* =============================================
+   NAV — ACTIVE STATE FOR CURRENT PAGE
+   ============================================= */
+.mobile-nav-links a.active-nav {
+  color: var(--sur-gold);
+}

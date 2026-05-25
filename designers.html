@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A-WAG — Meet the Artists</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Barlow:wght@300;400&family=Cormorant+Garamond:ital,wght@0,400;1,300;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+
+    /* ── PAGE HERO ─────────────────────────────────── */
+    .designers-hero {
+      padding: 100px 24px 64px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .designers-hero-eyebrow {
+      font-family: var(--font-body);
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--sur-gold);
+      margin-bottom: 16px;
+    }
+    .designers-hero-title {
+      font-family: var(--font-condensed);
+      font-size: clamp(56px, 11vw, 120px);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      line-height: 0.92;
+      color: var(--bone-white);
+      margin-bottom: 24px;
+    }
+    .designers-hero-sub {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: clamp(16px, 2.2vw, 20px);
+      color: var(--muted);
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.65;
+    }
+
+    /* ── ARTIST SECTIONS ───────────────────────────── */
+    .artist-page-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 560px;
+      border-bottom: 1px solid var(--border);
+    }
+    .artist-page-section:nth-child(even) .artist-visual { order: 2; }
+    .artist-page-section:nth-child(even) .artist-content { order: 1; }
+
+    .artist-visual {
+      background: var(--near-black);
+      border-right: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    .artist-page-section:nth-child(even) .artist-visual {
+      border-right: none;
+      border-left: 1px solid var(--border);
+    }
+
+    /* Subtle texture grain */
+    .artist-visual::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .artist-portrait {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      border: 1px solid rgba(184,146,42,0.35);
+      background: var(--void-black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      flex-shrink: 0;
+    }
+    /* Outer ring */
+    .artist-portrait::before {
+      content: '';
+      position: absolute;
+      inset: -10px;
+      border-radius: 50%;
+      border: 1px solid rgba(184,146,42,0.14);
+    }
+    /* Outermost ring */
+    .artist-portrait::after {
+      content: '';
+      position: absolute;
+      inset: -22px;
+      border-radius: 50%;
+      border: 1px solid rgba(184,146,42,0.07);
+    }
+    .artist-portrait svg {
+      width: 96px;
+      height: 96px;
+    }
+
+    .artist-content {
+      padding: 64px 56px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .artist-collection-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-body);
+      font-size: 9px;
+      font-weight: 400;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--sur-gold);
+      border: 1px solid rgba(184,146,42,0.3);
+      padding: 5px 12px;
+      margin-bottom: 20px;
+      width: fit-content;
+      text-decoration: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .artist-collection-tag:hover {
+      border-color: var(--sur-gold);
+      background: rgba(184,146,42,0.07);
+    }
+
+    .artist-page-name {
+      font-family: var(--font-condensed);
+      font-size: clamp(36px, 5vw, 60px);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      line-height: 1;
+      color: var(--bone-white);
+      margin-bottom: 6px;
+    }
+    .artist-page-role {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 15px;
+      color: var(--muted);
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+    .artist-bio {
+      font-family: var(--font-body);
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--bone-white);
+      opacity: 0.82;
+      margin-bottom: 28px;
+    }
+    .artist-bio p + p { margin-top: 14px; }
+
+    /* Design quotes from this artist */
+    .artist-design-quotes {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .artist-design-quote-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .adq-design-name {
+      font-family: var(--font-condensed);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sur-gold);
+      white-space: nowrap;
+      padding-top: 2px;
+      min-width: 120px;
+      flex-shrink: 0;
+    }
+    .adq-quote {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 13px;
+      line-height: 1.65;
+      color: var(--muted);
+    }
+
+    /* ── DIVIDER STRIP ─────────────────────────────── */
+    .artists-divider-strip {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      padding: 32px 24px;
+      border-bottom: 1px solid var(--border);
+      background: var(--near-black);
+    }
+    .ads-symbol {
+      font-size: 22px;
+      color: rgba(184,146,42,0.4);
+    }
+    .ads-text {
+      font-family: var(--font-body);
+      font-size: 9px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── END CTA ───────────────────────────────────── */
+    .designers-end-cta {
+      padding: 80px 24px;
+      text-align: center;
+    }
+    .designers-end-title {
+      font-family: var(--font-condensed);
+      font-size: clamp(36px, 7vw, 72px);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--bone-white);
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+    .designers-end-sub {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 16px;
+      color: var(--muted);
+      margin-bottom: 36px;
+    }
+
+    /* ── MOBILE ────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .artist-page-section {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+      .artist-page-section:nth-child(even) .artist-visual { order: 0; }
+      .artist-page-section:nth-child(even) .artist-content { order: 1; }
+      .artist-visual {
+        border-right: none !important;
+        border-left: none !important;
+        border-bottom: 1px solid var(--border);
+        padding: 48px 24px;
+        min-height: 280px;
+      }
+      .artist-portrait { width: 140px; height: 140px; }
+      .artist-portrait svg { width: 68px; height: 68px; }
+      .artist-content { padding: 36px 24px 48px; }
+      .adq-design-name { min-width: 90px; font-size: 8px; }
+      .adq-quote { font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ANNOUNCEMENT BAR -->
+  <div class="announcement-bar">
+    <span>FREE SHIPPING ACROSS INDIA — ALL ORDERS</span>
+    <span class="sep">·</span>
+    <span>MAKE TO ORDER · SHIPS IN 7 DAYS</span>
+  </div>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <button class="nav-hamburger" id="hamburgerBtn" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="index.html" class="nav-logo">A-WAG</a>
+    <div class="nav-icons">
+      <button class="nav-icon-btn" id="wishlistNavBtn" aria-label="Wishlist">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+        <span class="nav-badge" id="wishlistCount" style="display:none">0</span>
+      </button>
+      <button class="nav-icon-btn" id="cartNavBtn" aria-label="Cart">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        <span class="nav-badge" id="cartCount" style="display:none">0</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-menu-close" id="menuClose" aria-label="Close">✕</button>
+    <nav class="mobile-nav-links">
+      <a href="index.html#collections">Collections</a>
+      <a href="index.html#shop">Shop</a>
+      <a href="designers.html" class="active-nav">Meet Designers</a>
+      <a href="index.html#philosophy">Philosophy</a>
+      <a href="index.html#journal">Journal</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+    <div class="mobile-menu-footer">
+      <p class="mobile-tagline">Ain't We All God?</p>
+    </div>
+  </div>
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <!-- CART DRAWER -->
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-drawer-header"><h3>CART</h3><button class="cart-close" id="cartClose">✕</button></div>
+    <div class="cart-items" id="cartItems">
+      <div class="cart-empty"><p>Your cart is empty.</p><p class="cart-empty-sub">The gods travel light.</p></div>
+    </div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="cart-total"><span>Total</span><span id="cartTotal">₹0</span></div>
+      <button class="btn-primary btn-block" onclick="initiateCheckout()">PROCEED TO PAYMENT</button>
+    </div>
+  </div>
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <div class="toast" id="toast"></div>
+
+  <!-- PAGE HERO -->
+  <div class="designers-hero">
+    <p class="designers-hero-eyebrow">Behind The Frequency</p>
+    <h1 class="designers-hero-title">MEET<br>THE ARTISTS</h1>
+    <p class="designers-hero-sub">Five practitioners. Five disciplines. Each one spent years inside a tradition before translating it into cotton and ink.</p>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       ARTIST 1 — KAVYA RAO  ∴ AKSHAR
+       ══════════════════════════════════════════ -->
+  <section class="artist-page-section">
+
+    <div class="artist-visual">
+      <div class="artist-portrait">
+        <!-- Sanskrit ∴ mark — Akshar means 'the imperishable letter' -->
+        <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Devanagari-inspired letterform: OM stylised -->
+          <text x="50%" y="56%" dominant-baseline="middle" text-anchor="middle"
+                font-family="serif" font-size="58" fill="#B8922A" opacity="0.9">ॐ</text>
+          <!-- Three dots — the ∴ Akshar symbol -->
+          <circle cx="48" cy="82" r="2.5" fill="#B8922A" opacity="0.5"/>
+          <circle cx="40" cy="82" r="2.5" fill="#B8922A" opacity="0.5"/>
+          <circle cx="56" cy="82" r="2.5" fill="#B8922A" opacity="0.5"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="artist-content">
+      <a href="index.html#shop" class="artist-collection-tag">∴ AKSHAR COLLECTION →</a>
+      <h2 class="artist-page-name">Kavya Rao</h2>
+      <p class="artist-page-role">Sanskrit Calligrapher · Vedanta Practitioner · Mysore</p>
+      <div class="artist-bio">
+        <p>Kavya grew up in Mysore in a household where Sanskrit was spoken at the dinner table. At nineteen she left for Sringeri Sharada Peetham, one of the four original mathas established by Adi Shankaracharya, and spent twelve years there as a student of Advaita Vedanta under Swami Tattvavidananda. She learned Sanskrit not as a language but as a system for encoding reality.</p>
+        <p>Her calligraphy practice began as meditation — brushing Devanagari aksharas for four hours every morning, not to produce beautiful letters but to dissolve the distance between the hand, the letter, and the meaning the letter contains. She calls this "writing without a writer."</p>
+        <p>The AKSHAR collection emerged from twelve years of sitting with one question: if the word and the thing are not separate, what does the boundary between human and divine look like in ink?</p>
+      </div>
+      <div class="artist-design-quotes">
+        <div class="artist-design-quote-item">
+          <span class="adq-design-name">AREN'T WE ALL?</span>
+          <span class="adq-quote">"I sat with this question every morning for three years before I let it become a garment. The Vedantic answer is obvious — but only after you have stopped being afraid of what it means for the self you have been carrying."</span>
+        </div>
+        <div class="artist-design-quote-item">
+          <span class="adq-design-name">EVEN GODS DOUBT</span>
+          <span class="adq-quote">"My teacher at Sringeri said once: the student who stops doubting has stopped learning. I made this for everyone still inside the question — which is everyone who is honest."</span>
+        </div>
+        <div class="artist-design-quote-item">
+          <span class="adq-design-name">YOUR BODY IS ON LOAN</span>
+          <span class="adq-quote">"A swami pointed to my hand and said simply: borrowed. I laughed. Then I sat with it for four years. This garment came out the other side."</span>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <div class="artists-divider-strip">
+    <span class="ads-symbol">∴</span>
+    <span class="ads-text">5 Artists · 5 Traditions · 19 Designs</span>
+    <span class="ads-symbol">⊕</span>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       ARTIST 2 — ARYAN MEHTA  ⊕ BLOOM
+       ══════════════════════════════════════════ -->
+  <section class="artist-page-section">
+
+    <div class="artist-visual">
+      <div class="artist-portrait">
+        <!-- Cymatic wave pattern — Chladni figure / mantra frequency -->
+        <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Central node -->
+          <circle cx="48" cy="48" r="3" fill="#B8922A"/>
+          <!-- Inner cymatic ring -->
+          <circle cx="48" cy="48" r="14" stroke="#B8922A" stroke-width="1" stroke-dasharray="3 4" opacity="0.9"/>
+          <!-- Mid ring with frequency nodes -->
+          <circle cx="48" cy="48" r="26" stroke="#B8922A" stroke-width="0.8" stroke-dasharray="5 6" opacity="0.65"/>
+          <!-- Outer ring -->
+          <circle cx="48" cy="48" r="38" stroke="#B8922A" stroke-width="0.6" stroke-dasharray="8 9" opacity="0.35"/>
+          <!-- Radial frequency lines — the Chladni lines -->
+          <line x1="48" y1="10" x2="48" y2="22" stroke="#B8922A" stroke-width="1" opacity="0.7"/>
+          <line x1="48" y1="74" x2="48" y2="86" stroke="#B8922A" stroke-width="1" opacity="0.7"/>
+          <line x1="10" y1="48" x2="22" y2="48" stroke="#B8922A" stroke-width="1" opacity="0.7"/>
+          <line x1="74" y1="48" x2="86" y2="48" stroke="#B8922A" stroke-width="1" opacity="0.7"/>
+          <!-- Diagonal radials -->
+          <line x1="20" y1="20" x2="29" y2="29" stroke="#B8922A" stroke-width="0.7" opacity="0.5"/>
+          <line x1="67" y1="67" x2="76" y2="76" stroke="#B8922A" stroke-width="0.7" opacity="0.5"/>
+          <line x1="76" y1="20" x2="67" y2="29" stroke="#B8922A" stroke-width="0.7" opacity="0.5"/>
+          <line x1="20" y1="76" x2="29" y2="67" stroke="#B8922A" stroke-width="0.7" opacity="0.5"/>
+          <!-- Frequency nodes on inner ring -->
+          <circle cx="48" cy="34" r="2" fill="#B8922A" opacity="0.7"/>
+          <circle cx="48" cy="62" r="2" fill="#B8922A" opacity="0.7"/>
+          <circle cx="34" cy="48" r="2" fill="#B8922A" opacity="0.7"/>
+          <circle cx="62" cy="48" r="2" fill="#B8922A" opacity="0.7"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="artist-content">
+      <a href="index.html#shop" class="artist-collection-tag">⊕ BLOOM COLLECTION →</a>
+      <h2 class="artist-page-name">Aryan Mehta</h2>
+      <p class="artist-page-role">Cymatic Artist · Hindustani Musician · Varanasi</p>
+      <div class="artist-bio">
+        <p>Aryan was trained at the Benaras Gharana from age eleven under Pandit Ramkumar Mallick, spending fifteen years learning Hindustani classical vocal. But his obsession was not the music itself — it was the physical shape of sound. He wanted to see what a raga looked like.</p>
+        <p>He built his first Chladni apparatus in 2011 from salvaged lab equipment — a metal plate, a violin bow, salt and sand. Over the next decade he systematically mapped the visual geometry produced by every classical raga and Sanskrit mantra he knew, filling notebooks with the resulting Chladni figures and correlating them with the ancient texts that described the same sounds as forms.</p>
+        <p>The BLOOM collection documents what he found: that every mantra carries a precise geometric signature, and that the geometry the ancients described as sacred is the same geometry that appears when the sound is made visible in matter.</p>
+      </div>
+      <div class="artist-design-quotes">
+        <div class="artist-design-quote-item">
+          <span class="adq-design-name">NADA</span>
+          <span class="adq-quote">"I had studied Nada Brahma for seven years before I set up the Chladni plate. The first time I played the correct frequency and watched the sand arrange itself — the universe had been waiting to show me this since before I was born."</span>
+        </div>
+        <div class="artist-design-quote-item">
+          <span class="adq-design-name">PANCHAKSHARA</span>
+          <span class="adq-quote">"I spent six months mapping each syllable separately. Individually they make simple forms. Together — Na-Ma-Śi-Vā-Ya — they become this mandala. Five separate things become one totality."</span>
+        </div>
+        <div class="artist-design-quote-item">
+          <span class="adq-design-name">SPANDA</span>
+          <span class="adq-quote">"I sat by the Ganga for three days trying to draw what trembling looks like before it becomes a wave. This came on the fourth morning, before I was awake enough to interfere."</span>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <div class="artists-divider-strip">
+    <span class="ads-symbol">⊕</span>
+    <span class="ads-text">Each design begins as practice, not as product</span>
+    <span class="ads-symbol">○</span>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       ARTIST 3 — RIYA SEN  ○ VOID
+       ══════════════════════════════════════════ -->
+  <section class="artist-page-section">
+
+    <div class="artist-visual">
+      <div class="artist-portrait">
+        <!-- Quantum double-slit interference pattern — superposition before collapse -->
+        <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Two slits — vertical lines with gap -->
+          <line x1="38" y1="18" x2="38" y2="36" stroke="#B8922A" stroke-width="1.5" opacity="0.9"/>
+          <line x1="38" y1="44" x2="38" y2="52" stroke="#B8922A" stroke-width="1.5" opacity="0.9"/>
+          <line x1="38" y1="60" x2="38" y2="78" stroke="#B8922A" stroke-width="1.5" opacity="0.9"/>
+          <!-- Interference wave arcs emanating right -->
+          <path d="M 38 40 Q 58 28, 78 20" stroke="#B8922A" stroke-width="0.7" fill="none" opacity="0.8"/>
+          <path d="M 38 48 Q 58 48, 78 48" stroke="#B8922A" stroke-width="0.7" fill="none" opacity="0.9"/>
+          <path d="M 38 56 Q 58 68, 78 76" stroke="#B8922A" stroke-width="0.7" fill="none" opacity="0.8"/>
+          <path d="M 38 44 Q 62 36, 78 32" stroke="#B8922A" stroke-width="0.5" fill="none" opacity="0.5"/>
+          <path d="M 38 52 Q 62 60, 78 64" stroke="#B8922A" stroke-width="0.5" fill="none" opacity="0.5"/>
+          <path d="M 38 40 Q 64 52, 78 60" stroke="#B8922A" stroke-width="0.4" fill="none" opacity="0.3"/>
+          <path d="M 38 56 Q 64 44, 78 36" stroke="#B8922A" stroke-width="0.4" fill="none" opacity="0.3"/>
+          <!-- Interference nodes — bright dots where waves reinforce -->
+          <circle cx="78" cy="48" r="3" fill="#B8922A" opacity="0.9"/>
+          <circle cx="78" cy="28" r="2" fill="#B8922A" opacity="0.55"/>
+          <circle cx="78" cy="68" r="2" fill="#B8922A" opacity="0.55"/>
+          <circle cx="78" cy="14" r="1.2" fill="#B8922A" opacity="0.3"/>
+          <circle cx="78" cy="82" r="1.2" fill="#B8922A" opacity="0.3"/>
+          <!-- Incoming particle wave -->
+          <path d="M 10 48 Q 22 44, 34 48 Q 22 52, 10 48" stroke="#B8922A" stroke-width="0.8" fill="none" opacity="0.6"/>
+          <path d="M 14 48 Q 24 42, 34 48" stroke="#B8922A" stroke-width="0.4" fill="none" opacity="0.35"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="artist-content">
+      <a href="index.html#shop" class="artist-collection-tag">○ VOID COLLECTION →</a>
+      <h2 class="artist-page-name">Riya Sen</h2>
+      <p class="artist-page-role">Zen Artist · Quantum Physicist · Kolkata</p>
+      <div class="artist-bio">
+        <p>Riya was enrolled in a quantum physics PhD programme at IIT Bombay when she read her first D.T. Suzuki text — and realised the double-slit experiment and the Zen koan were describing the same event from different sides of language. She left the programme in 2014, not because she had lost interest in physics but because she had found the physics inside something older.</p>
+        <p>She spent eight years with a Zen roshi in Bodh Gaya, practicing and painting. Her work lives at the exact overlap between what physics has proven about observation and what Zen has known about it for twelve centuries. She does not see these as two things.</p>
+        <p>The VOID collection is built around one question her teacher gave her in 2016: what does the ground state look like before it decides to become a particle? She is still working on the answer. The three garments in this collection are the closest she has come.</p>
+      </div>
+      <div class="artist-design-quotes">
+        <div class="artist-design-quote-item">
+          <span class="adq-design-name">BEFORE NAME</span>
+          <span class="adq-quote">"A particle exists in superposition — all states simultaneously — until observation collapses it into one. This design is that superposition. Before language collapsed you into a particular self."</span>
+        </div>
+        <div class="artist-design-quote-item">
+          <span class="adq-design-name">STATIC FIELD</span>
+          <span class="adq-quote">"Physicists call it the zero-point field — the lowest possible energy state, which is still not zero. The vacuum hums. This garment is that hum."</span>
+        </div>
+        <div class="artist-design-quote-item">
+          <span class="adq-design-name">THE VESSEL</span>
+          <span class="adq-quote">"My Zen teacher asked: what is the shape of your mind before you start thinking? I could not answer for two years. One morning I picked up a brush without intention and this came out."</span>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <div class="artists-divider-strip">
+    <span class="ads-symbol">○</span>
+    <span class="ads-text">You wear the frequency. The meaning finds you later.</span>
+    <span class="ads-symbol">◉</span>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       ARTIST 4 — DEVRAJ NAIR  ◉ WITNESS
+       ══════════════════════════════════════════ -->
+  <section class="artist-page-section">
+
+    <div class="artist-visual">
+      <div class="artist-portrait">
+        <!-- Ensō — the Zen circle, brushed in one stroke -->
+        <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- The ensō: imperfect open circle brushed in one arc -->
+          <path d="M 48 14
+                   C 68 14, 82 29, 82 48
+                   C 82 67, 68 82, 48 82
+                   C 28 82, 14 67, 14 48
+                   C 14 34, 22 22, 34 17"
+                stroke="#B8922A"
+                stroke-width="4.5"
+                stroke-linecap="round"
+                fill="none"
+                opacity="0.9"/>
+          <!-- Central observation point — the witness -->
+          <circle cx="48" cy="48" r="3.5" fill="#B8922A" opacity="0.7"/>
+          <!-- Subtle inner ring -->
+          <circle cx="48" cy="48" r="16" stroke="#B8922A" stroke-width="0.5" opacity="0.2"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="artist-content">
+      <a href="index.html#shop" class="artist-collection-tag">◉ WITNESS COLLECTION →</a>
+      <h2 class="artist-page-name">Devraj Nair</h2>
+      <p class="artist-page-role">Mandala Painter · Vipassana Teacher · Kerala</p>
+      <div class="artist-bio">
+        <p>Devraj grew up in a Hindu household in Thrissur, but his first spiritual encounter came at twenty-two when he sat his first ten-day Vipassana retreat. He described it later as "the first time I caught myself watching." He has maintained an unbroken daily practice for eighteen years.</p>
+        <p>In 2008 he travelled to Dharamsala, where he trained for six years under a Tibetan lama learning the traditional art of the sand mandala — a practice requiring absolute precision, infinite patience, and the understanding that the completed work will be swept away. He has completed eleven full Kalachakra sand mandalas and destroyed all eleven.</p>
+        <p>The WITNESS collection is his attempt to document not the mandala but the geometry underneath it — the mathematical structure that the mandala is a surface of, the same geometry that quantum mechanics finds in observation, and that the Vedanta calls the witness consciousness behind all experience.</p>
+      </div>
+      <div class="artist-design-quotes">
+        <div class="artist-design-quote-item">
+          <span class="adq-design-name">ENSO</span>
+          <span class="adq-quote">"I have brushed the ensō ten thousand times in eighteen years. Each one in a single stroke, one breath, no correction. Each one complete. This is the one that finally surprised me — my hand made the choice before I did."</span>
+        </div>
+        <div class="artist-design-quote-item">
+          <span class="adq-design-name">INDRA'S CENTER</span>
+          <span class="adq-quote">"There is no centre — or every point is the centre. I tried to draw the moment you realise you are simultaneously one of the jewels, the net, and the light between them."</span>
+        </div>
+        <div class="artist-design-quote-item">
+          <span class="adq-design-name">KALACHAKRA</span>
+          <span class="adq-quote">"This design is not the mandala itself — it is the mathematical structure underneath it. The geometry the universe uses to organise time."</span>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <div class="artists-divider-strip">
+    <span class="ads-symbol">◉</span>
+    <span class="ads-text">The observer and the observed are not two separate things</span>
+    <span class="ads-symbol">◎</span>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       ARTIST 5 — MEERA KRISHNAMURTHY  ◎ YAATRA
+       ══════════════════════════════════════════ -->
+  <section class="artist-page-section">
+
+    <div class="artist-visual">
+      <div class="artist-portrait">
+        <!-- Sacred topographic map — concentric mountain lines, pilgrimage geometry -->
+        <svg viewBox="0 0 96 96" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Topographic contour lines — sacred mountain -->
+          <ellipse cx="48" cy="48" rx="38" ry="32" stroke="#B8922A" stroke-width="0.6" opacity="0.25"/>
+          <ellipse cx="48" cy="48" rx="30" ry="25" stroke="#B8922A" stroke-width="0.7" opacity="0.35"/>
+          <ellipse cx="48" cy="48" rx="22" ry="18" stroke="#B8922A" stroke-width="0.8" opacity="0.5"/>
+          <ellipse cx="48" cy="48" rx="14" ry="11" stroke="#B8922A" stroke-width="1" opacity="0.65"/>
+          <ellipse cx="48" cy="48" rx="7"  ry="5"  stroke="#B8922A" stroke-width="1.2" opacity="0.85"/>
+          <!-- Summit — the Jyotirlinga point -->
+          <circle cx="48" cy="48" r="2.5" fill="#B8922A" opacity="0.95"/>
+          <!-- The three rivers — Triveni lines converging -->
+          <path d="M 15 72 Q 30 58, 48 48" stroke="#B8922A" stroke-width="0.9" fill="none" opacity="0.55"/>
+          <path d="M 81 72 Q 66 58, 48 48" stroke="#B8922A" stroke-width="0.9" fill="none" opacity="0.55"/>
+          <!-- The invisible third river — dashed -->
+          <path d="M 48 82 Q 48 65, 48 48" stroke="#B8922A" stroke-width="0.9" fill="none" opacity="0.4" stroke-dasharray="3 4"/>
+          <!-- Pilgrimage path markers -->
+          <circle cx="15" cy="72" r="2" fill="#B8922A" opacity="0.4"/>
+          <circle cx="81" cy="72" r="2" fill="#B8922A" opacity="0.4"/>
+          <circle cx="48" cy="82" r="1.5" fill="#B8922A" opacity="0.3"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="artist-content">
+      <a href="index.html#shop" class="artist-collection-tag">◎ YAATRA COLLECTION →</a>
+      <h2 class="artist-page-name">Meera Krishnamurthy</h2>
+      <p class="artist-page-role">Sacred Geography Artist · Shaivite · Tamil Nadu</p>
+      <div class="artist-bio">
+        <p>Meera was born in Thanjavur into a family of temple painters. By the time she was thirty she had drawn the geometry of every major temple in Tamil Nadu — not the sculpture or the deity, but the topological structure underneath the architecture. She was looking for what makes a sacred site sacred before anyone builds on it.</p>
+        <p>Between 2015 and 2022 she walked all twelve Jyotirlinga pilgrimage routes on foot, carrying a sketchbook and a compass. She arrived at each site not to pray but to map — to document the sacred geometry of the landscape that the temples had been built to mark. She slept in dharamshalas, at railway stations, in the homes of strangers who understood what she was looking for.</p>
+        <p>The YAATRA collection is what she found: that every pilgrimage site in India is located at a specific topographic or astronomical event — a confluence, a solstice point, a place where geography itself creates a diagram of the consciousness the tradition describes.</p>
+      </div>
+      <div class="artist-design-quotes">
+        <div class="artist-design-quote-item">
+          <span class="adq-design-name">JYOTIRLINGA</span>
+          <span class="adq-quote">"The priest opened the doors at 4am. Inside there was no murti — only a rock, and light coming from somewhere I could not locate. I spent three months trying to draw where that light was coming from."</span>
+        </div>
+        <div class="artist-design-quote-item">
+          <span class="adq-design-name">MAHASMASHANA</span>
+          <span class="adq-quote">"I sat at Manikarnika Ghat for three consecutive nights. By the third I understood what was burning. It was not people. It was the part of them that believed it was something other than fire."</span>
+        </div>
+        <div class="artist-design-quote-item">
+          <span class="adq-design-name">TRIVENI</span>
+          <span class="adq-quote">"At Sangam, three rivers meet — but the Saraswati is invisible. One of its three currents cannot be seen. I have been thinking about invisible truth for twenty years. This is its diagram."</span>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- END CTA -->
+  <div class="designers-end-cta">
+    <p class="section-label">WHAT THEY MADE</p>
+    <h2 class="designers-end-title">FIVE TRADITIONS.<br>NINETEEN DESIGNS.</h2>
+    <p class="designers-end-sub">Each one made to order. Each one ships in 7 days.</p>
+    <a href="index.html#shop" class="btn-primary">SHOP ALL DESIGNS</a>
+  </div>
+
+  <script src="products.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
