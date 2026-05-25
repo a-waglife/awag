@@ -9,27 +9,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Barlow:wght@300;400&family=Cormorant+Garamond:ital,wght@0,400;1,300;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 
-  <!-- ══════════════════════════════════════════════
-       ANALYTICS — add when site goes live.
-       Three snippets to paste here, in order:
+  <!-- Google Analytics 4 — G-91LSYTJ5CD -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-91LSYTJ5CD"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-91LSYTJ5CD', {
+      page_title: document.title,
+      send_page_view: true
+    });
+  </script>
 
-       1. Google Analytics 4
-          → create property at analytics.google.com
-          → get Measurement ID (G-XXXXXXXXXX) from Admin > Data Streams
-          → paste the gtag snippet here
-
-       2. Meta / Facebook Pixel
-          → create pixel at business.facebook.com > Events Manager
-          → get the numeric Pixel ID
-          → paste the fbq snippet here
-
-       3. Microsoft Clarity (session recordings + heatmaps — free)
-          → create project at clarity.microsoft.com
-          → paste the clarity snippet here
-
-       The tracking functions in script.js are already wired up —
-       just paste the snippets and the full funnel fires automatically.
-       ══════════════════════════════════════════════ -->
+  <!-- Meta Pixel — paste fbq snippet here when ready -->
+  <!-- Microsoft Clarity — paste clarity snippet here when ready -->
 
 </head>
 <body>
@@ -260,9 +253,9 @@
 
     <!-- FILTER PILLS -->
     <div class="filter-bar">
-      <button class="filter-pill active" data-filter="all">ALL (19)</button>
-      <button class="filter-pill" data-filter="Akshar">AKSHAR (4)</button>
-      <button class="filter-pill" data-filter="Bloom">BLOOM (5)</button>
+      <button class="filter-pill active" data-filter="all">ALL (20)</button>
+      <button class="filter-pill" data-filter="Akshar">AKSHAR (6)</button>
+      <button class="filter-pill" data-filter="Bloom">BLOOM (4)</button>
       <button class="filter-pill" data-filter="Void">VOID (3)</button>
       <button class="filter-pill" data-filter="Witness">WITNESS (3)</button>
       <button class="filter-pill" data-filter="Yaatra">YAATRA (4)</button>
@@ -352,6 +345,46 @@
         </div>
       </div>
 
+      <div class="product-card" data-collection="Akshar">
+        <div class="product-img-wrap">
+          <img src="Collections/Akshar/God%20Mirror.jpg" alt="God Mirror" loading="lazy">
+          <button class="wishlist-heart" data-id="akshar-god-mirror" aria-label="Wishlist">♡</button>
+          <div class="product-overlay">
+            <button class="btn-primary btn-sm" onclick="addToCart('akshar-god-mirror', 'GOD MIRROR', 'Collections/Akshar/God%20Mirror.jpg')">BUY NOW</button>
+            <button class="btn-outline btn-sm" onclick="addToCart('akshar-god-mirror', 'GOD MIRROR', 'Collections/Akshar/God%20Mirror.jpg')">ADD TO CART</button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-collection">∴ AKSHAR</p>
+          <h3 class="product-name">GOD MIRROR</h3>
+          <p class="product-ground">Washed Void Black · Bone White Ink</p>
+          <div class="product-price-row">
+            <span class="product-price">₹2,499</span>
+            <span class="product-limited">MAKE TO ORDER</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-collection="Akshar">
+        <div class="product-img-wrap">
+          <img src="Collections/Akshar/Confusion%20Conclusion.jpg" alt="Confusion / Conclusion" loading="lazy">
+          <button class="wishlist-heart" data-id="akshar-confusion-conclusion" aria-label="Wishlist">♡</button>
+          <div class="product-overlay">
+            <button class="btn-primary btn-sm" onclick="addToCart('akshar-confusion-conclusion', 'CONFUSION / CONCLUSION', 'Collections/Akshar/Confusion%20Conclusion.jpg')">BUY NOW</button>
+            <button class="btn-outline btn-sm" onclick="addToCart('akshar-confusion-conclusion', 'CONFUSION / CONCLUSION', 'Collections/Akshar/Confusion%20Conclusion.jpg')">ADD TO CART</button>
+          </div>
+        </div>
+        <div class="product-info">
+          <p class="product-collection">∴ AKSHAR</p>
+          <h3 class="product-name">CONFUSION / CONCLUSION</h3>
+          <p class="product-ground">Smoke White · Deep Black Ink</p>
+          <div class="product-price-row">
+            <span class="product-price">₹2,499</span>
+            <span class="product-limited">MAKE TO ORDER</span>
+          </div>
+        </div>
+      </div>
+
       <!-- BLOOM -->
       <div class="product-card" data-collection="Bloom">
         <div class="product-img-wrap">
@@ -406,26 +439,6 @@
           <p class="product-collection">⊕ BLOOM</p>
           <h3 class="product-name">SPANDA</h3>
           <p class="product-ground">The Divine Pulse · Primordial Vibration</p>
-          <div class="product-price-row">
-            <span class="product-price">₹2,499</span>
-            <span class="product-limited">MAKE TO ORDER</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="product-card" data-collection="Bloom">
-        <div class="product-img-wrap">
-          <img src="Collections/Bloom/Vaayu%20Putra%201.jpg" alt="Vaayu Putra I" loading="lazy">
-          <button class="wishlist-heart" data-id="bloom-vaayu-1" aria-label="Wishlist">♡</button>
-          <div class="product-overlay">
-            <button class="btn-primary btn-sm" onclick="addToCart('bloom-vaayu-1', 'VAAYU PUTRA I', 'Collections/Bloom/Vaayu%20Putra%201.jpg')">BUY NOW</button>
-            <button class="btn-outline btn-sm" onclick="addToCart('bloom-vaayu-1', 'VAAYU PUTRA I', 'Collections/Bloom/Vaayu%20Putra%201.jpg')">ADD TO CART</button>
-          </div>
-        </div>
-        <div class="product-info">
-          <p class="product-collection">⊕ BLOOM</p>
-          <h3 class="product-name">VAAYU PUTRA I</h3>
-          <p class="product-ground">Son of Wind · Form I</p>
           <div class="product-price-row">
             <span class="product-price">₹2,499</span>
             <span class="product-limited">MAKE TO ORDER</span>
@@ -744,7 +757,7 @@
     <div class="process-divider"></div>
     <div class="process-item">
       <p class="process-num">5</p>
-      <p class="process-label">COLLECTIONS · 19 DESIGNS</p>
+      <p class="process-label">COLLECTIONS · 20 DESIGNS</p>
     </div>
   </div>
 

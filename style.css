@@ -2252,3 +2252,15 @@ input { font-family: inherit; }
 .mobile-nav-links a.active-nav {
   color: var(--sur-gold);
 }
+
+/* Artist name link on product page */
+.artist-name-link {
+  color: var(--bone-white);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(184,146,42,0.4);
+  transition: color var(--transition), border-color var(--transition);
+}
+.artist-name-link:hover {
+  color: var(--sur-gold);
+  border-color: var(--sur-gold);
+}

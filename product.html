@@ -9,10 +9,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Barlow:wght@300;400&family=Cormorant+Garamond:ital,wght@0,400;1,300;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 
-  <!-- ══════════════════════════════════════════════
-       ANALYTICS — paste snippets here when site goes live.
-       (same instructions as index.html)
-       ══════════════════════════════════════════════ -->
+  <!-- Google Analytics 4 — G-91LSYTJ5CD -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-91LSYTJ5CD"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-91LSYTJ5CD', {
+      page_title: document.title,
+      send_page_view: true
+    });
+  </script>
 </head>
 <body>
 
@@ -403,7 +410,7 @@
                   + '<div class="artist-profile">'
                     + '<div class="artist-avatar">' + product.artist.initials + '</div>'
                     + '<div class="artist-info">'
-                      + '<p class="artist-name">' + product.artist.name + '</p>'
+                      + '<p class="artist-name"><a href="designers.html" class="artist-name-link">' + product.artist.name + '</a></p>'
                       + '<p class="artist-role">' + product.artist.role + ' · ' + product.artist.location + '</p>'
                     + '</div>'
                   + '</div>'
