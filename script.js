@@ -449,6 +449,69 @@ function initNavScroll() {
   }, { passive: true });
 }
 
+// ─── COLLECTION ICONS ────────────────────────
+// Replaces legacy Unicode symbols (∴ ⊕ ○ ◉ ◎) with motif PNG icons
+var COLLECTION_ICON_MAP = {
+  'Akshar':  { symbol: '∴', src: 'icons/icon-akshar.png',  alt: 'Akshar' },
+  'Bloom':   { symbol: '⊕', src: 'icons/icon-bloom.png',   alt: 'Bloom'  },
+  'Void':    { symbol: '○', src: 'icons/icon-void.png',    alt: 'Void'   },
+  'Witness': { symbol: '◉', src: 'icons/icon-witness.png', alt: 'Witness'},
+  'Yaatra':  { symbol: '◎', src: 'icons/icon-yaatra.png',  alt: 'Yaatra' },
+};
+
+// Build reverse lookup: symbol char → icon src
+var SYMBOL_TO_ICON = {};
+Object.values(COLLECTION_ICON_MAP).forEach(function(v) {
+  SYMBOL_TO_ICON[v.symbol] = { src: v.src, alt: v.alt };
+});
+
+function iconImg(src, alt) {
+  return '<img class="col-icon" src="' + src + '" alt="' + alt + '">';
+}
+
+function initCollectionIcons() {
+  // 1. Elements whose text starts with a collection symbol
+  var selectors = [
+    '.product-collection',
+    '.spotlight-collection-tag',
+    '.pg-collection-tag',
+    '.related-collection-tag',
+    '.artist-collection-tag',
+  ];
+  document.querySelectorAll(selectors.join(',')).forEach(function(el) {
+    var html = el.innerHTML;
+    Object.entries(SYMBOL_TO_ICON).forEach(function(entry) {
+      var sym = entry[0], icon = entry[1];
+      if (html.indexOf(sym) !== -1) {
+        el.innerHTML = html.replace(sym, iconImg(icon.src, icon.alt));
+        html = el.innerHTML; // update for next iteration
+      }
+    });
+  });
+
+  // 2. Filter pills — prepend icon before collection name text
+  document.querySelectorAll('.filter-pill[data-filter]').forEach(function(pill) {
+    var col = pill.dataset.filter;
+    if (col === 'all') return;
+    var icon = COLLECTION_ICON_MAP[col];
+    if (icon && !pill.querySelector('.col-icon')) {
+      pill.innerHTML = iconImg(icon.src, icon.alt) + pill.innerHTML;
+    }
+  });
+
+  // 3. Footer collection links (e.g. "Akshar ∴")
+  document.querySelectorAll('.footer-link').forEach(function(link) {
+    var html = link.innerHTML;
+    Object.entries(SYMBOL_TO_ICON).forEach(function(entry) {
+      var sym = entry[0], icon = entry[1];
+      if (html.indexOf(sym) !== -1) {
+        link.innerHTML = html.replace(sym, iconImg(icon.src, icon.alt));
+        html = link.innerHTML;
+      }
+    });
+  });
+}
+
 // ─── COLLECTION LINKS ────────────────────────
 function initCollectionLinks() {
   document.querySelectorAll('.collection-link, .footer-link[data-collection]').forEach(link => {
@@ -619,6 +682,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initSizeButtons();
   initNavScroll();
   initCollectionLinks();
+  initCollectionIcons();
   initImageFallbacks();
   initFadeIn();
 

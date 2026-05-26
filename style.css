@@ -404,12 +404,10 @@ input { font-family: inherit; }
 }
 .hero-content { position: relative; z-index: 2; }
 .hero-signal {
-  font-family: var(--font-condensed);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.25em;
-  color: var(--sur-gold);
-  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
 }
 .hero-headline {
   font-family: var(--font-condensed);
@@ -2297,6 +2295,52 @@ input { font-family: inherit; }
    ============================================= */
 .mobile-nav-links a.active-nav {
   color: var(--sur-gold);
+}
+
+/* ── Collection icons (Canva motifs) ─────────── */
+.col-icon {
+  display: inline-block;
+  width: 38px;
+  height: 38px;
+  vertical-align: middle;
+  margin-right: 8px;
+  flex-shrink: 0;
+  object-fit: contain;
+  opacity: 0.95;
+  position: relative;
+  top: -1px;
+}
+/* Filter pills */
+.filter-pill .col-icon {
+  width: 28px;
+  height: 28px;
+  margin-right: 7px;
+}
+/* Spotlight section cards */
+.spotlight-collection-tag .col-icon {
+  width: 34px;
+  height: 34px;
+  margin-right: 8px;
+}
+/* PDP collection tag — largest */
+.pg-collection-tag .col-icon {
+  width: 48px;
+  height: 48px;
+  margin-right: 12px;
+}
+/* Hero signal bar — all 5 side by side */
+.hero-signal .col-icon {
+  width: 48px;
+  height: 48px;
+  margin: 0;
+  top: 0;
+  opacity: 0.9;
+}
+/* Designers page collection tags */
+.artist-collection-tag .col-icon {
+  width: 36px;
+  height: 36px;
+  margin-right: 10px;
 }
 
 /* Artist name link on product page */
