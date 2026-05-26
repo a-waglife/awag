@@ -478,6 +478,8 @@
     });
 
     renderProductPage(product);
+    // Swap collection icons after dynamic render
+    if (typeof initCollectionIcons === 'function') initCollectionIcons();
   });
   </script>
 
