@@ -8,6 +8,24 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Barlow:wght@300;400&family=Cormorant+Garamond:ital,wght@0,400;1,300;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '828940853275665');
+  fbq('track', 'PageView');
+  fbq('track', 'Purchase');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=828940853275665&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
   <style>
     .success-wrap {
       min-height: 100vh;
@@ -322,42 +340,55 @@
     // ── Send confirmation email to customer ─────────
     function sendConfirmationEmail() {
       var emailInput = document.getElementById('confirmEmail');
-      var email = emailInput.value.trim();
-      if (!email || !email.includes('@')) {
-        emailInput.focus();
-        return;
-      }
+      var sentMsg    = document.getElementById('emailSentMsg');
+      var btn        = document.querySelector('.confirm-email-btn');
+      var email      = emailInput.value.trim();
+
+      if (!email || !email.includes('@')) { emailInput.focus(); return; }
 
       var raw = sessionStorage.getItem('awag_last_order');
       var order = raw ? JSON.parse(raw) : {};
       var itemsText = order.items
         ? order.items.map(function(i) { return i.name + (i.qty > 1 ? ' ×' + i.qty : ''); }).join(', ')
         : '—';
+      var dateStr = new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
 
-      if (typeof emailjs !== 'undefined' && AWAG_CONFIG.emailjs && AWAG_CONFIG.emailjs.serviceId !== 'REPLACE_EMAILJS_SERVICE_ID') {
-        emailjs.send(
-          AWAG_CONFIG.emailjs.serviceId,
-          AWAG_CONFIG.emailjs.successTemplateId,
-          {
+      // ── Primary: Google Apps Script ─────────────
+      var appsScriptUrl = AWAG_CONFIG.appsScript && AWAG_CONFIG.appsScript.url;
+      if (appsScriptUrl && appsScriptUrl !== 'REPLACE_APPS_SCRIPT_WEB_APP_URL') {
+
+        if (btn) { btn.textContent = 'SENDING…'; btn.disabled = true; }
+
+        fetch(appsScriptUrl, {
+          method:  'POST',
+          mode:    'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            type:           'order',
             customer_email: email,
             payment_id:     order.payment_id || '—',
             items:          itemsText,
-            total:          '₹' + (order.total ? order.total.toLocaleString('en-IN') : '2,499'),
-            order_date:     new Date().toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }),
-            delivery_note:  'Made to order · Ships in 7 working days across India',
-          }
-        ).then(function() {
-          document.getElementById('emailSentMsg').style.display = 'block';
+            total:          order.total ? order.total.toLocaleString('en-IN') : '2,499',
+            order_date:     dateStr,
+          }),
+        })
+        .then(function() {
+          sentMsg.textContent = '✓ Confirmation sent.';
+          sentMsg.style.display = 'block';
           emailInput.value = '';
-        }).catch(function() {
-          document.getElementById('emailSentMsg').textContent = 'Could not send — email us at aintweallgod@gmail.com';
-          document.getElementById('emailSentMsg').style.display = 'block';
+          if (btn) { btn.textContent = 'SENT'; btn.disabled = false; }
+        })
+        .catch(function() {
+          sentMsg.textContent = 'Could not send — email us at aintweallgod@gmail.com';
+          sentMsg.style.display = 'block';
+          if (btn) { btn.textContent = 'SEND'; btn.disabled = false; }
         });
-      } else {
-        // EmailJS not yet configured — show manual fallback
-        document.getElementById('emailSentMsg').textContent = 'Save your Payment ID above. Email us at aintweallgod@gmail.com for confirmation.';
-        document.getElementById('emailSentMsg').style.display = 'block';
+        return;
       }
+
+      // ── Fallback: show manual note ───────────────
+      sentMsg.textContent = 'Save your Payment ID above. Email us at aintweallgod@gmail.com for confirmation.';
+      sentMsg.style.display = 'block';
     }
   </script>
 </body>

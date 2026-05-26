@@ -13,15 +13,18 @@ const AWAG_CONFIG = {
     image:       '',
     themeColor:  '#B8922A',
   },
+  // Google Apps Script Web App — handles subscribers + order confirmation emails
+  // Deploy: open awag-apps-script.gs in Apps Script editor → Deploy → New Deployment → Web App
+  //   Execute as: Me  |  Who has access: Anyone
+  // Paste the generated URL below.
+  appsScript: {
+    url: 'REPLACE_APPS_SCRIPT_WEB_APP_URL',  // ← paste Web App URL here after deploying
+  },
   emailjs: {
-    // Setup: emailjs.com → sign in with aintweallgod@gmail.com
-    // Add Gmail service → get Service ID
-    // Create two templates → get Template IDs
-    // Account → API Keys → get Public Key
-    publicKey:         'REPLACE_EMAILJS_PUBLIC_KEY',      // Account → API Keys
-    serviceId:         'REPLACE_EMAILJS_SERVICE_ID',      // Email Services → your Gmail service ID
-    successTemplateId: 'REPLACE_TEMPLATE_ORDER_SUCCESS',  // template for customer confirmation
-    failureTemplateId: 'REPLACE_TEMPLATE_ORDER_FAILED',   // template for failure alert to you
+    // Kept as fallback for order failure alerts only (no longer used for confirmations)
+    publicKey:         'REPLACE_EMAILJS_PUBLIC_KEY',
+    serviceId:         'REPLACE_EMAILJS_SERVICE_ID',
+    failureTemplateId: 'REPLACE_TEMPLATE_ORDER_FAILED',
     brandEmail:        'aintweallgod@gmail.com',
   }
 };
@@ -461,12 +464,34 @@ function initCollectionLinks() {
 // ─── NEWSLETTER ──────────────────────────────
 function handleNewsletterSubmit(e) {
   e.preventDefault();
-  const input = e.target.querySelector('.newsletter-input');
+  var input = e.target.querySelector('.newsletter-input');
+  var email = input.value.trim();
+  if (!email) return;
+
   showToast('YOU ARE IN THE SIGNAL');
   input.value = '';
 
   // Analytics — newsletter signup as lead, with UTM attribution
   track('generate_lead', { method: 'newsletter', ...getStoredUTM() });
+
+  // POST to Google Apps Script → writes to Sheets + sends welcome email
+  var url = AWAG_CONFIG.appsScript && AWAG_CONFIG.appsScript.url;
+  if (!url || url === 'REPLACE_APPS_SCRIPT_WEB_APP_URL') return;
+
+  var utm = getStoredUTM ? getStoredUTM() : {};
+  fetch(url, {
+    method:  'POST',
+    mode:    'no-cors',           // Apps Script CORS: no-cors is fine, response is opaque
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      type:         'subscribe',
+      email:        email,
+      source:       'homepage_newsletter',
+      utm_source:   utm.utm_source   || '',
+      utm_medium:   utm.utm_medium   || '',
+      utm_campaign: utm.utm_campaign || '',
+    }),
+  }).catch(function() { /* silent — sheet write not critical to UX */ });
 }
 
 // ─── PRODUCT CARD ROUTING ────────────────────
