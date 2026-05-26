@@ -101,7 +101,20 @@
 
   <!-- HERO -->
   <section class="hero">
-    <canvas id="heroCanvas" class="hero-canvas"></canvas>
+
+    <!-- Image slider (replaces canvas animation) -->
+    <div class="hero-slider" id="heroSlider" aria-hidden="true">
+      <a href="#shop" class="hero-slide active" data-collection="all"
+         style="background-image:url('Header%20Images/header-1.jpg')" aria-label="Shop all designs"></a>
+      <a href="#shop" class="hero-slide" data-collection="Bloom"
+         style="background-image:url('Header%20Images/header-2.jpg')" aria-label="Shop Bloom collection"></a>
+      <a href="#shop" class="hero-slide" data-collection="Akshar"
+         style="background-image:url('Header%20Images/header-3.jpg')" aria-label="Shop Akshar collection"></a>
+    </div>
+
+    <!-- Overlay gradient so text stays readable -->
+    <div class="hero-slider-overlay"></div>
+
     <div class="hero-content">
       <p class="hero-signal">∴ · ≋ · ◎</p>
       <h1 class="hero-headline">AIN'T<br>WE ALL<br>GOD?</h1>
@@ -111,6 +124,14 @@
         <a href="#origin" class="btn-ghost">WHAT IS A-WAG</a>
       </div>
     </div>
+
+    <!-- Slide dots -->
+    <div class="hero-dots" id="heroDots">
+      <button class="hero-dot active" data-slide="0" aria-label="Slide 1"></button>
+      <button class="hero-dot" data-slide="1" aria-label="Slide 2"></button>
+      <button class="hero-dot" data-slide="2" aria-label="Slide 3"></button>
+    </div>
+
     <div class="hero-scroll-hint">
       <span>SCROLL</span>
       <div class="hero-scroll-line"></div>

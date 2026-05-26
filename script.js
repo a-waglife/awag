@@ -478,8 +478,9 @@ function initProductCardLinks() {
     var id = heartBtn && heartBtn.dataset && heartBtn.dataset.id;
     if (!id) return;
 
-    // Clicking anywhere on the image → product page
     var imgWrap = card.querySelector('.product-img-wrap');
+
+    // Clicking anywhere on the image → product page
     if (imgWrap) {
       imgWrap.addEventListener('click', function(e) {
         if (e.target.closest('.wishlist-heart')) return;  // let heart toggle
@@ -617,140 +618,60 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
-// ─── HERO CANVAS — LISSAJOUS ANIMATION ───────
+// ─── HERO IMAGE SLIDER ────────────────────────
 (function() {
-  const canvas = document.getElementById('heroCanvas');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
+  var slides    = document.querySelectorAll('.hero-slide');
+  var dots      = document.querySelectorAll('.hero-dot');
+  if (!slides.length) return;
 
-  // Resize canvas to match hero
-  function resize() {
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
-  }
-  resize();
-  window.addEventListener('resize', () => { resize(); });
+  var current   = 0;
+  var total     = slides.length;
+  var INTERVAL  = 4500;   // ms per slide
+  var timer     = null;
 
-  // Raga frequency ratios (a:b) — each is a raga's defining interval
-  const figures = [
-    { a: 8,  b: 5,  d: Math.PI / 6,  label: 'BHAIRAV' },   // komal Dha 8:5
-    { a: 5,  b: 4,  d: Math.PI / 4,  label: 'YAMAN' },      // tivra Ma approx
-    { a: 5,  b: 3,  d: Math.PI / 3,  label: 'MALKAUNS' },   // pentatonic
-    { a: 3,  b: 2,  d: Math.PI / 2,  label: 'BHAIRAVI' },   // perfect fifth
-    { a: 7,  b: 4,  d: Math.PI / 5,  label: 'DARBARI' },    // andolan interval
-  ];
-
-  let figIdx = 0;
-  let progress = 0;      // 0 → 1 draw phase
-  let fadeOut = 0;       // 0 → 1 fade phase
-  const DRAW_SPEED = 0.0025;
-  const HOLD_FRAMES = 80;
-  let holdCount = 0;
-  let phase = 'draw';    // 'draw' | 'hold' | 'fade'
-
-  // Trail buffer for glow
-  const trail = [];
-  const TRAIL_LEN = 60;
-
-  function getPoint(fig, t) {
-    const W = canvas.width, H = canvas.height;
-    const size = Math.min(W, H) * 0.22;
-    const cx = W / 2, cy = H / 2;
-    return {
-      x: cx + size * Math.sin(fig.a * t + fig.d),
-      y: cy + size * Math.sin(fig.b * t)
-    };
+  function goTo(idx) {
+    slides[current].classList.remove('active');
+    dots[current] && dots[current].classList.remove('active');
+    current = (idx + total) % total;
+    slides[current].classList.add('active');
+    dots[current] && dots[current].classList.add('active');
   }
 
-  function draw() {
-    const W = canvas.width, H = canvas.height;
-    const fig = figures[figIdx];
-
-    // Fade background slightly — creates trail
-    ctx.fillStyle = 'rgba(13, 12, 11, 0.08)';
-    ctx.fillRect(0, 0, W, H);
-
-    if (phase === 'draw') {
-      progress += DRAW_SPEED;
-      const t = progress * 2 * Math.PI;
-      const pt = getPoint(fig, t);
-      trail.push(pt);
-      if (trail.length > TRAIL_LEN) trail.shift();
-
-      // Draw full curve (faint base)
-      ctx.beginPath();
-      for (let i = 0; i <= 300; i++) {
-        const angle = (i / 300) * progress * 2 * Math.PI;
-        const p = getPoint(fig, angle);
-        i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y);
-      }
-      ctx.strokeStyle = 'rgba(184, 146, 42, 0.18)';
-      ctx.lineWidth = 1;
-      ctx.shadowBlur = 0;
-      ctx.stroke();
-
-      // Draw luminous trail
-      for (let i = 1; i < trail.length; i++) {
-        const alpha = (i / trail.length) * 0.9;
-        const width = (i / trail.length) * 2.5;
-        ctx.beginPath();
-        ctx.moveTo(trail[i-1].x, trail[i-1].y);
-        ctx.lineTo(trail[i].x, trail[i].y);
-        ctx.strokeStyle = `rgba(184, 146, 42, ${alpha})`;
-        ctx.lineWidth = width;
-        ctx.shadowColor = '#B8922A';
-        ctx.shadowBlur = 8;
-        ctx.stroke();
-        ctx.shadowBlur = 0;
-      }
-
-      // Glowing cursor dot
-      if (trail.length) {
-        const tip = trail[trail.length - 1];
-        ctx.beginPath();
-        ctx.arc(tip.x, tip.y, 3, 0, Math.PI * 2);
-        ctx.fillStyle = '#D4A843';
-        ctx.shadowColor = '#B8922A';
-        ctx.shadowBlur = 18;
-        ctx.fill();
-        ctx.shadowBlur = 0;
-      }
-
-      if (progress >= 1) { phase = 'hold'; holdCount = 0; }
-
-    } else if (phase === 'hold') {
-      // Draw complete figure, held
-      ctx.beginPath();
-      for (let i = 0; i <= 400; i++) {
-        const t = (i / 400) * 2 * Math.PI;
-        const p = getPoint(fig, t);
-        i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y);
-      }
-      ctx.strokeStyle = 'rgba(184, 146, 42, 0.45)';
-      ctx.lineWidth = 1.2;
-      ctx.shadowColor = '#B8922A';
-      ctx.shadowBlur = 6;
-      ctx.stroke();
-      ctx.shadowBlur = 0;
-      holdCount++;
-      if (holdCount > HOLD_FRAMES) { phase = 'fade'; fadeOut = 0; }
-
-    } else if (phase === 'fade') {
-      fadeOut += 0.04;
-      // Accelerated clear
-      ctx.fillStyle = `rgba(13, 12, 11, ${0.06 + fadeOut * 0.12})`;
-      ctx.fillRect(0, 0, W, H);
-      if (fadeOut >= 1) {
-        ctx.clearRect(0, 0, W, H);
-        figIdx = (figIdx + 1) % figures.length;
-        progress = 0;
-        trail.length = 0;
-        phase = 'draw';
-      }
-    }
-
-    requestAnimationFrame(draw);
+  function startAuto() {
+    clearInterval(timer);
+    timer = setInterval(function() { goTo(current + 1); }, INTERVAL);
   }
 
-  draw();
+  // Dot click → jump to slide, restart timer
+  dots.forEach(function(dot) {
+    dot.addEventListener('click', function(e) {
+      e.preventDefault();
+      goTo(parseInt(dot.dataset.slide, 10));
+      startAuto();
+    });
+  });
+
+  // Slide click → navigate to collection filter
+  slides.forEach(function(slide) {
+    slide.addEventListener('click', function(e) {
+      e.preventDefault();
+      var collection = slide.dataset.collection;
+      var shopSection = document.getElementById('productGrid') || document.getElementById('shop');
+      if (shopSection) {
+        shopSection.scrollIntoView({ behavior: 'smooth' });
+      }
+      // Trigger the matching filter pill after a brief scroll delay
+      setTimeout(function() {
+        var pill;
+        if (collection && collection !== 'all') {
+          pill = document.querySelector('.filter-pill[data-filter="' + collection + '"]');
+        } else {
+          pill = document.querySelector('.filter-pill[data-filter="all"]');
+        }
+        if (pill) pill.click();
+      }, 600);
+    });
+  });
+
+  startAuto();
 })();
