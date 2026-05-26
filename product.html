@@ -129,15 +129,33 @@
           <tr><th>SIZE</th><th>HALF CHEST</th><th>LENGTH</th><th>SHOULDER</th></tr>
         </thead>
         <tbody>
+          <tr><td>XS</td><td>19.5"</td><td>27"</td><td>17"</td></tr>
           <tr><td>S</td><td>21"</td><td>28"</td><td>18"</td></tr>
           <tr><td>M</td><td>22.5"</td><td>29"</td><td>19"</td></tr>
           <tr><td>L</td><td>24"</td><td>30"</td><td>20.5"</td></tr>
         </tbody>
       </table>
       <p class="size-guide-note" style="margin-top:16px">
-        S fits body chest 34–36" · M fits 36–38" · L fits 38–42"<br>
+        XS fits body chest 32–34" · S fits 34–36" · M fits 36–38" · L fits 38–42"<br>
         Oversized by design — if you want a tighter fit, size down. If in doubt, size up.
       </p>
+
+      <!-- WOMEN'S GUIDE -->
+      <div class="sg-women-guide">
+        <p class="section-label" style="margin-bottom:6px">WOMEN'S SIZING</p>
+        <p class="size-guide-note">Relaxed oversized cut — size down one for a standard fit. Stay your size for the full drape.</p>
+        <table class="size-table sg-women-table">
+          <thead>
+            <tr><th>YOUR USUAL SIZE</th><th>A-WAG SIZE</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Women's S</td><td>XS</td></tr>
+            <tr><td>Women's M</td><td>S</td></tr>
+            <tr><td>Women's L</td><td>M</td></tr>
+            <tr><td>Women's XL</td><td>L</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 
@@ -341,6 +359,24 @@
         + '</div></section>';
     }
 
+    // Build thumbnail strip for all available images
+    var thumbImgs = [product.img];
+    ['img2','img3','img4','img5','img6'].forEach(function(k) {
+      if (product[k]) thumbImgs.push(product[k]);
+    });
+    var thumbLabels = ['front view','back view','lifestyle 1','lifestyle 2','lifestyle 3','lifestyle 4'];
+    var thumbStripHTML = '';
+    if (thumbImgs.length > 1) {
+      thumbStripHTML = '<div class="product-thumb-strip">';
+      thumbImgs.forEach(function(src, i) {
+        var lbl = thumbLabels[i] || ('view ' + (i + 1));
+        thumbStripHTML += '<button class="pg-thumb' + (i === 0 ? ' active' : '') + '" data-img="' + src + '" onclick="switchImg(this)" aria-label="' + lbl + '">'
+          + '<img src="' + src + '" alt="' + product.name + ' — ' + lbl + '" loading="lazy">'
+          + '</button>';
+      });
+      thumbStripHTML += '</div>';
+    }
+
     document.getElementById('productContent').innerHTML =
       /* BREADCRUMB */
       '<nav class="pg-breadcrumb" aria-label="breadcrumb">'
@@ -359,16 +395,7 @@
           + '<div class="product-img-frame">'
             + '<img id="mainProductImg" src="' + product.img + '" alt="' + product.name + '" onerror="this.parentElement.style.background=\'#1A1816\';this.style.display=\'none\'">'
           + '</div>'
-          + (product.img2
-              ? '<div class="product-thumb-strip">'
-                  + '<button class="pg-thumb active" data-img="' + product.img + '" onclick="switchImg(this)" aria-label="View 1">'
-                    + '<img src="' + product.img + '" alt="' + product.name + ' — front" loading="lazy">'
-                  + '</button>'
-                  + '<button class="pg-thumb" data-img="' + product.img2 + '" onclick="switchImg(this)" aria-label="View 2">'
-                    + '<img src="' + product.img2 + '" alt="' + product.name + ' — back" loading="lazy">'
-                  + '</button>'
-                + '</div>'
-              : '')
+          + thumbStripHTML
           + '<div class="product-img-meta">'
             + '<span class="product-limited-badge">MAKE TO ORDER · SHIPS IN 7 DAYS</span>'
           + '</div>'
@@ -395,7 +422,7 @@
               + '<button class="pg-size-guide-btn" onclick="openSizeGuide()">SIZE GUIDE →</button>'
             + '</div>'
             + '<div class="pg-size-row">'
-              + ['S','M','L'].map(function(s) {
+              + ['XS','S','M','L'].map(function(s) {
                   return '<button class="size-btn' + (s === selectedSize ? ' active' : '') + '" data-size="' + s + '" onclick="selectSize(\'' + s + '\')">' + s + '</button>';
                 }).join('')
             + '</div>'
@@ -436,7 +463,7 @@
               : '')
 
           + '<p class="pg-returns-note">'
-            + 'S · M · L — oversized drop-shoulder cut. S fits body chest 34–36". M fits 36–38". L fits 38–42". <button class="inline-size-link" onclick="openSizeGuide()">Full size chart →</button><br><br>'
+            + 'XS · S · M · L — oversized drop-shoulder cut. XS fits body chest 32–34". S fits 34–36". M fits 36–38". L fits 38–42". <button class="inline-size-link" onclick="openSizeGuide()">Full size chart →</button><br><br>'
             + 'Made to order — we make yours when you place the order. Ships in 7 working days.<br>'
             + 'Size questions: <a href="mailto:aintweallgod@gmail.com">aintweallgod@gmail.com</a>'
           + '</p>'

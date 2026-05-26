@@ -17,6 +17,7 @@ const AWAG_PRODUCTS = [
     img2:       'Collections/Akshar/Arent%20we%20all-1.jpg',
     price:      2499,
     philosophy: "The question isn't rhetorical. Every tradition that went deep enough arrived here — Vedanta, Zen, Sufism, the particle physicist at 3am. The question is the answer, wearing a question mark.",
+    artistShort: 'A Vedanta scholar who spent twelve years at Sringeri before she let Sanskrit become cloth.',
     artist: {
       name:     'Kavya Rao',
       initials: 'KR',
@@ -36,6 +37,7 @@ const AWAG_PRODUCTS = [
     img2:       'Collections/Akshar/Gods%20Doubt-1.jpg',
     price:      2499,
     philosophy: "Certainty is the smallest room. The gods worth following are the ones who kept asking. This garment is for the ones who haven't stopped.",
+    artistShort: 'A Vedanta scholar who spent twelve years at Sringeri before she let Sanskrit become cloth.',
     artist: {
       name:     'Kavya Rao',
       initials: 'KR',
@@ -54,6 +56,7 @@ const AWAG_PRODUCTS = [
     img:        'Collections/Akshar/Never%20Born.jpg',
     price:      2499,
     philosophy: "नैनं छिन्दन्ति शस्त्राणि — the blade cannot cut it. Whatever you actually are was not made when you were born and will not end when you stop breathing.",
+    artistShort: 'A Vedanta scholar who spent twelve years at Sringeri before she let Sanskrit become cloth.',
     artist: {
       name:     'Kavya Rao',
       initials: 'KR',
@@ -73,6 +76,7 @@ const AWAG_PRODUCTS = [
     img2:       'Collections/Akshar/On%20Loan-1.jpg',
     price:      2499,
     philosophy: "You did not make this body. You did not ask for it. You will not keep it. Wear it as though it belongs to something larger — because it does.",
+    artistShort: 'A Vedanta scholar who spent twelve years at Sringeri before she let Sanskrit become cloth.',
     artist: {
       name:     'Kavya Rao',
       initials: 'KR',
@@ -92,6 +96,7 @@ const AWAG_PRODUCTS = [
     img2:       'Collections/Akshar/God%20Mirror-1.jpg',
     price:      2499,
     philosophy: "Every mirror shows you a reversed self. The God mirror shows you the unreversed one — the version that was never only what it appeared to be. This garment is that reflection.",
+    artistShort: 'A Vedanta scholar who spent twelve years at Sringeri before she let Sanskrit become cloth.',
     artist: {
       name:     'Kavya Rao',
       initials: 'KR',
@@ -111,6 +116,7 @@ const AWAG_PRODUCTS = [
     img2:       'Collections/Akshar/Confusion%20Conclusion-1.jpg',
     price:      2499,
     philosophy: "Confusion is not a failure of understanding — it is the exact shape of the boundary where understanding expands. Every realisation was first a confusion that refused to resolve cheaply.",
+    artistShort: 'A Vedanta scholar who spent twelve years at Sringeri before she let Sanskrit become cloth.',
     artist: {
       name:     'Kavya Rao',
       initials: 'KR',
@@ -130,8 +136,12 @@ const AWAG_PRODUCTS = [
     colorway:   'Sacred Geometry · Sound Form',
     img:        'Collections/Bloom/Nada.jpg',
     img2:       'Collections/Bloom/Nada-1.jpg',
+    img3:       'Collections/Bloom/Nadalife1.jpg',
+    img4:       'Collections/Bloom/Nadalife2.jpg',
+    img5:       'Collections/Bloom/Nadalife3.jpg',
     price:      2499,
     philosophy: "Nada Brahma. The universe is sound. Before light, before matter, before you — there was vibration. The graphic on this garment is what that vibration looks like when plotted against itself.",
+    artistShort: 'A sound healer who photographs the shapes vibration makes — Chladni patterns, standing waves, the geometry of Om.',
     artist: {
       name:     'Aryan Mehta',
       initials: 'AM',
@@ -149,8 +159,13 @@ const AWAG_PRODUCTS = [
     colorway:   'Five Syllables · Five Elements',
     img:        'Collections/Bloom/Panchakshara.jpg',
     img2:       'Collections/Bloom/Panchakshara-1.jpg',
+    img3:       'Collections/Bloom/Panchaksharalife1.jpg',
+    img4:       'Collections/Bloom/Panchaksharalife2.jpg',
+    img5:       'Collections/Bloom/Panchaksharalife3.jpg',
+    img6:       'Collections/Bloom/Panchaksharalife4.jpg',
     price:      2499,
     philosophy: "Na-Ma-Śi-Vā-Ya. Five syllables. Five elements. The Shiva Purana says this mantra contains the entirety of creation in compressed form. The mandala on this garment is that compression, made visible.",
+    artistShort: 'A sound healer who photographs the shapes vibration makes — Chladni patterns, standing waves, the geometry of Om.',
     artist: {
       name:     'Aryan Mehta',
       initials: 'AM',
@@ -168,8 +183,12 @@ const AWAG_PRODUCTS = [
     colorway:   'The Divine Pulse · Primordial Vibration',
     img:        'Collections/Bloom/Spanda.jpg',
     img2:       'Collections/Bloom/Spanda-1.jpg',
+    img3:       'Collections/Bloom/Spandalife1.jpg',
+    img4:       'Collections/Bloom/Spandalife2.jpg',
+    img5:       'Collections/Bloom/Spandalife3.jpg',
     price:      2499,
     philosophy: "Spanda is the Kashmir Shaivite term for the sacred trembling at the root of everything — before form, before thought. The pulse the universe uses to recognise itself.",
+    artistShort: 'A sound healer who photographs the shapes vibration makes — Chladni patterns, standing waves, the geometry of Om.',
     artist: {
       name:     'Aryan Mehta',
       initials: 'AM',
@@ -189,6 +208,7 @@ const AWAG_PRODUCTS = [
     img2:       'Collections/Bloom/Vaayu%20Putra%202-1.jpg',
     price:      2499,
     philosophy: "Vaayu — the wind — is the life force made kinetic. Vayu Putra: born of that force. Two forms of the same movement. This is the second.",
+    artistShort: 'A sound healer who photographs the shapes vibration makes — Chladni patterns, standing waves, the geometry of Om.',
     artist: {
       name:     'Aryan Mehta',
       initials: 'AM',
@@ -210,6 +230,7 @@ const AWAG_PRODUCTS = [
     img2:       'Collections/Void/Before%20Name-1.jpg',
     price:      2499,
     philosophy: "Before you were named, you existed. Before the name settled in and became the container everything else went into. The design shows the moment before the wave function collapses into a person.",
+    artistShort: 'A quantum physicist who left the lab to paint what equations look like before they are written down.',
     artist: {
       name:     'Riya Sen',
       initials: 'RS',
@@ -229,6 +250,7 @@ const AWAG_PRODUCTS = [
     img2:       'Collections/Void/Static%20Field-1.jpg',
     price:      2499,
     philosophy: "The quantum vacuum is not empty. It is the ground state — the condition from which all particles emerge and into which they return. The static is not noise. It is the field before it decides what to be.",
+    artistShort: 'A quantum physicist who left the lab to paint what equations look like before they are written down.',
     artist: {
       name:     'Riya Sen',
       initials: 'RS',
@@ -248,6 +270,7 @@ const AWAG_PRODUCTS = [
     img2:       'Collections/Void/The%20Vessel-1.jpg',
     price:      2499,
     philosophy: "The Upanishads say the body is not the container of energy. The body IS the energy, temporarily localised. The graphic is spanda — the sacred trembling — radiating from a human centre.",
+    artistShort: 'A quantum physicist who left the lab to paint what equations look like before they are written down.',
     artist: {
       name:     'Riya Sen',
       initials: 'RS',
@@ -269,6 +292,7 @@ const AWAG_PRODUCTS = [
     img2:       'Collections/Witness/Enso-1.jpg',
     price:      2499,
     philosophy: "The ensō is brushed in one stroke without correction. It is complete because the person who brushed it was, at that moment, complete. Not a symbol of perfection — documentation of presence.",
+    artistShort: 'A Vipassana teacher who has brushed the ensō ten thousand times in eighteen years — each one in a single breath.',
     artist: {
       name:     'Devraj Nair',
       initials: 'DN',
@@ -288,6 +312,7 @@ const AWAG_PRODUCTS = [
     img2:       "Collections/Witness/Indra%27s%20Center-1.jpg",
     price:      2499,
     philosophy: "Indra's Net: a net of infinite jewels, each reflecting all others. Every point is a centre. There is no outside. The person wearing this garment is one of the jewels. So is the person looking at it.",
+    artistShort: 'A Vipassana teacher who has brushed the ensō ten thousand times in eighteen years — each one in a single breath.',
     artist: {
       name:     'Devraj Nair',
       initials: 'DN',
@@ -307,6 +332,7 @@ const AWAG_PRODUCTS = [
     img2:       'Collections/Witness/Kalachakra-1.jpg',
     price:      2499,
     philosophy: "The wheel does not turn — the observer turns. What you call time is the shape your attention makes moving through what has always been.",
+    artistShort: 'A Vipassana teacher who has brushed the ensō ten thousand times in eighteen years — each one in a single breath.',
     artist: {
       name:     'Devraj Nair',
       initials: 'DN',
@@ -328,6 +354,7 @@ const AWAG_PRODUCTS = [
     img2:       'Collections/Yaatra/Jyotirlinga-1.jpg',
     price:      2499,
     philosophy: "Jyotirlinga means pillar of light. Shiva does not appear as a statue at Kedarnath — he appears as light itself. The geometry on this garment is the temple's sacred architecture, mapped topologically.",
+    artistShort: 'A geographer of the sacred, who walks pilgrimage routes on foot before mapping them in ink.',
     artist: {
       name:     'Meera Krishnamurthy',
       initials: 'MK',
@@ -347,6 +374,7 @@ const AWAG_PRODUCTS = [
     img2:       'Collections/Yaatra/Kaal-1.jpg',
     price:      2499,
     philosophy: "Mahakaleshwar — the great lord of time. Ujjain sits on the Tropic of Cancer, where the shadow disappears at noon on the solstice. This is the garment of the place where time folds.",
+    artistShort: 'A geographer of the sacred, who walks pilgrimage routes on foot before mapping them in ink.',
     artist: {
       name:     'Meera Krishnamurthy',
       initials: 'MK',
@@ -366,6 +394,7 @@ const AWAG_PRODUCTS = [
     img2:       'Collections/Yaatra/Mahasmashana-1.jpg',
     price:      2499,
     philosophy: "Varanasi is where bodies burn continuously, where death is not hidden, where the line between the living and the dissolving is a ghat step wide. To go there correctly is to understand what the body is.",
+    artistShort: 'A geographer of the sacred, who walks pilgrimage routes on foot before mapping them in ink.',
     artist: {
       name:     'Meera Krishnamurthy',
       initials: 'MK',
@@ -385,6 +414,7 @@ const AWAG_PRODUCTS = [
     img2:       'Collections/Yaatra/Triveni-1.jpg',
     price:      2499,
     philosophy: "Triveni Sangam: where the Ganga, Yamuna, and the invisible Saraswati meet. The third river cannot be seen — it flows beneath the surface. The confluence is a diagram of consciousness.",
+    artistShort: 'A geographer of the sacred, who walks pilgrimage routes on foot before mapping them in ink.',
     artist: {
       name:     'Meera Krishnamurthy',
       initials: 'MK',

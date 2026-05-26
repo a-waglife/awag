@@ -7,7 +7,7 @@
 // Find each credential in the comments below.
 const AWAG_CONFIG = {
   razorpay: {
-    key:         'rzp_test_StkS5pheTr7wGM',    // ← TEST KEY — swap to rzp_live_... before going live
+    key:         'rzp_live_Stvm92zBRapJg8',     // ← LIVE KEY
     name:        'A-WAG',
     description: "Ain't We All God? · Spiritual Streetwear",
     image:       '',
@@ -204,22 +204,327 @@ function removeFromCart(id) {
 }
 
 // ─── RAZORPAY CHECKOUT ───────────────────────
-function initiateCheckout() {
+// ─── ORDER FORM ──────────────────────────────
+// Shown between "Proceed to Payment" and Razorpay.
+// Collects: name, email, phone, DOB/age, shipping address,
+//           gift pack option (+₹100), Signal subscription.
+
+function buildOrderFormHTML() {
+  return `
+    <div class="of-backdrop" id="ofBackdrop"></div>
+    <div class="of-panel">
+
+      <div class="of-header">
+        <div>
+          <p class="of-eyebrow">A–WAG</p>
+          <h2 class="of-title">COMPLETE YOUR ORDER</h2>
+        </div>
+        <button class="of-close" onclick="closeOrderForm()" aria-label="Close">✕</button>
+      </div>
+
+      <div class="of-summary" id="ofSummary"></div>
+
+      <form id="orderForm" onsubmit="submitOrderForm(event)" novalidate>
+
+        <!-- 01 · CONTACT -->
+        <div class="of-section">
+          <p class="of-section-label">01 · CONTACT</p>
+          <div class="of-field">
+            <label class="of-label" for="ofName">FULL NAME <span class="of-req">*</span></label>
+            <input class="of-input" type="text" id="ofName" autocomplete="name" required placeholder="As it should appear on the courier">
+            <span class="of-err" id="ofNameErr"></span>
+          </div>
+          <div class="of-row">
+            <div class="of-field">
+              <label class="of-label" for="ofEmail">EMAIL <span class="of-req">*</span></label>
+              <input class="of-input" type="email" id="ofEmail" autocomplete="email" required placeholder="For order confirmation">
+              <span class="of-err" id="ofEmailErr"></span>
+            </div>
+            <div class="of-field">
+              <label class="of-label" for="ofPhone">PHONE <span class="of-req">*</span></label>
+              <input class="of-input" type="tel" id="ofPhone" autocomplete="tel" required placeholder="10-digit mobile" maxlength="10" inputmode="numeric">
+              <span class="of-err" id="ofPhoneErr"></span>
+            </div>
+          </div>
+          <div class="of-row">
+            <div class="of-field">
+              <label class="of-label" for="ofDob">DATE OF BIRTH <span class="of-req">*</span></label>
+              <input class="of-input" type="date" id="ofDob" autocomplete="bday" required>
+              <span class="of-err" id="ofDobErr"></span>
+            </div>
+            <div class="of-field">
+              <label class="of-label" for="ofAge">AGE</label>
+              <input class="of-input" type="text" id="ofAge" placeholder="Auto-filled" tabindex="-1" readonly>
+            </div>
+          </div>
+        </div>
+
+        <!-- 02 · SHIPPING ADDRESS -->
+        <div class="of-section">
+          <p class="of-section-label">02 · SHIPPING ADDRESS</p>
+          <div class="of-field">
+            <label class="of-label" for="ofAddr1">ADDRESS <span class="of-req">*</span></label>
+            <input class="of-input" type="text" id="ofAddr1" autocomplete="address-line1" required placeholder="Flat / House no., Street, Area">
+            <span class="of-err" id="ofAddr1Err"></span>
+          </div>
+          <div class="of-field">
+            <label class="of-label" for="ofAddr2">ADDRESS LINE 2</label>
+            <input class="of-input" type="text" id="ofAddr2" autocomplete="address-line2" placeholder="Building, Landmark (optional)">
+          </div>
+          <div class="of-row">
+            <div class="of-field">
+              <label class="of-label" for="ofCity">CITY <span class="of-req">*</span></label>
+              <input class="of-input" type="text" id="ofCity" autocomplete="address-level2" required>
+              <span class="of-err" id="ofCityErr"></span>
+            </div>
+            <div class="of-field">
+              <label class="of-label" for="ofState">STATE <span class="of-req">*</span></label>
+              <input class="of-input" type="text" id="ofState" autocomplete="address-level1" required>
+              <span class="of-err" id="ofStateErr"></span>
+            </div>
+          </div>
+          <div class="of-row">
+            <div class="of-field">
+              <label class="of-label" for="ofPin">PIN CODE <span class="of-req">*</span></label>
+              <input class="of-input" type="text" id="ofPin" autocomplete="postal-code" required pattern="[0-9]{6}" placeholder="6-digit" maxlength="6" inputmode="numeric">
+              <span class="of-err" id="ofPinErr"></span>
+            </div>
+            <div class="of-field">
+              <label class="of-label">COUNTRY</label>
+              <input class="of-input" type="text" value="India" readonly tabindex="-1">
+            </div>
+          </div>
+        </div>
+
+        <!-- 03 · GIFT OPTION -->
+        <div class="of-section">
+          <p class="of-section-label">03 · GIFT OPTION</p>
+          <label class="of-gift-toggle" id="ofGiftToggle">
+            <input type="checkbox" id="ofGift" onchange="toggleGiftDetails()">
+            <span class="of-gift-box"></span>
+            <span class="of-gift-label-text">
+              <span class="of-gift-title">IS THIS A GIFT?</span>
+              <span class="of-gift-price">Add gift pack · +₹100</span>
+            </span>
+          </label>
+          <div class="of-gift-details" id="ofGiftDetails">
+            <div class="of-field">
+              <label class="of-label" for="ofGiftMsg">GIFT MESSAGE <span style="opacity:0.5">(optional)</span></label>
+              <input class="of-input" type="text" id="ofGiftMsg" placeholder="A short message to include in the pack" maxlength="120">
+            </div>
+            <div class="of-field">
+              <label class="of-label" for="ofGiftFrom">FROM</label>
+              <input class="of-input" type="text" id="ofGiftFrom" placeholder="Name of gifter (optional)" maxlength="60">
+            </div>
+          </div>
+        </div>
+
+        <!-- 04 · SIGNAL SUBSCRIPTION -->
+        <div class="of-section of-section-sub">
+          <label class="of-check-row">
+            <input type="checkbox" id="ofSubscribe" checked>
+            <span class="of-checkmark"></span>
+            <span class="of-check-text">
+              <span class="of-check-title">JOIN THE SIGNAL</span>
+              <span class="of-check-desc">New drops, philosophy dispatches &amp; frequency updates. No noise.</span>
+            </span>
+          </label>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="of-footer">
+          <div class="of-total-row">
+            <span>ORDER TOTAL</span>
+            <strong id="ofTotalDisplay">₹0</strong>
+          </div>
+          <button type="submit" class="btn-primary of-submit-btn">PROCEED TO PAYMENT →</button>
+          <p class="of-secure">🔒 Secured by Razorpay · SSL encrypted</p>
+        </div>
+
+      </form>
+    </div>
+  `;
+}
+
+function toggleGiftDetails() {
+  var checked = document.getElementById('ofGift').checked;
+  var details = document.getElementById('ofGiftDetails');
+  if (details) {
+    details.classList.toggle('visible', checked);
+  }
+  updateOfTotal();
+}
+
+function updateOfTotal() {
+  var base = cart.reduce(function(s,i) { return s + i.price * i.qty; }, 0);
+  var gift = document.getElementById('ofGift') && document.getElementById('ofGift').checked ? 100 : 0;
+  var el = document.getElementById('ofTotalDisplay');
+  if (el) el.textContent = '₹' + (base + gift).toLocaleString('en-IN');
+}
+
+function openOrderForm() {
+  closeCart();
+
+  // Build modal once
+  if (!document.getElementById('orderFormModal')) {
+    var modal = document.createElement('div');
+    modal.id = 'orderFormModal';
+    modal.className = 'of-modal';
+    modal.innerHTML = buildOrderFormHTML();
+    document.body.appendChild(modal);
+
+    // Backdrop click closes
+    document.getElementById('ofBackdrop').addEventListener('click', closeOrderForm);
+
+    // DOB → auto-calculate age
+    document.getElementById('ofDob').addEventListener('change', function() {
+      var dob = new Date(this.value);
+      var today = new Date();
+      var age = today.getFullYear() - dob.getFullYear();
+      var m = today.getMonth() - dob.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) age--;
+      document.getElementById('ofAge').value = (age >= 0 && age < 120) ? age : '';
+    });
+  }
+
+  // Populate summary strip
+  var totalQty = cart.reduce(function(s,i) { return s + i.qty; }, 0);
+  var itemsText = cart.map(function(i) { return i.name + (i.qty > 1 ? ' ×' + i.qty : ''); }).join(' · ');
+  document.getElementById('ofSummary').innerHTML =
+    '<strong>' + totalQty + ' ITEM' + (totalQty > 1 ? 'S' : '') + '</strong> · ' + itemsText;
+
+  // Restore previously saved values (user re-opened form)
+  var saved = getSavedOrderInfo();
+  if (saved) {
+    var fields = { ofName:'name', ofEmail:'email', ofPhone:'phone', ofDob:'dob',
+                   ofAddr1:'addr1', ofAddr2:'addr2', ofCity:'city', ofState:'state', ofPin:'pin' };
+    Object.keys(fields).forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el && saved[fields[id]]) el.value = saved[fields[id]];
+    });
+    if (saved.age) document.getElementById('ofAge').value = saved.age;
+    if (saved.subscribe === false) document.getElementById('ofSubscribe').checked = false;
+    if (saved.gift) {
+      document.getElementById('ofGift').checked = true;
+      toggleGiftDetails();
+      if (saved.giftMsg) document.getElementById('ofGiftMsg').value = saved.giftMsg;
+      if (saved.giftFrom) document.getElementById('ofGiftFrom').value = saved.giftFrom;
+    }
+  }
+
+  updateOfTotal();
+
+  requestAnimationFrame(function() {
+    document.getElementById('orderFormModal').classList.add('active');
+  });
+  document.body.style.overflow = 'hidden';
+}
+
+function closeOrderForm() {
+  var modal = document.getElementById('orderFormModal');
+  if (modal) modal.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+function getSavedOrderInfo() {
+  try { return JSON.parse(sessionStorage.getItem('awag_order_info') || 'null'); }
+  catch(e) { return null; }
+}
+
+function setFieldError(fieldId, msg) {
+  var input = document.getElementById(fieldId);
+  var err   = document.getElementById(fieldId + 'Err');
+  if (input) input.classList.toggle('of-invalid', !!msg);
+  if (err)   err.textContent = msg || '';
+}
+
+function submitOrderForm(event) {
+  event.preventDefault();
+
+  var name      = document.getElementById('ofName').value.trim();
+  var email     = document.getElementById('ofEmail').value.trim();
+  var phone     = document.getElementById('ofPhone').value.trim();
+  var dob       = document.getElementById('ofDob').value;
+  var age       = document.getElementById('ofAge').value;
+  var addr1     = document.getElementById('ofAddr1').value.trim();
+  var addr2     = document.getElementById('ofAddr2').value.trim();
+  var city      = document.getElementById('ofCity').value.trim();
+  var state     = document.getElementById('ofState').value.trim();
+  var pin       = document.getElementById('ofPin').value.trim();
+  var gift      = document.getElementById('ofGift').checked;
+  var giftMsg   = document.getElementById('ofGiftMsg') ? document.getElementById('ofGiftMsg').value.trim() : '';
+  var giftFrom  = document.getElementById('ofGiftFrom') ? document.getElementById('ofGiftFrom').value.trim() : '';
+  var subscribe = document.getElementById('ofSubscribe').checked;
+
+  var valid = true;
+  var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  setFieldError('ofName',  !name  ? 'Please enter your full name' : '');
+  if (!name) valid = false;
+
+  var emailErr = !email ? 'Please enter your email' : !emailRe.test(email) ? 'Enter a valid email address' : '';
+  setFieldError('ofEmail', emailErr);
+  if (emailErr) valid = false;
+
+  var phoneErr = !phone ? 'Please enter your phone number' : !/^\d{10}$/.test(phone) ? 'Enter a valid 10-digit mobile number' : '';
+  setFieldError('ofPhone', phoneErr);
+  if (phoneErr) valid = false;
+
+  setFieldError('ofDob',   !dob   ? 'Please enter your date of birth' : '');
+  if (!dob) valid = false;
+
+  setFieldError('ofAddr1', !addr1 ? 'Please enter your address' : '');
+  if (!addr1) valid = false;
+
+  setFieldError('ofCity',  !city  ? 'Please enter your city'  : '');
+  if (!city) valid = false;
+
+  setFieldError('ofState', !state ? 'Please enter your state' : '');
+  if (!state) valid = false;
+
+  var pinErr = !pin ? 'Please enter your PIN code' : !/^\d{6}$/.test(pin) ? 'Enter a valid 6-digit PIN code' : '';
+  setFieldError('ofPin', pinErr);
+  if (pinErr) valid = false;
+
+  if (!valid) {
+    var firstBad = document.querySelector('#orderFormModal .of-input.of-invalid');
+    if (firstBad) firstBad.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  // Save for success page and re-opens
+  var orderInfo = { name, email, phone, dob, age, addr1, addr2, city, state, pin,
+                    gift, giftMsg, giftFrom, subscribe };
+  sessionStorage.setItem('awag_order_info', JSON.stringify(orderInfo));
+
+  // Handle newsletter subscription
+  if (subscribe) {
+    var asUrl = AWAG_CONFIG.appsScript && AWAG_CONFIG.appsScript.url;
+    if (asUrl && asUrl.indexOf('REPLACE') === -1) {
+      fetch(asUrl, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: 'subscribe', email: email, name: name, source: 'checkout' }),
+      }).catch(function() {});
+    }
+  }
+
+  closeOrderForm();
+  openRazorpay(orderInfo);
+}
+
+// ─── RAZORPAY LAUNCHER ───────────────────────
+// Called after order form is successfully submitted.
+function openRazorpay(orderInfo) {
   if (cart.length === 0) return;
 
-  const totalAmount = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  var giftSurcharge = orderInfo.gift ? 100 : 0;
+  const totalAmount = cart.reduce((s, i) => s + i.price * i.qty, 0) + giftSurcharge;
   const totalQty    = cart.reduce((s, i) => s + i.qty, 0);
   const itemsDesc   = cart.map(i => `${i.name}${i.qty > 1 ? ' ×' + i.qty : ''}`).join(', ');
   const utm         = getStoredUTM();
-
-  // Fire begin_checkout before opening modal
-  track('begin_checkout', {
-    value:     totalAmount,
-    currency:  'INR',
-    num_items: totalQty,
-    items:     cart.map(i => ({ item_id: i.id, item_name: i.name, price: i.price, quantity: i.qty })),
-    ...utm
-  });
+  const address     = [orderInfo.addr1, orderInfo.addr2, orderInfo.city,
+                       orderInfo.state, orderInfo.pin, 'India'].filter(Boolean).join(', ');
 
   if (typeof Razorpay === 'undefined') {
     showToast('PAYMENT GATEWAY LOADING — TRY AGAIN');
@@ -228,13 +533,24 @@ function initiateCheckout() {
 
   const options = {
     key:         AWAG_CONFIG.razorpay.key,
-    amount:      totalAmount * 100,   // Razorpay takes paise
+    amount:      totalAmount * 100,
     currency:    'INR',
     name:        AWAG_CONFIG.razorpay.name,
     description: itemsDesc,
     image:       AWAG_CONFIG.razorpay.image || undefined,
+    prefill: {
+      name:    orderInfo.name,
+      email:   orderInfo.email,
+      contact: orderInfo.phone,
+    },
     notes: {
       items:        itemsDesc,
+      customer:     orderInfo.name,
+      address:      address.substring(0, 255),
+      dob:          orderInfo.dob,
+      gift_pack:    orderInfo.gift ? 'Yes' : 'No',
+      gift_message: orderInfo.giftMsg  || '',
+      gift_from:    orderInfo.giftFrom || '',
       cart_json:    JSON.stringify(cart.map(i => ({ id: i.id, name: i.name, qty: i.qty, price: i.price }))),
       utm_source:   utm.utm_source   || 'direct',
       utm_medium:   utm.utm_medium   || '',
@@ -242,32 +558,29 @@ function initiateCheckout() {
     },
     theme: { color: AWAG_CONFIG.razorpay.themeColor },
 
-    // ── Payment success callback ─────────────
     handler: function(response) {
       track('purchase', {
         transaction_id: response.razorpay_payment_id,
         value:          totalAmount,
         currency:       'INR',
         num_items:      totalQty,
-        items:          cart.map(i => ({ item_id: i.id, item_name: i.name, price: i.price, quantity: i.qty })),
+        items: cart.map(i => ({ item_id: i.id, item_name: i.name, price: i.price, quantity: i.qty })),
         ...utm
       });
 
-      // Store order details for success page
       sessionStorage.setItem('awag_last_order', JSON.stringify({
         payment_id: response.razorpay_payment_id,
         items:      cart.map(i => ({ name: i.name, price: i.price, qty: i.qty })),
         total:      totalAmount,
-        timestamp:  new Date().toISOString()
+        gift:       orderInfo.gift,
+        customer:   orderInfo,
+        timestamp:  new Date().toISOString(),
       }));
 
-      // Clear cart
       cart = [];
       saveCart();
       renderCart();
       closeCart();
-
-      // Redirect to success page
       window.location.href = 'success.html';
     },
 
@@ -286,12 +599,30 @@ function initiateCheckout() {
       error_description: response.error.description,
       value:             totalAmount
     });
-    // Send failure alert email to brand
     sendFailureAlert(response, totalAmount, cart);
     showToast('PAYMENT FAILED — PLEASE TRY AGAIN');
   });
 
   rzp.open();
+}
+
+// ─── CHECKOUT ENTRY POINT ────────────────────
+function initiateCheckout() {
+  if (cart.length === 0) return;
+
+  const totalAmount = cart.reduce((s, i) => s + i.price * i.qty, 0);
+  const totalQty    = cart.reduce((s, i) => s + i.qty, 0);
+  const utm         = getStoredUTM();
+
+  track('begin_checkout', {
+    value:     totalAmount,
+    currency:  'INR',
+    num_items: totalQty,
+    items:     cart.map(i => ({ item_id: i.id, item_name: i.name, price: i.price, quantity: i.qty })),
+    ...utm
+  });
+
+  openOrderForm();
 }
 
 function renderCart() {
@@ -512,6 +843,8 @@ function initCollectionIcons() {
   });
 }
 
+// Artist lines are hardcoded directly in index.html spotlight cards
+
 // ─── COLLECTION LINKS ────────────────────────
 function initCollectionLinks() {
   document.querySelectorAll('.collection-link, .footer-link[data-collection]').forEach(link => {
@@ -636,6 +969,32 @@ function initFadeIn() {
   targets.forEach(el => observer.observe(el));
 }
 
+// ─── PRODUCT SIZE PILLS ──────────────────────
+function initProductSizePills() {
+  document.querySelectorAll('.product-card').forEach(card => {
+    const info = card.querySelector('.product-info');
+    const priceRow = card.querySelector('.product-price-row');
+    if (!info || !priceRow) return;
+
+    // Unisex tag
+    const unisexTag = document.createElement('p');
+    unisexTag.className = 'product-unisex';
+    unisexTag.textContent = 'UNISEX';
+    info.insertBefore(unisexTag, priceRow);
+
+    // Size pills
+    const sizesEl = document.createElement('div');
+    sizesEl.className = 'product-sizes';
+    ['XS', 'S', 'M', 'L'].forEach(s => {
+      const pill = document.createElement('span');
+      pill.className = 'product-size-pill';
+      pill.textContent = s;
+      sizesEl.appendChild(pill);
+    });
+    info.insertBefore(sizesEl, priceRow);
+  });
+}
+
 // ─── INIT ────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -685,6 +1044,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCollectionIcons();
   initImageFallbacks();
   initFadeIn();
+  initProductSizePills();
 
   // Product card routing (index.html only — product-card class won't exist on product.html)
   if (document.querySelector('.product-card')) {
