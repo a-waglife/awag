@@ -497,16 +497,9 @@ function submitOrderForm(event) {
                     gift, giftMsg, giftFrom, subscribe };
   sessionStorage.setItem('awag_order_info', JSON.stringify(orderInfo));
 
-  // Handle newsletter subscription
+  // Handle newsletter subscription via Mailchimp (same URL as homepage form)
   if (subscribe) {
-    var asUrl = AWAG_CONFIG.appsScript && AWAG_CONFIG.appsScript.url;
-    if (asUrl && asUrl.indexOf('REPLACE') === -1) {
-      fetch(asUrl, {
-        method: 'POST', mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type: 'subscribe', email: email, name: name, source: 'checkout' }),
-      }).catch(function() {});
-    }
+    subscribeToMailchimp(email);
   }
 
   closeOrderForm();
@@ -867,27 +860,34 @@ function handleNewsletterSubmit(e) {
   showToast('YOU ARE IN THE SIGNAL');
   input.value = '';
 
-  // Analytics — newsletter signup as lead, with UTM attribution
+  // Analytics
   track('generate_lead', { method: 'newsletter', ...getStoredUTM() });
 
-  // POST to Google Apps Script → writes to Sheets + sends welcome email
-  var url = AWAG_CONFIG.appsScript && AWAG_CONFIG.appsScript.url;
-  if (!url || url === 'REPLACE_APPS_SCRIPT_WEB_APP_URL') return;
+  // ── Mailchimp JSONP subscribe ──────────────────────────────────────────
+  // HOW TO GET YOUR URL:
+  //   Mailchimp → Audience → Signup forms → Embedded forms
+  //   Copy the form action URL, paste as MAILCHIMP_URL below.
+  //   It looks like: https://xyz.us5.list-manage.com/subscribe/post?u=ABC&id=DEF
+  //
+  var MAILCHIMP_URL = 'REPLACE_WITH_MAILCHIMP_FORM_ACTION_URL';
 
-  var utm = getStoredUTM ? getStoredUTM() : {};
-  fetch(url, {
-    method:  'POST',
-    mode:    'no-cors',           // Apps Script CORS: no-cors is fine, response is opaque
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      type:         'subscribe',
-      email:        email,
-      source:       'homepage_newsletter',
-      utm_source:   utm.utm_source   || '',
-      utm_medium:   utm.utm_medium   || '',
-      utm_campaign: utm.utm_campaign || '',
-    }),
-  }).catch(function() { /* silent — sheet write not critical to UX */ });
+  if (MAILCHIMP_URL.indexOf('REPLACE') !== -1) return; // not configured yet
+
+  // Mailchimp requires JSONP (no CORS on their subscribe endpoint).
+  // We inject a <script> tag — it fires silently, no response needed.
+  var cb  = 'mc_cb_' + Date.now();
+  var src = MAILCHIMP_URL.replace('/post?', '/post-json?') +
+            '&EMAIL=' + encodeURIComponent(email) +
+            '&c=' + cb;
+
+  window[cb] = function() {
+    delete window[cb];
+    if (tag.parentNode) tag.parentNode.removeChild(tag);
+  };
+
+  var tag = document.createElement('script');
+  tag.src = src;
+  document.body.appendChild(tag);
 }
 
 // ─── PRODUCT CARD ROUTING ────────────────────

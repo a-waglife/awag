@@ -3010,3 +3010,68 @@ input { font-family: inherit; }
   }
   .of-row { grid-template-columns: 1fr; }
 }
+
+
+/* =============================================
+   WHATSAPP FLOAT BUTTON
+   ============================================= */
+.wa-float {
+  position: fixed;
+  bottom: 28px;
+  right: 24px;
+  z-index: 900;
+  width: 54px;
+  height: 54px;
+  background: #25D366;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 18px rgba(37,211,102,0.35);
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+  text-decoration: none;
+}
+.wa-float svg {
+  width: 28px;
+  height: 28px;
+  fill: #fff;
+}
+.wa-float:hover {
+  transform: scale(1.1) translateY(-2px);
+  box-shadow: 0 8px 28px rgba(37,211,102,0.45);
+}
+.wa-float-tooltip {
+  position: absolute;
+  right: 64px;
+  background: var(--near-black);
+  color: var(--bone-white);
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  white-space: nowrap;
+  border: 1px solid var(--border);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(6px);
+  transition: opacity 0.2s, transform 0.2s;
+}
+.wa-float-tooltip::after {
+  content: '';
+  position: absolute;
+  right: -5px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 5px solid transparent;
+  border-right: none;
+  border-left-color: var(--border);
+}
+.wa-float:hover .wa-float-tooltip {
+  opacity: 1;
+  transform: translateX(0);
+}
+@media (max-width: 480px) {
+  .wa-float { bottom: 20px; right: 16px; width: 50px; height: 50px; }
+  .wa-float-tooltip { display: none; }
+}

@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A-WAG — Contact</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Barlow:wght@300;400&family=Cormorant+Garamond:ital,wght@0,400;1,300;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-91LSYTJ5CD"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-91LSYTJ5CD');
+  </script>
+
+  <!-- Meta Pixel -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '828940853275665');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=828940853275665&ev=PageView&noscript=1"
+  /></noscript>
+
+  <style>
+    /* ── CONTACT PAGE STYLES ─────────────────── */
+    .contact-hero {
+      padding: 110px 24px 64px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .contact-hero-eyebrow {
+      font-family: var(--font-body);
+      font-size: 9px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--sur-gold);
+      margin-bottom: 16px;
+    }
+    .contact-hero-title {
+      font-family: var(--font-condensed);
+      font-size: clamp(52px, 10vw, 110px);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      line-height: 0.9;
+      color: var(--bone-white);
+      margin-bottom: 20px;
+    }
+    .contact-hero-sub {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: clamp(14px, 1.4vw, 17px);
+      color: var(--muted);
+      max-width: 420px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ── CONTACT GRID ───────────────────────── */
+    .contact-body {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 72px 24px 96px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    @media (max-width: 680px) {
+      .contact-body { grid-template-columns: 1fr; }
+    }
+
+    /* ── Contact card ───────────────────────── */
+    .contact-card {
+      padding: 48px 40px;
+      border: 1px solid var(--border);
+      border-right: none;
+    }
+    .contact-card:last-child { border-right: 1px solid var(--border); }
+    @media (max-width: 680px) {
+      .contact-card { border-right: 1px solid var(--border); border-bottom: none; }
+      .contact-card:last-child { border-bottom: 1px solid var(--border); }
+    }
+
+    .contact-card-icon {
+      width: 40px;
+      height: 40px;
+      margin-bottom: 20px;
+      opacity: 0.7;
+    }
+    .contact-card-label {
+      font-family: var(--font-body);
+      font-size: 9px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--sur-gold);
+      margin-bottom: 14px;
+    }
+    .contact-card-title {
+      font-family: var(--font-condensed);
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      color: var(--bone-white);
+      margin-bottom: 16px;
+      text-transform: uppercase;
+    }
+    .contact-card-body {
+      font-family: var(--font-body);
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.9;
+    }
+    .contact-card-body strong {
+      color: var(--bone-white);
+      font-weight: 400;
+      display: block;
+    }
+    .contact-card-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 24px;
+      font-family: var(--font-body);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sur-gold);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(184,146,42,0.35);
+      padding-bottom: 3px;
+      transition: color var(--transition), border-color var(--transition);
+    }
+    .contact-card-action:hover {
+      color: var(--bone-white);
+      border-bottom-color: rgba(232,226,213,0.35);
+    }
+
+    /* ── WhatsApp prominent block ───────────── */
+    .contact-wa-block {
+      margin: 0 24px;
+      max-width: 960px;
+      margin-left: auto;
+      margin-right: auto;
+      border: 1px solid var(--border);
+      border-top: none;
+      padding: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .contact-wa-left { display: flex; align-items: center; gap: 20px; }
+    .contact-wa-icon {
+      width: 48px;
+      height: 48px;
+      background: #25D366;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .contact-wa-icon svg { width: 26px; height: 26px; fill: #fff; }
+    .contact-wa-text {}
+    .contact-wa-label {
+      font-family: var(--font-body);
+      font-size: 9px;
+      letter-spacing: 0.28em;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+    .contact-wa-number {
+      font-family: var(--font-condensed);
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      color: var(--bone-white);
+    }
+    .contact-wa-sub {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      margin-top: 4px;
+    }
+    .contact-wa-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #25D366;
+      color: #fff;
+      font-family: var(--font-condensed);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 14px 28px;
+      transition: background 0.2s, transform 0.2s;
+      flex-shrink: 0;
+    }
+    .contact-wa-btn:hover { background: #1da851; transform: translateY(-1px); }
+    .contact-wa-btn svg { width: 18px; height: 18px; fill: #fff; }
+
+    /* ── Hours strip ────────────────────────── */
+    .contact-hours {
+      max-width: 960px;
+      margin: 0 auto;
+      border: 1px solid var(--border);
+      border-top: none;
+      padding: 28px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .contact-hours-label {
+      font-family: var(--font-body);
+      font-size: 9px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--sur-gold);
+    }
+    .contact-hours-val {
+      font-family: var(--font-body);
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+    .contact-hours-sep {
+      width: 1px;
+      height: 24px;
+      background: var(--border);
+    }
+    @media (max-width: 600px) {
+      .contact-hours { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .contact-hours-sep { display: none; }
+      .contact-wa-block { padding: 28px 24px; }
+      .contact-card { padding: 36px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav class="nav" id="nav">
+    <button class="nav-hamburger" id="hamburgerBtn" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="index.html" class="nav-logo">A-WAG</a>
+    <div class="nav-icons">
+      <button class="nav-icon-btn" id="wishlistNavBtn" aria-label="Wishlist">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+        <span class="nav-badge" id="wishlistCount" style="display:none">0</span>
+      </button>
+      <button class="nav-icon-btn" id="cartNavBtn" aria-label="Cart">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        <span class="nav-badge" id="cartCount" style="display:none">0</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-menu-close" id="menuClose" aria-label="Close">✕</button>
+    <nav class="mobile-nav-links">
+      <a href="index.html#collections">Collections</a>
+      <a href="index.html#shop">Shop</a>
+      <a href="designers.html">Meet Designers</a>
+      <a href="index.html#philosophy">Philosophy</a>
+      <a href="index.html#journal">Journal</a>
+      <a href="contact.html" class="active-nav">Contact</a>
+    </nav>
+    <div class="mobile-menu-footer">
+      <p class="mobile-tagline">Ain't We All God?</p>
+    </div>
+  </div>
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <!-- CART DRAWER -->
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-drawer-header"><h3>CART</h3><button class="cart-close" id="cartClose">✕</button></div>
+    <div class="cart-items" id="cartItems">
+      <div class="cart-empty"><p>Your cart is empty.</p><p class="cart-empty-sub">The gods travel light.</p></div>
+    </div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="cart-total"><span>Total</span><span id="cartTotal">₹0</span></div>
+      <button class="btn-primary btn-block" onclick="initiateCheckout()">PROCEED TO PAYMENT</button>
+    </div>
+  </div>
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <div class="toast" id="toast"></div>
+
+  <!-- PAGE HERO -->
+  <div class="contact-hero">
+    <p class="contact-hero-eyebrow">Reach Out</p>
+    <h1 class="contact-hero-title">GET IN<br>TOUCH</h1>
+    <p class="contact-hero-sub">Questions about an order, a design, or just the frequency — we're here.</p>
+  </div>
+
+  <!-- CONTACT CARDS -->
+  <div class="contact-body">
+
+    <div class="contact-card">
+      <svg class="contact-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" style="color:var(--sur-gold)">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+        <circle cx="12" cy="10" r="3"/>
+      </svg>
+      <p class="contact-card-label">Our Address</p>
+      <h2 class="contact-card-title">Find Us</h2>
+      <div class="contact-card-body">
+        <strong>A-WAG — Satva Wear</strong>
+        101, 1st Floor, HIG-A<br>
+        Phase-IV, APHB Colony<br>
+        Survey-90, Gachibowli<br>
+        Hyderabad — 500032<br>
+        Telangana, India
+      </div>
+    </div>
+
+    <div class="contact-card">
+      <svg class="contact-card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" style="color:var(--sur-gold)">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+        <polyline points="22,6 12,13 2,6"/>
+      </svg>
+      <p class="contact-card-label">Write To Us</p>
+      <h2 class="contact-card-title">Email</h2>
+      <div class="contact-card-body">
+        For orders, returns, sizing &amp; general enquiries — drop us a line and we'll respond within 24 hours.
+        <br><br>
+        <strong>aintweallgod@gmail.com</strong>
+      </div>
+      <a href="mailto:aintweallgod@gmail.com" class="contact-card-action">
+        SEND AN EMAIL →
+      </a>
+    </div>
+
+  </div>
+
+  <!-- WHATSAPP BLOCK -->
+  <div class="contact-wa-block">
+    <div class="contact-wa-left">
+      <div class="contact-wa-icon">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+      </div>
+      <div class="contact-wa-text">
+        <p class="contact-wa-label">Chat with us directly</p>
+        <p class="contact-wa-number">+91 83204 21625</p>
+        <p class="contact-wa-sub">Mon – Sat · 10am – 7pm IST</p>
+      </div>
+    </div>
+    <a href="https://wa.me/918320421625" target="_blank" rel="noopener" class="contact-wa-btn">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+      CHAT ON WHATSAPP
+    </a>
+  </div>
+
+  <!-- HOURS -->
+  <div class="contact-hours">
+    <div>
+      <p class="contact-hours-label">Customer Support</p>
+      <p class="contact-hours-val">Mon – Sat · 10:00 am – 7:00 pm IST</p>
+    </div>
+    <div class="contact-hours-sep"></div>
+    <div>
+      <p class="contact-hours-label">Order Queries</p>
+      <p class="contact-hours-val">Reply within 24 hours · aintweallgod@gmail.com</p>
+    </div>
+    <div class="contact-hours-sep"></div>
+    <div>
+      <p class="contact-hours-label">Shipping</p>
+      <p class="contact-hours-val">Make to order · Ships in 7 days</p>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="footer" style="margin-top:0">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <p class="footer-logo">A-WAG</p>
+        <p class="footer-tagline">Ain't We All God?</p>
+        <p class="footer-desc">Premium Indian spiritual streetwear.<br>Made for those who are asking.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <p class="footer-col-head">COLLECTIONS</p>
+          <a href="index.html#shop" class="footer-link">Void</a>
+          <a href="index.html#shop" class="footer-link">Witness</a>
+          <a href="index.html#shop" class="footer-link">Bloom</a>
+          <a href="index.html#shop" class="footer-link">Yaatra</a>
+          <a href="index.html#shop" class="footer-link">Akshar</a>
+        </div>
+        <div class="footer-col">
+          <p class="footer-col-head">INFO</p>
+          <a href="index.html#philosophy" class="footer-link">Philosophy</a>
+          <a href="designers.html" class="footer-link">Meet Designers</a>
+          <a href="index.html#journal" class="footer-link">Journal</a>
+          <a href="contact.html" class="footer-link">Contact</a>
+        </div>
+        <div class="footer-col">
+          <p class="footer-col-head">CONNECT</p>
+          <a href="#" class="footer-link">Instagram</a>
+          <a href="mailto:aintweallgod@gmail.com" class="footer-link">aintweallgod@gmail.com</a>
+          <a href="https://wa.me/918320421625" target="_blank" rel="noopener" class="footer-link">WhatsApp</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 A-WAG. All rights reserved.</p>
+      <p>Made to order. Ships in 7 days. Always.</p>
+    </div>
+  </footer>
+
+  <!-- WHATSAPP FLOAT -->
+  <a href="https://wa.me/918320421625" target="_blank" rel="noopener" class="wa-float" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+    <span class="wa-float-tooltip">Chat with us</span>
+  </a>
+
+  <script src="products.js"></script>
+  <script src="script.js"></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+</body>
+</html>

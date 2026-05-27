@@ -367,6 +367,9 @@
 
         if (btn) { btn.textContent = 'SENDING…'; btn.disabled = true; }
 
+        var info = {};
+        try { info = JSON.parse(sessionStorage.getItem('awag_order_info') || '{}'); } catch(e){}
+
         fetch(appsScriptUrl, {
           method:  'POST',
           mode:    'no-cors',
@@ -374,10 +377,17 @@
           body: JSON.stringify({
             type:           'order',
             customer_email: email,
+            customer_name:  info.name  || '',
+            customer_phone: info.phone || '',
             payment_id:     order.payment_id || '—',
             items:          itemsText,
             total:          order.total ? order.total.toLocaleString('en-IN') : '2,499',
             order_date:     dateStr,
+            address:        [info.addr1, info.addr2, info.city, info.state, info.pin, 'India'].filter(Boolean).join(', '),
+            dob:            info.dob   || '',
+            gift:           info.gift  ? 'Yes' : 'No',
+            gift_message:   info.giftMsg  || '',
+            gift_from:      info.giftFrom || '',
           }),
         })
         .then(function() {

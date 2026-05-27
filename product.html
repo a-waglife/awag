@@ -222,6 +222,10 @@
     document.getElementById('mainProductImg').src = thumbEl.dataset.img;
     document.querySelectorAll('.pg-thumb').forEach(function(t) { t.classList.remove('active'); });
     thumbEl.classList.add('active');
+    // Immediately blur the button so focus doesn't linger — without this, the next
+    // tap anywhere first de-focuses the button (consuming the event) rather than
+    // activating the tapped element. Classic iOS ghost-tap on button focus.
+    thumbEl.blur();
   }
 
   /* ── Size guide modal ── */
