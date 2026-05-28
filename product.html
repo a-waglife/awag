@@ -222,10 +222,48 @@
     document.getElementById('mainProductImg').src = thumbEl.dataset.img;
     document.querySelectorAll('.pg-thumb').forEach(function(t) { t.classList.remove('active'); });
     thumbEl.classList.add('active');
-    // Immediately blur the button so focus doesn't linger — without this, the next
-    // tap anywhere first de-focuses the button (consuming the event) rather than
-    // activating the tapped element. Classic iOS ghost-tap on button focus.
     thumbEl.blur();
+  }
+
+  function initImageSwipe() {
+    var frame = document.querySelector('.product-img-frame');
+    if (!frame) return;
+
+    var startX = 0;
+    var startY = 0;
+
+    frame.addEventListener('touchstart', function(e) {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    }, { passive: true });
+
+    frame.addEventListener('touchend', function(e) {
+      var dx = e.changedTouches[0].clientX - startX;
+      var dy = e.changedTouches[0].clientY - startY;
+
+      // Only register horizontal swipe (not scroll)
+      if (Math.abs(dx) < 40 || Math.abs(dx) < Math.abs(dy)) return;
+
+      var thumbs = Array.from(document.querySelectorAll('.pg-thumb'));
+      if (thumbs.length < 2) return;
+
+      var activeIdx = thumbs.findIndex(function(t) { return t.classList.contains('active'); });
+      var nextIdx;
+
+      if (dx < 0) {
+        // swipe left → next image
+        nextIdx = (activeIdx + 1) % thumbs.length;
+      } else {
+        // swipe right → previous image
+        nextIdx = (activeIdx - 1 + thumbs.length) % thumbs.length;
+      }
+
+      switchImg(thumbs[nextIdx]);
+
+      // Scroll the thumb strip to keep the active thumb visible
+      var strip = document.querySelector('.product-thumb-strip');
+      if (strip) strip.scrollLeft = thumbs[nextIdx].offsetLeft - 8;
+    }, { passive: true });
   }
 
   /* ── Size guide modal ── */
@@ -484,8 +522,8 @@
     });
 
     renderProductPage(product);
-    // Swap collection icons after dynamic render
     if (typeof initCollectionIcons === 'function') initCollectionIcons();
+    initImageSwipe();
   });
   </script>
 

@@ -1469,7 +1469,11 @@ input { font-family: inherit; }
   padding-bottom: 100%;
   position: relative;
   overflow: hidden;
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
 }
+.product-img-frame:active { cursor: grabbing; }
 @media (min-width: 900px) {
   .product-img-frame {
     height: 100%;
