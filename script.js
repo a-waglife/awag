@@ -18,7 +18,7 @@ const AWAG_CONFIG = {
   //   Execute as: Me  |  Who has access: Anyone
   // Paste the generated URL below.
   appsScript: {
-    url: 'REPLACE_APPS_SCRIPT_WEB_APP_URL',  // ← paste Web App URL here after deploying
+    url: 'https://script.google.com/macros/s/AKfycbyFHDBjWbPziM-q_oVXIdjaqfCeuXcSVnZthjzmNqDLdvfpry2JgUmdwsT6bAGx6egIHg/exec',
   },
   emailjs: {
     // Kept as fallback for order failure alerts only (no longer used for confirmations)
@@ -951,8 +951,8 @@ function initCollectionLinks() {
 //        GF_ENTRY_ID — the full "entry.XXXXXXXXX" from the query string
 //   4. Paste both below, then redeploy
 //
-var GF_FORM_ID  = 'REPLACE_WITH_FORM_ID';        // e.g. 1FAIpQLSe...
-var GF_ENTRY_ID = 'entry.REPLACE_WITH_NUMBER';   // e.g. entry.123456789
+var GF_FORM_ID  = '1FAIpQLSc5TpCgxl6yomKIBgg_dWqRkw0dV0PDbvBqwqiOsy-536nw2Q';
+var GF_ENTRY_ID = 'entry.2098994194';
 
 function subscribeViaGoogleForm(email) {
   if (!email || GF_FORM_ID.indexOf('REPLACE') !== -1) return;
