@@ -356,13 +356,18 @@ function toggleGiftDetails() {
 }
 
 function updateOfTotal() {
-  var base = cart.reduce(function(s,i) { return s + i.price * i.qty; }, 0);
+  var base = window._awagBuyNow
+    ? window._awagBuyNow.product.price
+    : cart.reduce(function(s,i) { return s + i.price * i.qty; }, 0);
   var gift = document.getElementById('ofGift') && document.getElementById('ofGift').checked ? 100 : 0;
   var el = document.getElementById('ofTotalDisplay');
   if (el) el.textContent = '₹' + (base + gift).toLocaleString('en-IN');
 }
 
-function openOrderForm() {
+function openOrderForm(ctx) {
+  // ctx is optional: { buyNow: true, product, itemName } for direct Buy Now
+  window._awagBuyNow = (ctx && ctx.buyNow) ? ctx : null;
+
   closeCart();
 
   // Build modal once
@@ -388,10 +393,15 @@ function openOrderForm() {
   }
 
   // Populate summary strip
-  var totalQty = cart.reduce(function(s,i) { return s + i.qty; }, 0);
-  var itemsText = cart.map(function(i) { return i.name + (i.qty > 1 ? ' ×' + i.qty : ''); }).join(' · ');
-  document.getElementById('ofSummary').innerHTML =
-    '<strong>' + totalQty + ' ITEM' + (totalQty > 1 ? 'S' : '') + '</strong> · ' + itemsText;
+  var summaryHTML;
+  if (window._awagBuyNow) {
+    summaryHTML = '<strong>1 ITEM</strong> · ' + window._awagBuyNow.itemName;
+  } else {
+    var totalQty = cart.reduce(function(s,i) { return s + i.qty; }, 0);
+    var itemsText = cart.map(function(i) { return i.name + (i.qty > 1 ? ' ×' + i.qty : ''); }).join(' · ');
+    summaryHTML = '<strong>' + totalQty + ' ITEM' + (totalQty > 1 ? 'S' : '') + '</strong> · ' + itemsText;
+  }
+  document.getElementById('ofSummary').innerHTML = summaryHTML;
 
   // Restore previously saved values (user re-opened form)
   var saved = getSavedOrderInfo();
@@ -497,13 +507,19 @@ function submitOrderForm(event) {
                     gift, giftMsg, giftFrom, subscribe };
   sessionStorage.setItem('awag_order_info', JSON.stringify(orderInfo));
 
-  // Handle newsletter subscription via Mailchimp (same URL as homepage form)
   if (subscribe) {
-    subscribeToMailchimp(email);
+    subscribeViaGoogleForm(email);
   }
 
   closeOrderForm();
-  openRazorpay(orderInfo);
+
+  if (window._awagBuyNow) {
+    var ctx = window._awagBuyNow;
+    window._awagBuyNow = null;
+    openRazorpayDirect(orderInfo, ctx);
+  } else {
+    openRazorpay(orderInfo);
+  }
 }
 
 // ─── RAZORPAY LAUNCHER ───────────────────────
@@ -596,6 +612,79 @@ function openRazorpay(orderInfo) {
     showToast('PAYMENT FAILED — PLEASE TRY AGAIN');
   });
 
+  rzp.open();
+}
+
+// ─── RAZORPAY — BUY NOW (single item, no cart) ──
+function openRazorpayDirect(orderInfo, ctx) {
+  var giftSurcharge = orderInfo.gift ? 100 : 0;
+  var totalAmount   = ctx.product.price + giftSurcharge;
+  var utm           = getStoredUTM();
+  var address       = [orderInfo.addr1, orderInfo.addr2, orderInfo.city,
+                       orderInfo.state, orderInfo.pin, 'India'].filter(Boolean).join(', ');
+
+  if (typeof Razorpay === 'undefined') {
+    showToast('PAYMENT GATEWAY LOADING — TRY AGAIN');
+    return;
+  }
+
+  var options = {
+    key:         AWAG_CONFIG.razorpay.key,
+    amount:      totalAmount * 100,
+    currency:    'INR',
+    name:        AWAG_CONFIG.razorpay.name,
+    description: ctx.itemName,
+    image:       AWAG_CONFIG.razorpay.image || undefined,
+    prefill: {
+      name:    orderInfo.name,
+      email:   orderInfo.email,
+      contact: orderInfo.phone,
+    },
+    notes: {
+      item:         ctx.itemName,
+      customer:     orderInfo.name,
+      address:      address.substring(0, 255),
+      dob:          orderInfo.dob,
+      gift_pack:    orderInfo.gift  ? 'Yes' : 'No',
+      gift_message: orderInfo.giftMsg  || '',
+      gift_from:    orderInfo.giftFrom || '',
+      utm_source:   utm.utm_source   || 'direct',
+      utm_medium:   utm.utm_medium   || '',
+      utm_campaign: utm.utm_campaign || '',
+    },
+    theme: { color: AWAG_CONFIG.razorpay.themeColor },
+
+    handler: function(response) {
+      track('purchase', {
+        transaction_id: response.razorpay_payment_id,
+        value: totalAmount, currency: 'INR',
+        item_id: ctx.product.id, item_name: ctx.itemName,
+        ...utm
+      });
+      sessionStorage.setItem('awag_last_order', JSON.stringify({
+        payment_id: response.razorpay_payment_id,
+        items:      [{ name: ctx.itemName, price: ctx.product.price, qty: 1 }],
+        total:      totalAmount,
+        gift:       orderInfo.gift,
+        customer:   orderInfo,
+        timestamp:  new Date().toISOString(),
+      }));
+      window.location.href = 'success.html';
+    },
+
+    modal: {
+      ondismiss: function() {
+        track('checkout_abandoned', { value: totalAmount, currency: 'INR', num_items: 1 });
+      }
+    }
+  };
+
+  var rzp = new Razorpay(options);
+  rzp.on('payment.failed', function(response) {
+    track('payment_failed', { error_code: response.error.code, value: totalAmount });
+    sendFailureAlert(response, totalAmount, [{ name: ctx.itemName, qty: 1 }]);
+    showToast('PAYMENT FAILED — PLEASE TRY AGAIN');
+  });
   rzp.open();
 }
 
@@ -850,6 +939,29 @@ function initCollectionLinks() {
   });
 }
 
+// ─── GOOGLE FORM SUBSCRIBE ───────────────────
+// Used by the homepage newsletter form AND the order form checkbox.
+// Silently submits email to a Google Form → auto-logged in linked Sheet.
+//
+// SETUP (one time, ~2 min):
+//   1. forms.google.com → New form → add 1 field: "Email" (Short answer)
+//   2. Click ⋮ → "Get pre-filled link" → type any email → Get Link
+//   3. From the URL copy:
+//        GF_FORM_ID  — the long string in .../d/XXXXXX/viewform
+//        GF_ENTRY_ID — the full "entry.XXXXXXXXX" from the query string
+//   4. Paste both below, then redeploy
+//
+var GF_FORM_ID  = 'REPLACE_WITH_FORM_ID';        // e.g. 1FAIpQLSe...
+var GF_ENTRY_ID = 'entry.REPLACE_WITH_NUMBER';   // e.g. entry.123456789
+
+function subscribeViaGoogleForm(email) {
+  if (!email || GF_FORM_ID.indexOf('REPLACE') !== -1) return;
+  var url = 'https://docs.google.com/forms/d/' + GF_FORM_ID + '/formResponse'
+          + '?' + GF_ENTRY_ID + '=' + encodeURIComponent(email)
+          + '&submit=Submit';
+  fetch(url, { method: 'POST', mode: 'no-cors' }).catch(function() {});
+}
+
 // ─── NEWSLETTER ──────────────────────────────
 function handleNewsletterSubmit(e) {
   e.preventDefault();
@@ -860,34 +972,8 @@ function handleNewsletterSubmit(e) {
   showToast('YOU ARE IN THE SIGNAL');
   input.value = '';
 
-  // Analytics
   track('generate_lead', { method: 'newsletter', ...getStoredUTM() });
-
-  // ── Mailchimp JSONP subscribe ──────────────────────────────────────────
-  // HOW TO GET YOUR URL:
-  //   Mailchimp → Audience → Signup forms → Embedded forms
-  //   Copy the form action URL, paste as MAILCHIMP_URL below.
-  //   It looks like: https://xyz.us5.list-manage.com/subscribe/post?u=ABC&id=DEF
-  //
-  var MAILCHIMP_URL = 'REPLACE_WITH_MAILCHIMP_FORM_ACTION_URL';
-
-  if (MAILCHIMP_URL.indexOf('REPLACE') !== -1) return; // not configured yet
-
-  // Mailchimp requires JSONP (no CORS on their subscribe endpoint).
-  // We inject a <script> tag — it fires silently, no response needed.
-  var cb  = 'mc_cb_' + Date.now();
-  var src = MAILCHIMP_URL.replace('/post?', '/post-json?') +
-            '&EMAIL=' + encodeURIComponent(email) +
-            '&c=' + cb;
-
-  window[cb] = function() {
-    delete window[cb];
-    if (tag.parentNode) tag.parentNode.removeChild(tag);
-  };
-
-  var tag = document.createElement('script');
-  tag.src = src;
-  document.body.appendChild(tag);
+  subscribeViaGoogleForm(email);
 }
 
 // ─── PRODUCT CARD ROUTING ────────────────────

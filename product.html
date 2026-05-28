@@ -260,16 +260,14 @@
     addToCart(cartId, cartName, product.img);
   }
 
-  /* ── Buy now — direct single-item Razorpay checkout ── */
+  /* ── Buy now — opens order form then goes to Razorpay ── */
   function buyNowFromPage() {
     var params  = new URLSearchParams(window.location.search);
     var id      = params.get('id');
     var product = getProduct(id);
     if (!product) return;
     if (!selectedSize) { showToast('SELECT A SIZE FIRST'); return; }
-    if (typeof Razorpay === 'undefined') { showToast('PAYMENT LOADING — TRY AGAIN'); return; }
 
-    var utm      = getStoredUTM();
     var itemName = product.name + ' / ' + selectedSize;
 
     track('begin_checkout', {
@@ -277,49 +275,8 @@
       item_id: product.id, item_name: itemName
     });
 
-    var options = {
-      key:         AWAG_CONFIG.razorpay.key,
-      amount:      product.price * 100,
-      currency:    'INR',
-      name:        AWAG_CONFIG.razorpay.name,
-      description: itemName,
-      image:       AWAG_CONFIG.razorpay.image || undefined,
-      notes: {
-        item:         itemName,
-        collection:   product.collection,
-        size:         selectedSize,
-        utm_source:   utm.utm_source   || 'direct',
-        utm_medium:   utm.utm_medium   || '',
-        utm_campaign: utm.utm_campaign || '',
-      },
-      theme: { color: AWAG_CONFIG.razorpay.themeColor },
-      handler: function(response) {
-        track('purchase', {
-          transaction_id: response.razorpay_payment_id,
-          value: product.price, currency: 'INR',
-          item_id: product.id, item_name: itemName
-        });
-        sessionStorage.setItem('awag_last_order', JSON.stringify({
-          payment_id: response.razorpay_payment_id,
-          items:      [{ name: itemName, price: product.price, qty: 1 }],
-          total:      product.price,
-          timestamp:  new Date().toISOString()
-        }));
-        window.location.href = 'success.html';
-      },
-      modal: {
-        ondismiss: function() {
-          track('checkout_abandoned', { value: product.price, currency: 'INR', num_items: 1 });
-        }
-      }
-    };
-
-    var rzp = new Razorpay(options);
-    rzp.on('payment.failed', function(response) {
-      track('payment_failed', { error_code: response.error.code, value: product.price });
-      showToast('PAYMENT FAILED — PLEASE TRY AGAIN');
-    });
-    rzp.open();
+    // Open the order form in buy-now mode (single item, bypasses cart)
+    openOrderForm({ buyNow: true, product: product, itemName: itemName });
   }
 
   /* ── Render product page HTML ── */
