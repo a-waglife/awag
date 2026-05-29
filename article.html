@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A-WAG — The Journal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800;900&family=Barlow:wght@300;400&family=Cormorant+Garamond:ital,wght@0,400;1,300;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-91LSYTJ5CD"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-91LSYTJ5CD');
+  </script>
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '828940853275665');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=828940853275665&ev=PageView&noscript=1"/></noscript>
+
+  <style>
+    /* ── Article page layout ── */
+    .article-wrap {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 80px 24px 96px;
+    }
+    .article-breadcrumb {
+      font-family: var(--font-body);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 40px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .article-breadcrumb a { color: var(--muted); text-decoration: none; }
+    .article-breadcrumb a:hover { color: var(--bone-white); }
+    .article-breadcrumb .bc-sep { opacity: 0.4; }
+    .article-tag {
+      font-family: var(--font-body);
+      font-size: 9px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--sur-gold);
+      margin-bottom: 16px;
+    }
+    .article-title {
+      font-family: var(--font-condensed);
+      font-size: clamp(36px, 6vw, 72px);
+      font-weight: 900;
+      letter-spacing: 0.03em;
+      color: var(--bone-white);
+      line-height: 0.95;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .article-subtitle {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: clamp(16px, 1.6vw, 20px);
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 12px;
+    }
+    .article-meta {
+      font-family: var(--font-body);
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: var(--muted);
+      opacity: 0.6;
+      margin-bottom: 48px;
+    }
+    .article-divider {
+      width: 40px;
+      height: 1px;
+      background: var(--sur-gold);
+      margin: 48px 0;
+    }
+    /* Article body typography */
+    .article-body { color: var(--bone-white); }
+    .article-body .article-lead {
+      font-family: var(--font-serif);
+      font-size: clamp(17px, 1.8vw, 21px);
+      color: var(--bone-white);
+      line-height: 1.75;
+      margin-bottom: 32px;
+    }
+    .article-body p {
+      font-family: var(--font-body);
+      font-size: 15px;
+      color: rgba(232,226,213,0.78);
+      line-height: 1.9;
+      margin-bottom: 22px;
+      font-weight: 300;
+    }
+    .article-body h2 {
+      font-family: var(--font-condensed);
+      font-size: clamp(20px, 2.2vw, 28px);
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--bone-white);
+      margin: 44px 0 18px;
+    }
+    .article-body blockquote {
+      border-left: 2px solid var(--sur-gold);
+      padding: 0 0 0 24px;
+      margin: 36px 0;
+    }
+    .article-body blockquote p {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: clamp(16px, 1.6vw, 19px);
+      color: var(--bone-white);
+      line-height: 1.7;
+      margin-bottom: 8px;
+    }
+    .article-body blockquote cite {
+      font-family: var(--font-body);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--sur-gold);
+      font-style: normal;
+    }
+    /* Shop CTA */
+    .article-shop-cta {
+      background: rgba(184,146,42,0.06);
+      border: 1px solid rgba(184,146,42,0.2);
+      padding: 32px;
+      margin: 48px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .article-shop-cta-text p {
+      font-family: var(--font-body);
+      font-size: 9px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--sur-gold);
+      margin-bottom: 6px;
+    }
+    .article-shop-cta-text h3 {
+      font-family: var(--font-condensed);
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      color: var(--bone-white);
+    }
+    /* More dispatches */
+    .more-dispatches {
+      margin-top: 80px;
+      border-top: 1px solid var(--border);
+      padding-top: 48px;
+    }
+    .more-dispatches-label {
+      font-family: var(--font-body);
+      font-size: 9px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--sur-gold);
+      margin-bottom: 32px;
+    }
+    .more-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+    @media (max-width: 680px) {
+      .more-grid { grid-template-columns: 1fr; }
+    }
+    .more-card {
+      background: var(--void-black);
+      padding: 24px;
+      text-decoration: none;
+      display: block;
+      transition: background var(--transition);
+    }
+    .more-card:hover { background: var(--near-black); }
+    .more-card-tag {
+      font-family: var(--font-body);
+      font-size: 8px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--sur-gold);
+      margin-bottom: 10px;
+    }
+    .more-card-title {
+      font-family: var(--font-condensed);
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--bone-white);
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+    .more-card-read {
+      font-family: var(--font-body);
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="announcement-bar">
+    <span>FREE SHIPPING ACROSS INDIA — ALL ORDERS</span>
+    <span class="sep">·</span>
+    <span>DROP 001–005 NOW LIVE</span>
+    <span class="sep">·</span>
+    <span>MAKE TO ORDER · SHIPS IN 7 DAYS</span>
+  </div>
+
+  <nav class="nav" id="nav">
+    <button class="nav-hamburger" id="hamburgerBtn" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <a href="index.html" class="nav-logo">A-WAG</a>
+    <div class="nav-icons">
+      <button class="nav-icon-btn" id="wishlistNavBtn" aria-label="Wishlist">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+        </svg>
+        <span class="nav-badge" id="wishlistCount" style="display:none">0</span>
+      </button>
+      <button class="nav-icon-btn" id="cartNavBtn" aria-label="Cart">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        <span class="nav-badge" id="cartCount" style="display:none">0</span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="mobile-menu" id="mobileMenu">
+    <button class="mobile-menu-close" id="menuClose" aria-label="Close">✕</button>
+    <nav class="mobile-nav-links">
+      <a href="index.html#collections">Collections</a>
+      <a href="index.html#shop">Shop</a>
+      <a href="designers.html">Meet Designers</a>
+      <a href="journal.html">Journal</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="mobile-menu-footer">
+      <p class="mobile-tagline">Ain't We All God?</p>
+    </div>
+  </div>
+  <div class="menu-overlay" id="menuOverlay"></div>
+
+  <div class="cart-drawer" id="cartDrawer">
+    <div class="cart-drawer-header"><h3>CART</h3><button class="cart-close" id="cartClose">✕</button></div>
+    <div class="cart-items" id="cartItems">
+      <div class="cart-empty"><p>Your cart is empty.</p><p class="cart-empty-sub">The gods travel light.</p></div>
+    </div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="cart-total"><span>Total</span><span id="cartTotal">₹0</span></div>
+      <button class="btn-primary btn-block" onclick="initiateCheckout()">PROCEED TO PAYMENT</button>
+    </div>
+  </div>
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+  <div class="toast" id="toast"></div>
+
+  <div id="articleContent"></div>
+  <div id="articleNotFound" style="display:none; text-align:center; padding:120px 24px;">
+    <p class="section-label">LOST?</p>
+    <h2 style="font-family:var(--font-condensed);font-size:clamp(36px,8vw,72px);font-weight:900;margin:16px 0;color:var(--bone-white)">DISPATCH NOT FOUND.</h2>
+    <a href="journal.html" class="btn-ghost" style="margin-top:24px;display:inline-block">← BACK TO JOURNAL</a>
+  </div>
+
+  <footer class="footer" id="pgFooter" style="display:none">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <p class="footer-logo">A-WAG</p>
+        <p class="footer-tagline">Ain't We All God?</p>
+        <p class="footer-desc">Premium Indian spiritual streetwear.<br>Made for those who are asking.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <p class="footer-col-head">COLLECTIONS</p>
+          <a href="index.html#shop" class="footer-link">Void</a>
+          <a href="index.html#shop" class="footer-link">Witness</a>
+          <a href="index.html#shop" class="footer-link">Bloom</a>
+          <a href="index.html#shop" class="footer-link">Yaatra</a>
+          <a href="index.html#shop" class="footer-link">Akshar</a>
+        </div>
+        <div class="footer-col">
+          <p class="footer-col-head">INFO</p>
+          <a href="journal.html" class="footer-link">Journal</a>
+          <a href="designers.html" class="footer-link">Meet Designers</a>
+          <a href="contact.html" class="footer-link">Contact</a>
+        </div>
+        <div class="footer-col">
+          <p class="footer-col-head">CONNECT</p>
+          <a href="https://www.instagram.com/aint.we.all.god/" target="_blank" rel="noopener" class="footer-link footer-insta">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            @aint.we.all.god
+          </a>
+          <a href="mailto:aintweallgod@gmail.com" class="footer-link">aintweallgod@gmail.com</a>
+          <a href="https://wa.me/918320421625" target="_blank" rel="noopener" class="footer-link">WhatsApp</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 A-WAG. All rights reserved.</p>
+      <p>Made to order. Ships in 7 days. Always.</p>
+    </div>
+  </footer>
+
+  <a href="https://wa.me/918320421625" target="_blank" rel="noopener" class="wa-float" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+    <span class="wa-float-tooltip">Chat with us</span>
+  </a>
+
+  <script src="products.js"></script>
+  <script src="script.js"></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+  <script>
+  var AWAG_ARTICLES = [
+
+    {
+      id: 'bloom-physics-of-devotion',
+      tag: '⊕ BLOOM · PHILOSOPHY',
+      title: 'THE PHYSICS OF DEVOTION',
+      subtitle: 'What happens when a billion people pray the same frequency for a thousand years',
+      date: 'May 2025 · 6 min read',
+      shopLink: 'product.html?id=bloom-spanda',
+      shopLabel: 'SHOP BLOOM COLLECTION',
+      shopCollection: 'BLOOM',
+      content: `
+        <p class="article-lead">Cymatics is the science of visible sound. German physicist Ernst Chladni discovered in 1787 that a bow drawn across a sand-covered metal plate at a specific frequency causes the sand to arrange itself into precise, repeating geometric forms. Different frequencies — different forms. Every time, with mathematical precision.</p>
+
+        <p>He called them Chladni figures. Today, updated with sine-wave generators and finer materials, we call the study cymatics. The core discovery has not changed: sound has shape. Frequency leaves a physical trace.</p>
+
+        <h2>The Experiment</h2>
+
+        <p>Take a flat metal plate. Cover it in fine sand. Apply a specific frequency. The sand migrates from the antinodes — points of maximum vibration — and settles at the nodes, where the plate is momentarily still. What remains is a map of the sound. A photograph of vibration, made permanent in matter.</p>
+
+        <p>The pattern is not random. It is not approximate. At 432 Hz, you get a specific form. At 528 Hz, another. Change the frequency by a single hertz and the pattern changes. The form is a direct, unambiguous record of the frequency that created it.</p>
+
+        <blockquote>
+          <p>"Matter is energy. Energy is just frequency. Change the frequency and you change the matter."</p>
+          <cite>— Sadhguru, Isha Foundation</cite>
+        </blockquote>
+
+        <h2>What Om Actually Is</h2>
+
+        <p>Om — Aum — is not a word. It is a frequency specification. The Mandukya Upanishad devotes itself entirely to Om's structure: A-U-M, three phonemes, three states of consciousness, the fourth being the silence that contains them. It has been maintained — with the same vowel ratios, the same specific pronunciation — for at minimum three thousand years.</p>
+
+        <p>Osho spoke of Om differently but arrived at the same place: "The sound Om is not something invented by man. It is the sound that exists in existence itself. If you become very silent, you will hear it — humming all around you." He was describing what cymatics confirms: the universe has a base frequency, and Om is humanity's ancient attempt to match it.</p>
+
+        <p>When you produce the Om sound at its canonical frequency and introduce it to a Chladni plate, you get a specific form. That form contains a six-pointed structure — two triangles, overlapping. Which is also how the Sri Yantra begins. Which is also what you find at the base of certain Hindu temple floor plans. This is not coincidence. It is geometry responding to frequency. The same geometry, across different traditions, different centuries, different media — because the frequency is the same.</p>
+
+        <h2>A Billion People, A Thousand Years</h2>
+
+        <p>India's bhakti tradition involves, conservatively, a billion people repeating certain prayers with specific intonation patterns that have not changed in over a thousand years. The Panchakshara — Na-Ma-Śi-Vā-Ya — has five syllables, each assigned to one of the five elements. Each syllable has a canonical pronunciation. Each canonical pronunciation has a specific frequency.</p>
+
+        <p>When Aryan Mehta, the cymatic artist who created the BLOOM collection, applied the frequency of each syllable to a Chladni plate, he found that the five patterns — combined — produced the mandala you see on the Panchakshara garment. Not a design inspired by the mantra. Not a symbol that represents it. The actual visual record of what happens when those five frequencies interact in sequence.</p>
+
+        <blockquote>
+          <p>"The mantra is not just a sound. It is a technology. A technology to restructure the mind from the inside."</p>
+          <cite>— Sadhguru</cite>
+        </blockquote>
+
+        <p>He spent six months mapping each syllable separately before combining them. "Individually, they make simple forms," he said. "Together — Na-Ma-Śi-Vā-Ya — they become this mandala. That is what a mantra does. Five separate things become one totality."</p>
+
+        <h2>The Tradition Knew</h2>
+
+        <p>Osho, in his discourses on tantra, described mantra as "a scientific device — not religious, not philosophical, but scientific." He meant this precisely: that chanting specific sounds at specific intervals produces specific effects in the body, in the brain, and — cymatics now confirms — in matter itself.</p>
+
+        <p>The temples were built with specific acoustic geometries. The proportions of a gopuram are not decorative — they are tuned. The ratios of a mandala are not aesthetic — they are sonic. The tradition understood, in its own language, what we are now able to verify with sine generators and high-speed cameras: sound structures matter. Intent expressed as sound leaves a physical trace.</p>
+
+        <h2>What You Are Wearing</h2>
+
+        <p>The BLOOM collection is not spiritual in the way that word is usually used — as a synonym for decorative or vaguely meaningful. It is spiritual in the original sense: it is a direct record of what happens when matter responds to devotion.</p>
+
+        <p>When a billion people have prayed the same frequency for a thousand years, they have been filling space with a specific vibration. Cymatics tells us that specific vibrations produce specific forms. The BLOOM designs are those forms, documented.</p>
+
+        <p>You are not wearing a symbol of devotion. You are wearing what devotion looks like at the particle level.</p>
+      `
+    },
+
+    {
+      id: 'raga-bhairav-at-4am',
+      tag: '≋ RAGA · COMING SOON',
+      title: 'BHAIRAV AT 4AM',
+      subtitle: 'The science and the silence of the pre-dawn raga',
+      date: 'Coming Soon',
+      shopLink: 'index.html#newsletter',
+      shopLabel: 'JOIN THE SIGNAL — GET NOTIFIED',
+      shopCollection: 'RAGA',
+      content: `
+        <p class="article-lead">Raga Bhairav belongs to the brahma muhurta — the hour of Brahma — 3:30 to 5:30am, the time before the sun has risen but after the deepest darkness. Not quite night. Not yet day. The raga that belongs to the threshold.</p>
+
+        <p>Its defining note is komal Dha — the flat sixth. In frequency ratios, komal Dha sits at 8:5 relative to the root. It is the most mathematically complex major interval in Bhairav's scale. The note that makes the raga identifiable — and the note most difficult to sing.</p>
+
+        <h2>What a Lissajous Figure Is</h2>
+
+        <p>When two frequencies interact at right angles — one on the x-axis, one on the y-axis — they draw curves. Jules Antoine Lissajous catalogued these curves in 1857. Simple integer ratios draw simple, closed shapes: 1:1 draws a diagonal line, 1:2 draws a figure-eight. The more complex the ratio, the more intricate the closed curve.</p>
+
+        <p>The ratio 8:5 — komal Dha — draws an asymmetric three-lobe closed curve. If you plot the interaction of the root note and its flat sixth as Lissajous figures, you get a form that is precise, reproducible, and unmistakably a visual record of that specific interval. The curve becomes the garment. Not a symbol of the raga — the raga itself, in form.</p>
+
+        <h2>Why 4am</h2>
+
+        <p>The brahma muhurta is when the veil is thinnest. It is not a metaphor — or rather, it is a metaphor that encodes a physiological fact. At 3:30am, cortisol begins its pre-dawn rise. Melatonin is still present. The brain is in a state of heightened plasticity. Information acquired in this window consolidates differently. Monks and meditators across traditions have known this for millennia.</p>
+
+        <blockquote>
+          <p>"The seeker must rise before the sun. Not because it is a rule — but because in those hours, existence is more available to you."</p>
+          <cite>— Sadhguru</cite>
+        </blockquote>
+
+        <p>Osho was more direct: "Four in the morning is the best time for meditation. The whole earth is asleep. You are a little bit ahead of the earth, ahead of the ordinary, the mundane. That gap is the gap for the divine." He was describing what the raga tradition formalised two thousand years earlier.</p>
+
+        <h2>The Komal Dha and Longing</h2>
+
+        <p>J. Krishnamurti spoke often about the quality of attention that is possible only in a particular state — what he called "choiceless awareness." Not the attention you bring to a problem, not focused, goal-directed concentration, but a passive, all-receiving alertness. "In that state, the observer and the observed are not two separate things."</p>
+
+        <p>Raga Bhairav induces exactly this. The komal Dha creates unresolved longing. Bhairav is not a raga of arrival. It is a raga of yearning — for the light that is coming, for the source that is everywhere. It creates a mood in the listener that mirrors the dawn state: between worlds, neither here nor there, open.</p>
+
+        <p>The great Bhairav singers — Pandit Bhimsen Joshi, Ustad Amir Khan — describe the raga as needing to be sung slowly, almost reluctantly, as if the music itself is not yet ready to arrive. The suspension is the content. The longing is the teaching.</p>
+
+        <h2>The Garment (Coming)</h2>
+
+        <p>When we asked Aryan Mehta to design the RAGA collection, we gave him one instruction: document the raga, don't illustrate it. The result will be the Lissajous figure of the komal Dha ratio — the visual form of the note that defines Bhairav, the note that belongs to the threshold hour.</p>
+
+        <p>Not a symbol of the raga. Not a decorative reference to it. The raga itself, in form.</p>
+
+        <blockquote>
+          <p>"Music is not entertainment. Music is the language of the beyond — the only language that reaches where words cannot."</p>
+          <cite>— Osho</cite>
+        </blockquote>
+
+        <p>When you wear it at 4am, something is different. That is not mysticism either. That is Bhairav doing what Bhairav does.</p>
+      `
+    },
+
+    {
+      id: 'yaatra-geometry-of-kashi',
+      tag: '◎ YAATRA · SACRED GEOGRAPHY',
+      title: 'THE GEOMETRY OF KASHI',
+      subtitle: 'Why ghat steps are the most honest map of existence',
+      date: 'May 2025 · 7 min read',
+      shopLink: 'product.html?id=yaatra-mahasmashana',
+      shopLabel: 'SHOP YAATRA COLLECTION',
+      shopCollection: 'YAATRA',
+      content: `
+        <p class="article-lead">The ghats of Varanasi descend to the Ganga at a specific angle. No two are exactly the same. But viewed from directly above — from the Panchakroshi road, from the satellite image — you see the same diagram repeating: parallel lines of decreasing width converging toward water.</p>
+
+        <p>Form dissolving into formlessness. The diagram of the human condition, carved in stone over three thousand years.</p>
+
+        <h2>The Oldest City</h2>
+
+        <p>Varanasi — Kashi — Banaras. It is not simply an old city. It is, according to the Skanda Purana, the city that has existed since before the current universe began and will exist after it ends. It is the city that Shiva holds on his trident. It is the mandala city — laid out in three concentric circles, each a pilgrimage route, the innermost being the city itself.</p>
+
+        <p>This is not mythology being used as tourism copy. This is urban planning. The city was designed as a diagram of liberation — a place where every street, every ghat, every temple placement encodes a specific cosmological idea. You move through Kashi as through a text.</p>
+
+        <blockquote>
+          <p>"To die in Kashi is not to die. It is to be initiated. Shiva himself whispers the taraka mantra in your ear. What more could you want?"</p>
+          <cite>— Sadhguru, on Kashi</cite>
+        </blockquote>
+
+        <h2>What the Steps Are</h2>
+
+        <p>Eighty-eight ghats. Most are for bathing, for cremation, for worship. The steps — the ghats themselves — were built at the angle that allows the Ganga's flooding to drain without damaging the city. Practical engineering. But the form this engineering produces is precise: wide at the city level, narrowing as they descend, ending where the river begins.</p>
+
+        <p>The anthropologist Diana Eck, in her exhaustive study of Kashi, notes that the ghat steps function as a kind of graduated dissolution — the further you descend from the city, the less you are in the world of structures and certainties, the more you are at the edge of the formless. The Ganga is not just water in Kashi. It is the line where form ends.</p>
+
+        <p>Krishnamurti would have been uncomfortable with the religious framing but would have recognised the geometry. He spoke often about "the unknown" that exists at the boundary of everything the mind has built. "The mind can only go so far," he said. "At some point, it must stop. And in that stopping — something else is possible." The ghat steps are that stopping point, made into architecture.</p>
+
+        <h2>Mahasmashana</h2>
+
+        <p>Manikarnika ghat — the great cremation ground. The Mahasmashana. The pyre that has burned continuously for three thousand years. When you die in Kashi, you die at Manikarnika. According to the tradition, Shiva whispers the taraka mantra in your ear. You are released.</p>
+
+        <p>Not because of a miracle — because of geography. Because dying at the edge of the formless, in the city of liberation, at the place where the form literally ends and becomes fire and then water and then formless — is the diagram made literal.</p>
+
+        <blockquote>
+          <p>"Death is not the opposite of life. Death is the opposite of birth. Life has no opposite. Life is all there is."</p>
+          <cite>— Osho</cite>
+        </blockquote>
+
+        <p>Osho spent years in Varanasi. He returned to the burning ghats repeatedly — not for morbid fascination, but because, he said, "Here, the pretence stops. At Manikarnika, nobody is pretending. The body is burning. The question answers itself."</p>
+
+        <h2>Why You Walk</h2>
+
+        <p>Yaatra means journey. Not travel — journey. A yaatra has a purpose, a direction, a terminus. The pilgrimage is not about the destination. It is about what walking does to the walker.</p>
+
+        <p>Sadhguru has described the purpose of a pilgrimage in terms that would have satisfied a scientist and a mystic equally: "When you walk barefoot on sacred ground, when you are in the proximity of a powerful space, you can be transformed — not because of belief, but because of exposure. The geometry of the place does something to you."</p>
+
+        <p>Three thousand years of feet on those ghat steps have not worn them smooth by accident. The wear pattern on stone is itself a record of intention. Every bare foot that descended toward the Ganga carried something — grief, petition, curiosity, surrender — and left it there.</p>
+
+        <h2>The Garment</h2>
+
+        <p>When Meera Krishnamurthy — the geographer of the sacred who created the YAATRA collection — designs these garments, she walks the routes first. On foot. The Panchakroshi. The Char Dham. Not to extract inspiration. To let the walk do what the walk does.</p>
+
+        <p>The YAATRA garment — Mahasmashana — documents this diagram. The parallel lines converging toward a point. The step pattern narrowing to water. It is the ghat, seen from above, worn on the body. Not a souvenir of the journey. The journey itself, compressed into form.</p>
+      `
+    },
+
+    {
+      id: 'witness-double-slit',
+      tag: '◉ WITNESS · QUANTUM · ZEN',
+      title: 'THE DOUBLE-SLIT IS A KOAN',
+      subtitle: 'On observation, collapse, and the WITNESS collection',
+      date: 'May 2025 · 8 min read',
+      shopLink: 'product.html?id=witness-enso',
+      shopLabel: 'SHOP WITNESS COLLECTION',
+      shopCollection: 'WITNESS',
+      content: `
+        <p class="article-lead">In 1801, Thomas Young fired light through two narrow slits and found that the result — on the screen behind — was an interference pattern. The light behaved as a wave. It passed through both slits simultaneously and interfered with itself.</p>
+
+        <p>In 1909, the same experiment was performed one photon at a time. The photons — fired individually, sequentially, with no possibility of interacting with each other — still produced an interference pattern. Each photon passed through both slits simultaneously. Alone.</p>
+
+        <h2>What Happens When You Watch</h2>
+
+        <p>Then a detector was placed at the slits. To see which slit each photon went through. The moment a measurement was made — the moment the photon was observed — the interference pattern disappeared. Each photon went through one slit. The wave collapsed into a particle.</p>
+
+        <p>The act of observation changed what was observed.</p>
+
+        <p>This is not metaphor. This is not the observer changing the experiment by physically interfering with it. The act of obtaining information — the act of knowing — changes the result. The Copenhagen interpretation, which is the mainstream interpretation of quantum mechanics, states plainly: a quantum system exists in superposition until measured. Measurement collapses the wave function.</p>
+
+        <blockquote>
+          <p>"When I look at something, the very act of looking changes it. This is not only true in quantum physics — it is true in life. The moment you observe yourself, you begin to change."</p>
+          <cite>— J. Krishnamurti</cite>
+        </blockquote>
+
+        <h2>The Koan</h2>
+
+        <p>A monk asks Zhaozhou: "Does a dog have Buddha-nature?" Zhaozhou says: "Wu." No. Nothing. Not-knowing.</p>
+
+        <p>A koan is not a puzzle to be solved with logic. It is a question held in awareness until the frame that generated the question breaks. The question "which slit does the photon go through?" is a koan. The moment you insist it must go through one, you destroy the interference. The moment you stop insisting — the moment you let it go through both — it does.</p>
+
+        <p>Krishnamurti was adamant that the accumulated knowledge we bring to any observation corrupts it. "Can you look at a tree without naming it? Can you look at your wife without the image you have built of her over twenty years? If you can, you will see something entirely different." He was describing, in 1970, the exact mechanism the double-slit experiment had revealed in 1909. The observer contaminates the observed.</p>
+
+        <h2>The Witness</h2>
+
+        <p>Vipassana — insight meditation — trains the practitioner in a specific posture of attention. You observe sensation without reacting to it. You watch the mind without being the mind. The moment you identify with the sensation — the moment the observer collapses into the observed — the meditation is over. You are inside the wave function.</p>
+
+        <blockquote>
+          <p>"The observer is the observed. When you understand this — not intellectually, but actually feel it — the division ends. And with the division, the conflict."</p>
+          <cite>— J. Krishnamurti, The Urgency of Change</cite>
+        </blockquote>
+
+        <p>The Vedantic concept of the sākṣī — the witness — is identical. The pure awareness that watches experience without becoming experience. The screen on which the film plays, not the film.</p>
+
+        <p>Osho described this most vividly: "The witness is the one who watches — not with the eyes, but with the being. It never gets involved. It watches anger, it watches jealousy, it watches love, it watches thought — but it is never the anger, never the jealousy, never the thought. It is the mirror. The mirror reflects everything but remains empty."</p>
+
+        <h2>What the Physics Is Saying</h2>
+
+        <p>What the double-slit experiment shows is that this is not only a psychological state. It is a description of physical reality. The universe behaves differently depending on whether it is being watched, and how. Consciousness is not separate from the experiment. It is the condition of the experiment.</p>
+
+        <p>Sadhguru puts it plainly: "Modern physicists are slowly discovering what yogis have known for thousands of years — that the universe is not happening to you. You are happening to the universe. The inside and the outside are not two different things."</p>
+
+        <p>This is why the WITNESS collection renders the interference pattern — not the particle tracks, not the detector data, but the pattern that appears only when no one is watching. The form that exists in superposition. The wave function, not the collapse.</p>
+
+        <h2>The Ensō</h2>
+
+        <p>Devraj Nair — the Vipassana teacher who created the WITNESS collection — brushes the ensō in one stroke. One breath. He has done it ten thousand times in eighteen years. "The ensō is complete because the person who drew it was, at that moment, complete. Not a symbol of perfection — documentation of presence."</p>
+
+        <p>The ensō on the WITNESS garment is not the ensō he intended. It is the ensō that appeared when he was not trying to make an ensō. The interference pattern that only appears when the witness stops watching.</p>
+
+        <blockquote>
+          <p>"Meditation is not a doing. It is an undoing. When all the doing stops — when the observer stops trying to observe — something is seen."</p>
+          <cite>— Osho</cite>
+        </blockquote>
+
+        <p>When you wear it, the question is not what it means. The question is what it asks you to do with your attention.</p>
+      `
+    }
+
+  ];
+
+  function renderArticle() {
+    var params = new URLSearchParams(window.location.search);
+    var id = params.get('id');
+    var article = AWAG_ARTICLES.find(function(a) { return a.id === id; });
+
+    if (!article) {
+      document.getElementById('articleNotFound').style.display = 'block';
+      document.title = 'A-WAG — Not Found';
+      return;
+    }
+
+    document.title = 'A-WAG — ' + article.title;
+
+    // Build recommended articles (all except current)
+    var others = AWAG_ARTICLES.filter(function(a) { return a.id !== id; });
+    var moreHTML = others.map(function(a) {
+      return '<a href="article.html?id=' + a.id + '" class="more-card">'
+        + '<p class="more-card-tag">' + a.tag + '</p>'
+        + '<p class="more-card-title">' + a.title + '</p>'
+        + '<p class="more-card-read">READ →</p>'
+        + '</a>';
+    }).join('');
+
+    document.getElementById('articleContent').innerHTML =
+      '<div class="article-wrap">'
+
+        + '<nav class="article-breadcrumb">'
+          + '<a href="index.html">A-WAG</a>'
+          + '<span class="bc-sep">·</span>'
+          + '<a href="journal.html">JOURNAL</a>'
+          + '<span class="bc-sep">·</span>'
+          + '<span>' + article.tag + '</span>'
+        + '</nav>'
+
+        + '<p class="article-tag">' + article.tag + '</p>'
+        + '<h1 class="article-title">' + article.title + '</h1>'
+        + '<p class="article-subtitle">' + article.subtitle + '</p>'
+        + '<p class="article-meta">' + article.date + '</p>'
+
+        + '<div class="article-divider"></div>'
+
+        + '<div class="article-body">' + article.content + '</div>'
+
+        + '<div class="article-shop-cta">'
+          + '<div class="article-shop-cta-text">'
+            + '<p>' + article.shopCollection + ' COLLECTION</p>'
+            + '<h3>Wear the frequency.</h3>'
+          + '</div>'
+          + '<a href="' + article.shopLink + '" class="btn-primary">' + article.shopLabel + '</a>'
+        + '</div>'
+
+        + '<div class="more-dispatches">'
+          + '<p class="more-dispatches-label">MORE DISPATCHES</p>'
+          + '<div class="more-grid">' + moreHTML + '</div>'
+        + '</div>'
+
+      + '</div>';
+
+    document.getElementById('pgFooter').style.display = '';
+  }
+
+  document.addEventListener('DOMContentLoaded', renderArticle);
+  </script>
+
+</body>
+</html>

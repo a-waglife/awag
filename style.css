@@ -1015,6 +1015,12 @@ input { font-family: inherit; }
   transition: opacity var(--transition);
 }
 .footer-link:hover { opacity: 1; }
+.footer-insta {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+}
+.footer-insta svg { flex-shrink: 0; }
 .footer-bottom {
   display: flex;
   flex-direction: column;
